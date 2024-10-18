@@ -1,0 +1,160 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\ClubRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: ClubRepository::class)]
+class Club
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 15)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $sigle = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $gymnase = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $adresse = null;
+
+    /**
+     * @var Collection<int, reception>
+     */
+    #[ORM\OneToMany(targetEntity: reception::class, mappedBy: 'club', orphanRemoval: true)]
+    private Collection $receptions;
+
+    /**
+     * @var Collection<int, equipe>
+     */
+    #[ORM\OneToMany(targetEntity: equipe::class, mappedBy: 'club', orphanRemoval: true)]
+    private Collection $equipe;
+
+    public function __construct()
+    {
+        $this->receptions = new ArrayCollection();
+        $this->equipe = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getSigle(): ?string
+    {
+        return $this->sigle;
+    }
+
+    public function setSigle(?string $sigle): static
+    {
+        $this->sigle = $sigle;
+
+        return $this;
+    }
+
+    public function getGymnase(): ?string
+    {
+        return $this->gymnase;
+    }
+
+    public function setGymnase(string $gymnase): static
+    {
+        $this->gymnase = $gymnase;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): static
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, reception>
+     */
+    public function getReceptions(): Collection
+    {
+        return $this->receptions;
+    }
+
+    public function addReception(reception $reception): static
+    {
+        if (!$this->receptions->contains($reception)) {
+            $this->receptions->add($reception);
+            $reception->setClub($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReception(reception $reception): static
+    {
+        if ($this->receptions->removeElement($reception)) {
+            // set the owning side to null (unless already changed)
+            if ($reception->getClub() === $this) {
+                $reception->setClub(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, equipe>
+     */
+    public function getEquipe(): Collection
+    {
+        return $this->equipe;
+    }
+
+    public function addEquipe(equipe $equipe): static
+    {
+        if (!$this->equipe->contains($equipe)) {
+            $this->equipe->add($equipe);
+            $equipe->setClub($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipe(equipe $equipe): static
+    {
+        if ($this->equipe->removeElement($equipe)) {
+            // set the owning side to null (unless already changed)
+            if ($equipe->getClub() === $this) {
+                $equipe->setClub(null);
+            }
+        }
+
+        return $this;
+    }
+}
