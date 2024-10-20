@@ -4,7 +4,7 @@ INSERT INTO capitaine (id, joueur_id, nom, prenom, telephone, mail) VALUES
 (3, NULL, 'Durand', 'Paul', '0608091011', 'paul.durand@example.com');
 
 
-INSERT INTO club (id, nom, sigle, gymnase, string) VALUES
+INSERT INTO club (id, nom, sigle, gymnase, adresse) VALUES
 (1, 'Badminton Club Paris', 'BCP', 'Gymnase Jaurès', 'string1'),
 (2, 'Lyon Badminton', 'LYB', 'Gymnase Lumière', 'string2'),
 (3, 'Marseille Smash', 'MSM', 'Gymnase Prado', 'string3');

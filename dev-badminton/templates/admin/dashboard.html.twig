@@ -1,0 +1,12 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <h1>Welcome to the Admin Dashboard</h1>
+
+    <h2>Clubs</h2>
+    <ul>
+        {% for club in clubs %}
+            <li>{{ club.nom }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

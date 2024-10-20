@@ -28,15 +28,15 @@ class Club
     private ?string $adresse = null;
 
     /**
-     * @var Collection<int, reception>
+     * @var Collection<int, Reception>
      */
-    #[ORM\OneToMany(targetEntity: reception::class, mappedBy: 'club', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Reception::class, mappedBy: 'club', orphanRemoval: true)]
     private Collection $receptions;
 
     /**
-     * @var Collection<int, equipe>
+     * @var Collection<int, Equipe>
      */
-    #[ORM\OneToMany(targetEntity: equipe::class, mappedBy: 'club', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Equipe::class, mappedBy: 'club', orphanRemoval: true)]
     private Collection $equipe;
 
     public function __construct()
@@ -99,14 +99,14 @@ class Club
     }
 
     /**
-     * @return Collection<int, reception>
+     * @return Collection<int, Reception>
      */
     public function getReceptions(): Collection
     {
         return $this->receptions;
     }
 
-    public function addReception(reception $reception): static
+    public function addReception(Reception $reception): static
     {
         if (!$this->receptions->contains($reception)) {
             $this->receptions->add($reception);
@@ -116,7 +116,7 @@ class Club
         return $this;
     }
 
-    public function removeReception(reception $reception): static
+    public function removeReception(Reception $reception): static
     {
         if ($this->receptions->removeElement($reception)) {
             // set the owning side to null (unless already changed)
@@ -129,14 +129,14 @@ class Club
     }
 
     /**
-     * @return Collection<int, equipe>
+     * @return Collection<int, Equipe>
      */
     public function getEquipe(): Collection
     {
         return $this->equipe;
     }
 
-    public function addEquipe(equipe $equipe): static
+    public function addEquipe(Equipe $equipe): static
     {
         if (!$this->equipe->contains($equipe)) {
             $this->equipe->add($equipe);
@@ -146,10 +146,9 @@ class Club
         return $this;
     }
 
-    public function removeEquipe(equipe $equipe): static
+    public function removeEquipe(Equipe $equipe): static
     {
         if ($this->equipe->removeElement($equipe)) {
-            // set the owning side to null (unless already changed)
             if ($equipe->getClub() === $this) {
                 $equipe->setClub(null);
             }
