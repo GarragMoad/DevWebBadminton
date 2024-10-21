@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\ClubType;
+use App\Form\ClubToReceptionType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -23,29 +24,38 @@ class ClubService
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
     }
-    public function createClub(Request $request)       
-    {
+    public function createClub(Request $request): array    
+    {   
         // Création du club
         $club = new Club();
+        $reception= new Reception();
+
         // Créer le formulaire pour le club
-        $form = $this->formFactory->create(ClubType::class, $club);
-
-        $form->handleRequest($form);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                // Persistons d'abord le club
-                $debugForm = $form->getData();
-                dd($debugForm);
-                $this->entityManager->persist($club);
-                $this->entityManager->flush();
-            } catch (\Exception $e) {
-                return new Response('An error occurred', Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-        }
+        $ClubForm = $this->formFactory->create(ClubType::class, $club);
+        $ClubToReceptionForm= $this->formFactory->create(ClubToReceptionType::class, $reception);
+        $ClubToReceptionForm->handleRequest($request);
+        $ClubForm->handleRequest($request);
         
 
-     }
+        if ($ClubForm->isSubmitted() && $ClubForm->isValid()) {
+                // Persistons d'abord le club
+                $this->entityManager->persist($club);
+                $this->entityManager->flush();
+
+                if($ClubToReceptionForm->isSubmitted() && $ClubToReceptionForm->isValid()){
+                    $reception->setClub($club);
+                    $this->entityManager->persist($reception);
+                    $this->entityManager->flush(); 
+                }
+            }
+
+       
+        return [
+            'clubForm' => $ClubForm,
+            'clubToReceptionForm' => $ClubToReceptionForm,
+        ];
+        
+    }
 
 
     public function getClub(int $id): ?Club

@@ -73,6 +73,13 @@ class Reception
         return $this;
     }
 
+    public function setTypeReception(?TypeReception $typeReception): self
+    {
+        $this->typeReception = $typeReception;
+
+        return $this;
+    }
+
     public function getTypeReception(): ?TypeReception
     {
         return $this->typeReception;

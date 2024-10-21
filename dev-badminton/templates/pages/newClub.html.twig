@@ -4,8 +4,11 @@
 
 {% block body %}
     <h1>Ajouter un nouveau club</h1>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
+    
+    {{ form_start(formClub) }}
+        {{ form_widget(formClub) }}
+        {{ form_widget(ClubToReceptionForm) }}
         <button type="submit">Ajouter le club</button>
-    {{ form_end(form) }}
+    {{ form_end(formClub) }}
+
 {% endblock %}
