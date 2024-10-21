@@ -25,7 +25,7 @@ class ClubToReceptionType extends AbstractType
             'choice_label' => 'id',
         ])
         ->add('jour', EntityType::class, [
-            'class' => jours::class,
+            'class' => Jours::class,
             'choice_label' => 'id',
         ])
     ;

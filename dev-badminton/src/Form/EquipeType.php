@@ -2,37 +2,34 @@
 
 namespace App\Form;
 
+use App\Entity\capitaine;
 use App\Entity\Club;
-use App\Entity\jours;
-use App\Entity\Reception;
-use App\Entity\TypeReception;
+use App\Entity\Equipe;
+use App\Entity\joueur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ReceptionType extends AbstractType
+class EquipeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('horaireDebut', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('horaireFin', null, [
-                'widget' => 'single_text',
-            ])
+            ->add('nom_equipe')
+            ->add('numero_equipe')
             ->add('club', EntityType::class, [
                 'class' => Club::class,
                 'choice_label' => 'id',
             ])
-            ->add('typeReception', EntityType::class, [
-                'class' => TypeReception::class,
+            ->add('capitaine', EntityType::class, [
+                'class' => capitaine::class,
                 'choice_label' => 'id',
             ])
-            ->add('jour', EntityType::class, [
-                'class' => Jours::class,
+            ->add('joueurs', EntityType::class, [
+                'class' => joueur::class,
                 'choice_label' => 'id',
+                'multiple' => true,
             ])
         ;
     }
@@ -40,7 +37,7 @@ class ReceptionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Reception::class,
+            'data_class' => Equipe::class,
         ]);
     }
 }

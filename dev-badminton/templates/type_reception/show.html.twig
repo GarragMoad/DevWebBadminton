@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeReception{% endblock %}
+
+{% block body %}
+    <h1>TypeReception</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_reception.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ type_reception.type }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_type_reception_index') }}">back to list</a>
+
+    <a href="{{ path('app_type_reception_edit', {'id': type_reception.id}) }}">edit</a>
+
+    {{ include('type_reception/_delete_form.html.twig') }}
+{% endblock %}

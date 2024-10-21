@@ -1,3 +1,9 @@
+{# {{ form_start(formClub) }}
+    {{ form_widget(formClub) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(formClub) }} #}
+
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter un nouveau club{% endblock %}
@@ -8,7 +14,7 @@
     {{ form_start(formClub) }}
         {{ form_widget(formClub) }}
         {{ form_widget(ClubToReceptionForm) }}
-        <button type="submit">Ajouter le club</button>
+        <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(formClub) }}
 
 {% endblock %}

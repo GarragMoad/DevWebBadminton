@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Joueur{% endblock %}
+
+{% block body %}
+    <h1>Joueur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ joueur.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ joueur.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ joueur.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Numreo_licence</th>
+                <td>{{ joueur.numreoLicence }}</td>
+            </tr>
+            <tr>
+                <th>Classement_simple</th>
+                <td>{{ joueur.classementSimple }}</td>
+            </tr>
+            <tr>
+                <th>Cpph_simple</th>
+                <td>{{ joueur.cpphSimple }}</td>
+            </tr>
+            <tr>
+                <th>Classement_double</th>
+                <td>{{ joueur.classementDouble }}</td>
+            </tr>
+            <tr>
+                <th>Cpph_double</th>
+                <td>{{ joueur.cpphDouble }}</td>
+            </tr>
+            <tr>
+                <th>Classement_mixtes</th>
+                <td>{{ joueur.classementMixtes }}</td>
+            </tr>
+            <tr>
+                <th>Cpph_mixtes</th>
+                <td>{{ joueur.cpphMixtes }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_joueur_index') }}">back to list</a>
+
+    <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">edit</a>
+
+    {{ include('joueur/_delete_form.html.twig') }}
+{% endblock %}

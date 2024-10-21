@@ -1,0 +1,8 @@
+# config/packages/easy_admin.yaml
+
+easy_admin:
+    entities:
+        - App\Entity\Club
+        - App\Entity\Equipe
+        - App\Entity\Reception
+        # Ajoutez d'autres entités ici si nécessaire

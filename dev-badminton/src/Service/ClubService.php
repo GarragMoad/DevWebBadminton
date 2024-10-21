@@ -6,27 +6,29 @@ use App\Entity\Club;
 use App\Entity\Reception;
 use App\Entity\Equipe;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use App\Form\ClubType;
 use App\Form\ClubToReceptionType;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouterInterface; // Import du RouterInterface
+
 
 class ClubService
 {
     private $entityManager;
     private $formFactory;
-
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory)
+    private $router;
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->formFactory = $formFactory;
     }
-    public function createClub(Request $request): array    
+    public function createClub(Request $request): array 
     {   
-        // Création du club
+        // Création du club 
         $club = new Club();
         $reception= new Reception();
 
@@ -46,6 +48,7 @@ class ClubService
                     $reception->setClub($club);
                     $this->entityManager->persist($reception);
                     $this->entityManager->flush(); 
+                    return ['redirect' => $this->router->generate('app_club_index')];
                 }
             }
 

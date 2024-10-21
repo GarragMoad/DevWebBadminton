@@ -16,6 +16,20 @@ class JoueurRepository extends ServiceEntityRepository
         parent::__construct($registry, Joueur::class);
     }
 
+     /**
+     * @return Joueur[] Returns an array of Joueur objects associated with a specific Equipe
+     */
+    public function findByEquipe($equipeId): array
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.equipe = :equipeId')
+            ->setParameter('equipeId', $equipeId)
+            ->orderBy('j.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    /**
     //     * @return Joueur[] Returns an array of Joueur objects
     //     */

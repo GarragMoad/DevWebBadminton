@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Joueur index{% endblock %}
+
+{% block body %}
+    <h1>Joueur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Numreo_licence</th>
+                <th>Classement_simple</th>
+                <th>Cpph_simple</th>
+                <th>Classement_double</th>
+                <th>Cpph_double</th>
+                <th>Classement_mixtes</th>
+                <th>Cpph_mixtes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for joueur in joueurs %}
+            <tr>
+                <td>{{ joueur.id }}</td>
+                <td>{{ joueur.nom }}</td>
+                <td>{{ joueur.prenom }}</td>
+                <td>{{ joueur.numreoLicence }}</td>
+                <td>{{ joueur.classementSimple }}</td>
+                <td>{{ joueur.cpphSimple }}</td>
+                <td>{{ joueur.classementDouble }}</td>
+                <td>{{ joueur.cpphDouble }}</td>
+                <td>{{ joueur.classementMixtes }}</td>
+                <td>{{ joueur.cpphMixtes }}</td>
+                <td>
+                    <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">show</a>
+                    <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_joueur_new') }}">Create new</a>
+{% endblock %}
