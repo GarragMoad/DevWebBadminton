@@ -7,6 +7,7 @@ use App\Form\ClubType;
 use App\Repository\ClubRepository;
 use App\Service\ClubService;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,13 +23,7 @@ final class ClubController extends AbstractController
         $this->clubService = $clubService;
     }
 
-    public static function getEntityFqcn(): string
-    {
-        return Club::class;
-    }
-
-
-
+    
     #[Route(name: 'app_club_index', methods: ['GET'])]
     public function index(ClubRepository $clubRepository): Response
     {
