@@ -30,9 +30,9 @@ class Equipe
     private ?capitaine $capitaine = null;
 
     /**
-     * @var Collection<int, joueur>
+     * @var Collection<int, Joueur>
      */
-    #[ORM\ManyToMany(targetEntity: joueur::class)]
+    #[ORM\ManyToMany(targetEntity: Joueur::class)]
     private Collection $joueurs;
 
     public function __construct()

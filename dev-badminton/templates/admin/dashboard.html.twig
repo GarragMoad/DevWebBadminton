@@ -1,12 +1,26 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content %}
-    <h1>Welcome to the Admin Dashboard</h1>
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
 
-    <h2>Clubs</h2>
-    <ul>
-        {% for club in clubs %}
-            <li>{{ club.nom }}</li>
-        {% endfor %}
-    </ul>
+{% block head_javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Welcome to the Admin Dashboard</h1>
+
+        <h2>Clubs</h2>
+        <ul class="list-group">
+            {% for club in clubs %}
+                <li class="list-group-item">{{ club.nom }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
