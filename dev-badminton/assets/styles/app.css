@@ -1,3 +1,7 @@
+/* Structure de base de la page */
 body {
-    background-color: skyblue;
+    display: flex;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.9);
 }

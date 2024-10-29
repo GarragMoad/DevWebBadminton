@@ -14,18 +14,20 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 
 
+
 class adminDashboardController extends AbstractDashboardController
 {
-    private $security;
-    public function __construct(private  ClubService  $clubService, private EntityManagerInterface $entityManager ,Security $security) {
-        $this->security = $security;
+    
+    public function __construct(private  ClubService  $clubService, private EntityManagerInterface $entityManager , private Security $security)
+    {
+       
     }
 
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
          $clubs = $this->clubService->getAllClubs();
         return $this->render('admin/dashboard.html.twig', [
             'clubs' => $clubs,
@@ -40,10 +42,17 @@ class adminDashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {   
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToRoute('Clubs', 'fas fa-list','app_club_index');
+        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+            yield MenuItem::linkToRoute('Admins', 'fas fa-list', 'app_club_index');
+        }
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::linkToRoute('Clubs', 'fas fa-list', 'app_club_index');
+        }
         yield MenuItem::linkToRoute('Equipes', 'fas fa-list', 'app_equipe_index');
         yield MenuItem::linkToRoute('Joueurs', 'fas fa-list', 'app_joueur_index');
         yield MenuItem::linkToRoute('Capitaines', 'fas fa-list', 'app_capitaine_index');
         yield MenuItem::linkToRoute('Reception', 'fas fa-list', 'app_reception_index');
+        yield MenuItem::linkToRoute('TypeReception', 'fas fa-list', 'app_type_reception_index');
     }
+
 }

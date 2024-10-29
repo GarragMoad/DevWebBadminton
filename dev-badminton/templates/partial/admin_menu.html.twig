@@ -1,0 +1,13 @@
+{# templates/partial/admin_menu.html.twig #}
+<div class="sidebar-sticky">
+    <ul class="nav flex-column">
+    {% for menuItem in menuItems %}
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{{ menuItem.url }}">
+                <i class="{{ menuItem.icon }}"></i> {{ menuItem.label }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+

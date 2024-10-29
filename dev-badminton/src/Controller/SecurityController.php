@@ -28,9 +28,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/redirect-after-login", name="redirect_after_login")
-     */
+    #[Route(path: '/LoginRedirection', name: 'LoginRedirection')]
     public function redirectAfterLogin(LoggerInterface $logger): RedirectResponse
     {
         // Vérifier le rôle et rediriger vers le dashboard correspondant
@@ -39,7 +37,7 @@ class SecurityController extends AbstractController
         }
 
         if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_equipe_index');
+            return $this->redirectToRoute('admin');
         }
 
         if ($this->isGranted('ROLE_CLUB')) {

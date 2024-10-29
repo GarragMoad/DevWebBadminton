@@ -7,26 +7,31 @@ use App\Form\ClubType;
 use App\Repository\ClubRepository;
 use App\Service\ClubService;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+
 
 #[Route('/club')]
 final class ClubController extends AbstractController
 {
     private $clubService;
 
-    public function __construct(ClubService $clubService)
+    private $adminUrlGenerator;
+    public function __construct(ClubService $clubService, AdminUrlGenerator $adminUrlGenerator )
     {
         $this->clubService = $clubService;
+        $this->adminUrlGenerator = $adminUrlGenerator;
     }
-
     
     #[Route(name: 'app_club_index', methods: ['GET'])]
     public function index(ClubRepository $clubRepository): Response
     {
+        
+        //$menuItems = $this->get('easyadmin.config.menu_items');
+
         return $this->render('club/index.html.twig', [
             'clubs' => $clubRepository->findAll(),
         ]);
@@ -63,7 +68,7 @@ final class ClubController extends AbstractController
             return $this->redirect($formViews['redirect']);
         }
         return $this->render('club/edit.html.twig', [
-            'formClub' => $formViews['clubForm'], 'ClubToReceptionForm' => $formViews['clubToReceptionForm']
+            'formClub' => $formViews['clubForm'], 'ClubToReceptionForm' => $formViews['clubToReceptionForm'] , 'club' => $club
         ]);
     }
 

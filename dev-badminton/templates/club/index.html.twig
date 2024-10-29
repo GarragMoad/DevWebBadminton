@@ -5,15 +5,15 @@
 {% block body %}
     <h1>Club index</h1>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="thead-dark">
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Sigle</th>
                 <th>Gymnase</th>
                 <th>Adresse</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,17 +25,17 @@
                 <td>{{ club.gymnase }}</td>
                 <td>{{ club.adresse }}</td>
                 <td>
-                    <a href="{{ path('app_club_show', {'id': club.id}) }}">show</a>
-                    <a href="{{ path('app_club_edit', {'id': club.id}) }}">edit</a>
+                    <a href="{{ path('app_club_show', {'id': club.id}) }}" class="btn btn-sm btn-info">Show</a>
+                    <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-sm btn-warning">Edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_club_new') }}">Create new</a>
+    <a href="{{ path('app_club_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

@@ -28,7 +28,7 @@ security:
                 form_login:
                     login_path: app_login
                     check_path: app_login
-                    default_target_path: admin
+                    default_target_path: app_login
                     enable_csrf: true  # Activer la protection CSRF
                     csrf_token_id: 'authenticate'  # Identifiant du jeton CSRF
 
