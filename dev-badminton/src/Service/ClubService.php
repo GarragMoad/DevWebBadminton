@@ -12,6 +12,7 @@ use App\Form\ClubType;
 use App\Form\ClubToReceptionType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface; // Import du RouterInterface
+use App\Entity\User;
 
 
 class ClubService
@@ -48,6 +49,7 @@ class ClubService
                     $reception->setClub($club);
                     $this->entityManager->persist($reception);
                     $this->entityManager->flush(); 
+                    $this->createClubIdentification($club);  // Créer un user pour le club
                     return ['redirect' => $this->router->generate('app_club_index')];
                 }
             }
@@ -58,6 +60,18 @@ class ClubService
             'clubToReceptionForm' => $ClubToReceptionForm,
         ];
         
+    }
+
+    public function createClubIdentification(Club $club)
+    {
+        $user= new User();
+        //$password = bin2hex(random_bytes(4));
+        $user->setPassword(password_hash("toto", PASSWORD_BCRYPT));
+        $user->setEmail(strtolower($club->getNom()) . '@example.com');
+        $user->setRoles(['ROLE_CLUB']);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
     }
 
 
@@ -81,6 +95,10 @@ class ClubService
     {
         $this->entityManager->remove($club);
         $this->entityManager->flush();
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => strtolower($club->getNom()) . '@example.com']);
+        if ($user) {
+            $this->deleteUser($user);
+        }
     }
 
     public function addReceptionToClub(Club $club, Reception $reception): Club
@@ -109,5 +127,11 @@ class ClubService
         $club->removeEquipe($equipe);
         $this->entityManager->flush();
         return $club;
+    }
+
+    public function deleteUser(User $user): void
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
     }
 }

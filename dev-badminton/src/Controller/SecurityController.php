@@ -33,11 +33,11 @@ class SecurityController extends AbstractController
     {
         // Vérifier le rôle et rediriger vers le dashboard correspondant
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
-            return $this->redirectToRoute('admin');
+            return $this->redirectToRoute('superAdmin');
         }
 
         if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('admin');
+            return $this->redirectToRoute('superAdmin');
         }
 
         if ($this->isGranted('ROLE_CLUB')) {

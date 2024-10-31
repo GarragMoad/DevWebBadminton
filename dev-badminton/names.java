@@ -1,0 +1,1 @@
+Case mismatch between loaded and declared class names: "App\Entity\capitaine" vs "App\Entity\Capitaine".

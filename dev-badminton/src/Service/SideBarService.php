@@ -24,7 +24,7 @@ class SideBarService
         $menuItems[] = [
             'label' => 'Dashboard',
             'icon' => 'fa fa-home',
-            'url' => $this->router->generate('admin'), // Route de votre dashboard
+            'url' => $this->router->generate('superAdmin'), // Route de votre dashboard
         ];
 
         // Menu pour les administrateurs
@@ -32,7 +32,7 @@ class SideBarService
             $menuItems[] = [
                 'label' => 'Admins',
                 'icon' => 'fas fa-list',
-                'url' => $this->router->generate('app_club_index'),
+                'url' => $this->router->generate('app_user_index'),
             ];
         }
 
@@ -56,6 +56,12 @@ class SideBarService
             'label' => 'Joueurs',
             'icon' => 'fas fa-list',
             'url' => $this->router->generate('app_joueur_index'),
+        ];
+
+        $menuItems[] = [
+            'label' => 'Capitaines',
+            'icon' => 'fas fa-list',
+            'url' => $this->router->generate('app_capitaine_index'),
         ];
 
         $menuItems[] = [

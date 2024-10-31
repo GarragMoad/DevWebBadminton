@@ -27,7 +27,7 @@ class Equipe
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?capitaine $capitaine = null;
+    private ?Capitaine $capitaine = null;
 
     /**
      * @var Collection<int, Joueur>

@@ -24,12 +24,12 @@ class adminDashboardController extends AbstractDashboardController
     }
 
 
-    #[Route('/admin', name: 'admin')]
+    #[Route('/superAdmin', name: 'superAdmin')]
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
          $clubs = $this->clubService->getAllClubs();
-        return $this->render('admin/dashboard.html.twig', [
+        return $this->render('superAdmin/dashboard.html.twig', [
             'clubs' => $clubs,
         ]);
     }
@@ -43,7 +43,7 @@ class adminDashboardController extends AbstractDashboardController
     {   
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
-            yield MenuItem::linkToRoute('Admins', 'fas fa-list', 'app_club_index');
+            yield MenuItem::linkToRoute('Users', 'fas fa-list', 'app_user_index');
         }
         if ($this->security->isGranted('ROLE_ADMIN')) {
             yield MenuItem::linkToRoute('Clubs', 'fas fa-list', 'app_club_index');
