@@ -48,6 +48,7 @@ final class EquipeController extends AbstractController
     {
         return $this->render('equipe/show.html.twig', [
             'equipe' => $equipe,
+            'joueurs' => $equipe->getJoueurs(),
         ]);
     }
 

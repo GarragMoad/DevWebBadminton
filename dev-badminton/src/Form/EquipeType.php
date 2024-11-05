@@ -20,15 +20,21 @@ class EquipeType extends AbstractType
             ->add('numero_equipe')
             ->add('club', EntityType::class, [
                 'class' => Club::class,
-                'choice_label' => 'id',
+                'choice_label' => function(Club $club) {
+                    return $club->getNom();
+                },
             ])
             ->add('capitaine', EntityType::class, [
                 'class' => capitaine::class,
-                'choice_label' => 'id',
+                'choice_label' => function(capitaine $capitaine) {
+                    return $capitaine->getPrenom() . ' ' . $capitaine->getNom();
+                },
             ])
             ->add('joueurs', EntityType::class, [
                 'class' => joueur::class,
-                'choice_label' => 'id',
+                'choice_label' => function(joueur $joueur) {
+                    return $joueur->getPrenom() . ' ' . $joueur->getNom();
+                },
                 'multiple' => true,
             ])
         ;

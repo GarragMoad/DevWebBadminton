@@ -19,6 +19,14 @@
                 <th>Numero_equipe</th>
                 <td>{{ equipe.numeroEquipe }}</td>
             </tr>
+            <tr>
+                <th>Jouers</th>
+                 {% for joueur in equipe.joueurs %}
+                    <td>{{ joueur.nom }} {{ joueur.prenom }} </td>
+                    {% else %}
+                    <td>Aucun Joueur pour cette équipe</td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 
