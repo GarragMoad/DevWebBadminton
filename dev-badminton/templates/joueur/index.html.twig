@@ -37,6 +37,7 @@
                 <td>
                     <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">show</a>
                     <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">edit</a>
+                    <a href="{{ path('app_joueur_equipe',{'id': joueur.id}) }}">Associer</a>
                 </td>
             </tr>
         {% else %}

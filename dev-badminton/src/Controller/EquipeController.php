@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class EquipeController extends AbstractController
 {
     #[Route(name: 'app_equipe_index', methods: ['GET'])]
-    public function index(EquipeRepository $equipeRepository , JoueurRepository $joueurRepository): Response
+    public function index(EquipeRepository $equipeRepository ): Response
     {
         return $this->render('equipe/index.html.twig', [
             'equipes' => $equipeRepository->findAll(),
@@ -49,6 +49,8 @@ final class EquipeController extends AbstractController
         return $this->render('equipe/show.html.twig', [
             'equipe' => $equipe,
             'joueurs' => $equipe->getJoueurs(),
+            'club' => $equipe->getClub(),
+            'capitaine' => $equipe->getCapitaine(),
         ]);
     }
 

@@ -10,10 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\JoueurEquipeService;
 
 #[Route('/joueur')]
 final class JoueurController extends AbstractController
 {
+    private $jouerequipeService;
+
+    public function __construct(JoueurEquipeService $jouerequipeService)
+    {
+        $this->jouerequipeService = $jouerequipeService;
+    }
+
     #[Route(name: 'app_joueur_index', methods: ['GET'])]
     public function index(JoueurRepository $joueurRepository): Response
     {
@@ -77,5 +85,17 @@ final class JoueurController extends AbstractController
         }
 
         return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/addJoueurEquipe/{id}', name: 'app_joueur_equipe', methods: ['GET', 'POST'])]
+    public function addJoueurEquipe(Request $request , Joueur $joueur): Response{
+        $form = $this->jouerequipeService->ajouterJoueurEquipe($request , $joueur);
+        if (isset($form['redirect'])) {
+            return $this->redirect($form['redirect']);
+        }
+        return $this->render('joueur/joueur_equipe.html.twig', [
+            'form' => $form['form'],
+            'joueur' => $joueur
+        ]);
     }
 }

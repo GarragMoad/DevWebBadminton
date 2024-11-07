@@ -25,6 +25,7 @@ class Capitaine
     #[ORM\Column(length: 25)]
     private ?string $telephone = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +75,18 @@ class Capitaine
     public function setTelephone(string $telephone): static
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getIdJoueur(): ?int
+    {
+        return $this->idJoueur;
+    }
+
+    public function setIdJoueur(?int $idJoueur): static
+    {
+        $this->idJoueur = $idJoueur;
 
         return $this;
     }

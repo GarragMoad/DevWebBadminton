@@ -20,6 +20,14 @@
                 <td>{{ equipe.numeroEquipe }}</td>
             </tr>
             <tr>
+                <th>Club</th>
+                <td>{{ club.nom }}</td>
+            </tr>
+             <tr>
+                <th>Capitaine</th>
+                <td>{{ capitaine.nom }}</td>
+            </tr>
+            <tr>
                 <th>Jouers</th>
                  {% for joueur in equipe.joueurs %}
                     <td>{{ joueur.nom }} {{ joueur.prenom }} </td>
