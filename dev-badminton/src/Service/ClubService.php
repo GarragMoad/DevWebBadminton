@@ -6,7 +6,6 @@ use App\Entity\Club;
 use App\Entity\Reception;
 use App\Entity\Equipe;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ClubType;
 use App\Form\ClubToReceptionType;
@@ -133,5 +132,11 @@ class ClubService
     {
         $this->entityManager->remove($user);
         $this->entityManager->flush();
+    }
+
+    public function getClubFromUser(User $user): ?club
+    {
+        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
+        return $club ? $club : null;
     }
 }
