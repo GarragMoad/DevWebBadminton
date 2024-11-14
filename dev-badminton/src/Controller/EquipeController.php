@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\ClubService;
+use App\Entity\Joueur;
 
 #[Route('/equipe')]
 final class EquipeController extends AbstractController
@@ -29,10 +30,19 @@ final class EquipeController extends AbstractController
         public function new(Request $request, EntityManagerInterface $entityManager): Response
         {
             $equipe = new Equipe();
+            // for ($i = 0; $i < 2; $i++) { // Par exemple, initialiser avec 3 joueurs vides
+            //     $equipe->addJoueur(new Joueur());
+            // }
             $form = $this->createForm(EquipeType::class, $equipe);
             $form->handleRequest($request);
     
             if ($form->isSubmitted() && $form->isValid()) {
+                $capitaine = $equipe->getCapitaine();
+                foreach ($equipe->getJoueurs() as $joueur) {
+                    $equipe->addJoueur($joueur);
+                    $entityManager->persist($joueur);
+                }
+                $entityManager->persist($capitaine);
                 $entityManager->persist($equipe);
                 $entityManager->flush();
     
@@ -44,6 +54,7 @@ final class EquipeController extends AbstractController
                 'form' => $form,
             ]);
         }
+    
     
         #[Route('/{id}', name: 'app_equipe_show', methods: ['GET'])]
         public function show(Equipe $equipe, ClubService $clubService): Response

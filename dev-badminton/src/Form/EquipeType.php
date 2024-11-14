@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Repository\ClubRepository;
 use App\Repository\CapitaineRepository;
@@ -48,22 +49,18 @@ class EquipeType extends AbstractType
                     return $club->getNom();
                 }
             ])
-            ->add('capitaine', EntityType::class, [
-                'class' => Capitaine::class,
-                'choices' => $this->getCapitainesForUser($user),
-                'choice_label' => function(Capitaine $capitaine) {
-                    return $capitaine->getPrenom() . ' ' . $capitaine->getNom();
-                },
-            ])
-            ->add('joueurs', EntityType::class, [
-                'class' => Joueur::class,
-                'choices' => $this->getJoueursForUser($user),
-                'choice_label' => function(Joueur $joueur) {
-                    return $joueur->getPrenom() . ' ' . $joueur->getNom();
-                },
-                'multiple' => true,
-            ])
-        ;
+            ->add('capitaine',CapitaineType::class)
+
+        //     ->add('joueurs', CollectionType::class, [
+        //         'entry_type' => JoueurType::class,
+        //         'entry_options' => ['label' => false],
+        //         'allow_add' => true,
+        //         'allow_delete' => true,
+        //         'by_reference' => false,
+        //     ])
+         ;
+
+            
     }
 
     private function getClubsForUser($user)
@@ -77,25 +74,6 @@ class EquipeType extends AbstractType
         return [];
     }
 
-    private function getCapitainesForUser($user)
-    {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return $this->capitaineRepository->findAll();
-        } else  if($this->security->isGranted('ROLE_CLUB')) {
-            //return $this->capitaineRepository->findBy(['club' =>$this->clubService->getClubFromUser($user) ]);
-            return $this->capitaineRepository->findAll();
-        }
-    }
-
-    private function getJoueursForUser($user)
-    {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return $this->joueurRepository->findAll();
-        } else {
-            return $this->joueurRepository->findAll();
-            //return $this->joueurRepository->findBy(['club' => $this->clubService->getClubFromUser($user)]);
-        }
-    }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
