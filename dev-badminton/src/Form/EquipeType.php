@@ -47,7 +47,7 @@ class EquipeType extends AbstractType
                 'choices' => $this->getClubsForUser($user),
                 'choice_label' => function(Club $club) {
                     return $club->getNom();
-                }
+
             ])
             ->add('capitaine',CapitaineType::class)
 
