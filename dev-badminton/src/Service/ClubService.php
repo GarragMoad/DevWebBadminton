@@ -133,4 +133,10 @@ class ClubService
         $this->entityManager->remove($user);
         $this->entityManager->flush();
     }
+
+    public function getClubFromUser(User $user): ?club
+    {
+        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
+        return $club ? $club : null;
+    }
 }

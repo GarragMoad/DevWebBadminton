@@ -21,12 +21,15 @@ class SideBarService
         $menuItems = [];
 
         // Menu item pour Dashboard
-        $menuItems[] = [
-            'label' => 'Dashboard',
-            'icon' => 'fa fa-home',
-            'url' => $this->router->generate('superAdmin'), // Route de votre dashboard
-        ];
-
+        if ($this->security->isGranted('ROLE_ADMIN')){
+            $menuItems[] = [
+                'label' => 'Dashboard',
+                'icon' => 'fa fa-home',
+                'url' => $this->router->generate('superAdmin'), // Route de votre dashboard
+            ];
+    
+        }
+       
         // Menu pour les administrateurs
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
             $menuItems[] = [

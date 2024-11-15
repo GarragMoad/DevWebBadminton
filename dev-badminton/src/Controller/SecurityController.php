@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ClubRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
@@ -29,7 +30,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/LoginRedirection', name: 'LoginRedirection')]
-    public function redirectAfterLogin(LoggerInterface $logger): RedirectResponse
+    public function redirectAfterLogin(LoggerInterface $logger , ClubRepository $clubRepository): RedirectResponse
     {
         // Vérifier le rôle et rediriger vers le dashboard correspondant
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
@@ -41,7 +42,21 @@ class SecurityController extends AbstractController
         }
 
         if ($this->isGranted('ROLE_CLUB')) {
-            return $this->redirectToRoute('app_joueur_index');
+
+            $user = $this->getUser();
+            if ($user && method_exists($user, 'getEmail')){
+                $email = $user->getEmail();
+
+                // Extraire la partie avant le @
+                $clubName = explode('@', $email)[0];
+                $club = $clubRepository->findOneBy(['nom' => $clubName]);
+                if ($club) {
+                    $clubId = $club->getId();
+                    return $this->redirectToRoute('app_club_show', ['id' => $clubId]);
+                }
+                
+            }
+            return $this->redirectToRoute('app_club_index');
         }
 
         // Redirection par défaut si aucun rôle

@@ -81,4 +81,14 @@ final class ClubController extends AbstractController
 
         return $this->redirectToRoute('app_club_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/equipe', name: 'app_equipes_club', methods: ['GET'])]
+    public function equipesClub(Request $request, Club $club): Response
+    {
+        return $this->render('club/show.html.twig', [
+            'club' => $club,
+        ]);
+    }
+
+
 }
