@@ -1,20 +1,62 @@
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Styles personnalisés pour centrer le formulaire */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .login-card h1 {
+            font-weight: 700;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+<div class="login-container">
+    <div class="login-card bg-white">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    <label for="username">Email</label>
-    <input type="text" name="_username" id="username" class="form-control" value="{{ last_username }}" required autofocus>
+            <h1 class="h4 mb-3 text-center">Please Sign In</h1>
 
-    <label for="password">Password</label>
-    <input type="password" name="_password" id="password" class="form-control" required>
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="text" name="_username" id="username" class="form-control" 
+                       value="{{ last_username }}" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="_password" id="password" class="form-control" required>
+            </div>
 
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <input type="hidden" name="_target_path" value="{{ path('LoginRedirection') }}">
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -30,13 +30,12 @@ class Reception
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?jours $jour = null;
+    private ?Jours $jour = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getHoraireDebut(): ?\DateTimeInterface
     {
         return $this->horaireDebut;
