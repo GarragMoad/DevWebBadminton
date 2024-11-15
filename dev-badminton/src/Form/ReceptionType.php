@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Club;
-use App\Entity\jours;
+use App\Entity\Jours;
 use App\Entity\Reception;
 use App\Entity\TypeReception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

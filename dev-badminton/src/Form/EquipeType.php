@@ -31,7 +31,7 @@ class EquipeType extends AbstractType
                 },
             ])
             ->add('joueurs', EntityType::class, [
-                'class' => joueur::class,
+                'class' => Joueur::class,
                 'choice_label' => function(joueur $joueur) {
                     return $joueur->getPrenom() . ' ' . $joueur->getNom();
                 },

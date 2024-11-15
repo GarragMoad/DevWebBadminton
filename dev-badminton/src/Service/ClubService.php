@@ -6,7 +6,6 @@ use App\Entity\Club;
 use App\Entity\Reception;
 use App\Entity\Equipe;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ClubType;
 use App\Form\ClubToReceptionType;
