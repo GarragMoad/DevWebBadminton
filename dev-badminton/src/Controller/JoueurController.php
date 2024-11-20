@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Joueur;
 use App\Form\JoueurType;
 use App\Repository\JoueurRepository;
+use App\Service\ClubService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,17 +17,28 @@ use App\Service\JoueurEquipeService;
 final class JoueurController extends AbstractController
 {
     private $jouerequipeService;
+    private $clubService;
 
-    public function __construct(JoueurEquipeService $jouerequipeService)
+    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService)
     {
         $this->jouerequipeService = $jouerequipeService;
+        $this->clubService = $clubService;
     }
 
     #[Route(name: 'app_joueur_index', methods: ['GET'])]
     public function index(JoueurRepository $joueurRepository): Response
     {
+        $joueurs = [];
+        if ($this->isGranted('ROLE_CLUB')){
+            $user = $this->getUser();
+            $club = $this->clubService->getClubFromUser($user);
+            $joueurs = $joueurRepository->findJoueursByClub($club);
+        }
+        if($this->isGranted('ROLE_ADMIN')){
+            $joueurs = $joueurRepository->findAll();
+        }
         return $this->render('joueur/index.html.twig', [
-            'joueurs' => $joueurRepository->findAll(),
+            'joueurs' => $joueurs,
         ]);
     }
 

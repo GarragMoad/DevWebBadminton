@@ -50,6 +50,7 @@
             </div>
 
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <input type="hidden" name="_target_path" value="{{ path('LoginRedirection') }}">
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>

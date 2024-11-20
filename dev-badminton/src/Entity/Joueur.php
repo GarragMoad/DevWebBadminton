@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\JoueurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: JoueurRepository::class)]
 class Joueur
@@ -40,11 +41,40 @@ class Joueur
     #[ORM\Column(nullable: true)]
     private ?float $cpph_mixtes = null;
 
+    #[ORM\ManyToMany(targetEntity: Equipe::class, mappedBy: 'joueurs')]
+    private Collection $equipes;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
+     /**
+     * @return Collection<int, Equipe>
+     */
+    public function getEquipes(): Collection
+    {
+        return $this->equipes;
+    }
+
+    public function addEquipe(Equipe $equipe): self
+    {
+        if (!$this->equipes->contains($equipe)) {
+            $this->equipes[] = $equipe;
+            $equipe->addJoueur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipe(Equipe $equipe): self
+    {
+        if ($this->equipes->removeElement($equipe)) {
+            $equipe->removeJoueur($this);
+        }
+
+        return $this;
+    }
     public function getNom(): ?string
     {
         return $this->nom;

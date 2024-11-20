@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Joueur;
+use App\Entity\Club;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,20 +17,19 @@ class JoueurRepository extends ServiceEntityRepository
         parent::__construct($registry, Joueur::class);
     }
 
-     /**
-     * @return Joueur[] Returns an array of Joueur objects associated with a specific Equipe
+    /**
+     * @return Joueur[] Returns an array of Joueur objects associated with a specific Club
      */
-    public function findByEquipe($equipeId): array
+    public function findJoueursByClub(Club $club)
     {
         return $this->createQueryBuilder('j')
-            ->andWhere('j.equipe = :equipeId')
-            ->setParameter('equipeId', $equipeId)
-            ->orderBy('j.id', 'ASC')
+            ->innerJoin('j.equipes', 'e')
+            ->innerJoin('e.club', 'c')
+            ->where('c = :club')
+            ->setParameter('club', $club)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-
     //    /**
     //     * @return Joueur[] Returns an array of Joueur objects
     //     */
