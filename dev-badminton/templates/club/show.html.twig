@@ -1,36 +1,43 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Club{% endblock %}
-
 {% block body %}
-    <h1>Club</h1>
+    <div style="width: 80%; margin: auto; text-align: center;">
+        <h1 style="color: #343a40;">Détails du Club</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ club.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ club.nom }}</td>
-            </tr>
-            <tr>
-                <th>Sigle</th>
-                <td>{{ club.sigle }}</td>
-            </tr>
-            <tr>
-                <th>Gymnase</th>
-                <td>{{ club.gymnase }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ club.adresse }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse; margin: 20px 0;">
+            <tbody>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Id</th>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.id }}</td>
+                </tr>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Nom</th>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.nom }}</td>
+                </tr>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Sigle</th>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.sigle }}</td>
+                </tr>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Gymnase</th>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.gymnase }}</td>
+                </tr>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Adresse</th>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.adresse }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_club_index') }}">back to list</a>
-    <a href="{{ path('app_club_edit', {'id': club.id}) }}">edit</a>
-    {{ include('club/_delete_form.html.twig', {'club': club}) }}
+        <!-- Container for buttons -->
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+            <a href="{{ path('app_club_index') }}" 
+               style="background-color: #6c757d; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
+                Retour à la liste
+            </a>
+            <a href="{{ path('app_club_edit', {'id': club.id}) }}" 
+               style="background-color: #ffc107; color: black; padding: 10px 15px; text-decoration: none; border-radius: 4px;">
+                Modifier
+            </a>
+            {{ include('club/_delete_form.html.twig', { 'club': club, 'btn_style': 'background-color: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;' }) }}
+        </div>
+    </div>
 {% endblock %}

@@ -1,41 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Club index{% endblock %}
+{% block title %}Club Index{% endblock %}
 
 {% block body %}
-    <h1>Club index</h1>
+<div style="width: 90%; margin: auto; text-align: center;">
+    <h1 style="color: #343a40;">Club Index</h1>
 
-    <table class="table table-striped">
-        <thead class="thead-dark">
+    <table style="width: 100%; margin: 20px 0; border-collapse: collapse; border: 1px solid #ddd;">
+        <thead style="background-color: #343a40; color: white;">
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Sigle</th>
-                <th>Gymnase</th>
-                <th>Adresse</th>
-                <th>Actions</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Id</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Nom</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Sigle</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Gymnase</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Adresse</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for club in clubs %}
-            <tr>
-                <td>{{ club.id }}</td>
-                <td>{{ club.nom }}</td>
-                <td>{{ club.sigle }}</td>
-                <td>{{ club.gymnase }}</td>
-                <td>{{ club.adresse }}</td>
-                <td>
-                    <a href="{{ path('app_club_show', {'id': club.id}) }}" class="btn btn-sm btn-info">Show</a>
-                    <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-sm btn-warning">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">No records found</td>
-            </tr>
-        {% endfor %}
+            {% for club in clubs %}
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.id }}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.nom }}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.sigle }}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.gymnase }}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{{ club.adresse }}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">
+                        <a href="{{ path('app_club_show', {'id': club.id}) }}" style="background-color: #17a2b8; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;">Show</a>
+                        <a href="{{ path('app_club_edit', {'id': club.id}) }}" style="background-color: #ffc107; color: black; padding: 5px 10px; border-radius: 4px; text-decoration: none;">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" style="padding: 10px; border: 1px solid #ddd; text-align: center;">No records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_club_new') }}" class="btn btn-success">Create new</a>
+    <a href="{{ path('app_club_new') }}" style="background-color: #28a745; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px;">Create new</a>
+</div>
 {% endblock %}
