@@ -51,4 +51,18 @@ class EquipeService
         return null;
     }
 
+    public function getCapitainesFromUser($user): ?array
+    {
+        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
+        if ($club) {
+            $equipes = $this->entityManager->getRepository(Equipe::class)->findBy(['club' => $club]);
+            $capitaines = [];
+            foreach ($equipes as $equipe) {
+                $capitaines[] = $equipe->getCapitaine();
+            }
+            return $capitaines;
+        }
+        return null;
+    }
+
 }

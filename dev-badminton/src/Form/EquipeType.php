@@ -6,33 +6,33 @@ namespace App\Form;
 use App\Entity\Capitaine;
 use App\Entity\Club;
 use App\Entity\Equipe;
-use App\Entity\Joueur;
+use App\Form\CapitaineType;
 use App\Service\ClubService;
+use App\Service\CapitaineService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Repository\ClubRepository;
 use App\Repository\CapitaineRepository;
-use App\Repository\JoueurRepository;
 
 class EquipeType extends AbstractType
 {
     private $security;
     private $clubRepository;
     private $capitaineRepository;
-    private $joueurRepository;
     private $clubService;
+    private $capitaineService;
 
-    public function __construct(Security $security, ClubRepository $clubRepository, CapitaineRepository $capitaineRepository, JoueurRepository $joueurRepository, ClubService $clubService)
+    public function __construct(Security $security, ClubRepository $clubRepository, CapitaineRepository $capitaineRepository, ClubService $clubService, CapitaineService $capitaineService)
     {
         $this->security = $security;
         $this->clubRepository = $clubRepository;
         $this->capitaineRepository = $capitaineRepository;
-        $this->joueurRepository = $joueurRepository;
         $this->clubService = $clubService;
+        $this->capitaineService = $capitaineService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -49,18 +49,36 @@ class EquipeType extends AbstractType
                     return $club->getNom();
                 }
             ])
-            ->add('capitaine',CapitaineType::class)
+            ->add('capitaine_choice', ChoiceType::class, [
+                'choices' => [
+                    'Choisir un capitaine existant' => 'existing',
+                    'Créer un nouveau capitaine' => 'new',
+                ],
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+            ])
+            ->add('capitaine', EntityType::class, [
+                'class' => Capitaine::class,
+                'choices' => $this->capitaineService->getCapitaineFromUser($user),
+                'choice_label' => function(Capitaine $capitaine) {
+                    return $capitaine->getNom();
+                },
+                'required' => false,
+            ])
+            ->add('new_capitaine', CapitaineType::class, [
+                'mapped' => false,
+                'required' => false,
+            ]);
 
-        //     ->add('joueurs', CollectionType::class, [
-        //         'entry_type' => JoueurType::class,
-        //         'entry_options' => ['label' => false],
-        //         'allow_add' => true,
-        //         'allow_delete' => true,
-        //         'by_reference' => false,
-        //     ])
-         ;
-
-            
+        // Ajouter des champs pour les joueurs si nécessaire
+        // $builder->add('joueurs', CollectionType::class, [
+        //     'entry_type' => JoueurType::class,
+        //     'entry_options' => ['label' => false],
+        //     'allow_add' => true,
+        //     'allow_delete' => true,
+        //     'by_reference' => false,
+        // ]);
     }
 
     private function getClubsForUser($user)
@@ -73,7 +91,6 @@ class EquipeType extends AbstractType
         }
         return [];
     }
-
 
     public function configureOptions(OptionsResolver $resolver): void
     {

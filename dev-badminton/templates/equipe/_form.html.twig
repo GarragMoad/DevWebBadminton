@@ -1,4 +1,73 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    <div class="form-group">
+        {{ form_label(form.nom_equipe, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.nom_equipe, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.numero_equipe, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.numero_equipe, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.club, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.club, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.capitaine_choice, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.capitaine_choice, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div class="form-horizontal">
+    <div id="existing-capitaine" class="form-group" style="display: none;">
+        {{ form_label(form.capitaine, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.capitaine, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    
+    <div id="new-capitaine" class="form-group" style="display: none;">
+        {{ form_label(form.new_capitaine, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.new_capitaine, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <div>
+    </div>
+    
+    
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Créer</button>
+        </div>
+    </div>
 {{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const capitaineChoices = document.querySelectorAll('input[name="equipe[capitaine_choice]"]');
+        const existingCapitaine = document.getElementById('existing-capitaine');
+        const newCapitaine = document.getElementById('new-capitaine');
+
+        function toggleCapitaineFields() {
+            const selectedValue = document.querySelector('input[name="equipe[capitaine_choice]"]:checked').value;
+            if (selectedValue === 'existing') {
+                existingCapitaine.style.display = 'block';
+                newCapitaine.style.display = 'none';
+            } else {
+                existingCapitaine.style.display = 'none';
+                newCapitaine.style.display = 'block';
+            }
+        }
+
+        capitaineChoices.forEach(choice => {
+            choice.addEventListener('change', toggleCapitaineFields);
+        });
+
+        toggleCapitaineFields();
+    });
+</script>

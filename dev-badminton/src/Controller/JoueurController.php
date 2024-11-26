@@ -49,24 +49,6 @@ final class JoueurController extends AbstractController
     #[Route('/new', name: 'app_joueur_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        // $joueur = new Joueur();
-        // $form = $this->createForm(JoueurType::class, $joueur);
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $entityManager->persist($joueur);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);
-        // }
-
-        // return $this->render('joueur/new.html.twig', [
-        //     'joueur' => $joueur,
-        //     'form' => $form,
-        // ]);
-
-
-       
             $formViews= $this->equipeService->createJoueurForEquipe($request);
             
             if (isset($formViews['redirect'])) {

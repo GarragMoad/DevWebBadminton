@@ -7,5 +7,9 @@
 
     {{ include('equipe/_form.html.twig') }}
 
-    <a href="{{ path('app_equipe_index') }}">back to list</a>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <a href="{{ path('app_equipe_index') }}" class="btn btn-secondary">Back to list</a>
+        </div>
+    </div>
 {% endblock %}
