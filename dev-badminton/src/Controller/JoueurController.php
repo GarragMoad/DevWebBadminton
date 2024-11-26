@@ -6,6 +6,7 @@ use App\Entity\Joueur;
 use App\Form\JoueurType;
 use App\Repository\JoueurRepository;
 use App\Service\ClubService;
+use App\Service\EquipeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,22 +20,25 @@ final class JoueurController extends AbstractController
     private $jouerequipeService;
     private $clubService;
 
-    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService)
+    private $equipeService;
+
+    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService)
     {
         $this->jouerequipeService = $jouerequipeService;
         $this->clubService = $clubService;
+        $this->equipeService = $equipeService;
     }
 
     #[Route(name: 'app_joueur_index', methods: ['GET'])]
     public function index(JoueurRepository $joueurRepository): Response
     {
         $joueurs = [];
-        if ($this->isGranted('ROLE_CLUB')){
+        if ($this->isGranted(attribute: 'ROLE_CLUB')){
             $user = $this->getUser();
             $club = $this->clubService->getClubFromUser($user);
             $joueurs = $joueurRepository->findJoueursByClub($club);
         }
-        if($this->isGranted('ROLE_ADMIN')){
+        if($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN')){
             $joueurs = $joueurRepository->findAll();
         }
         return $this->render('joueur/index.html.twig', [
@@ -43,23 +47,36 @@ final class JoueurController extends AbstractController
     }
 
     #[Route('/new', name: 'app_joueur_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
-        $joueur = new Joueur();
-        $form = $this->createForm(JoueurType::class, $joueur);
-        $form->handleRequest($request);
+        // $joueur = new Joueur();
+        // $form = $this->createForm(JoueurType::class, $joueur);
+        // $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($joueur);
-            $entityManager->flush();
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $entityManager->persist($joueur);
+        //     $entityManager->flush();
 
-            return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);
-        }
+        //     return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);
+        // }
 
-        return $this->render('joueur/new.html.twig', [
-            'joueur' => $joueur,
-            'form' => $form,
-        ]);
+        // return $this->render('joueur/new.html.twig', [
+        //     'joueur' => $joueur,
+        //     'form' => $form,
+        // ]);
+
+
+       
+            $formViews= $this->equipeService->createJoueurForEquipe($request);
+            
+            if (isset($formViews['redirect'])) {
+                return $this->redirect($formViews['redirect']);
+            }
+            return $this->render('joueur/new.html.twig', [
+                'joueur' => $formViews['joueur'], 'form' => $formViews['form']
+                
+            ]);
+        
     }
 
     #[Route('/{id}', name: 'app_joueur_show', methods: ['GET'])]

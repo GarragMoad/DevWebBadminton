@@ -11,6 +11,8 @@
                 <th>Id</th>
                 <th>Nom_equipe</th>
                 <th>Numero_equipe</th>
+                <th>Capitaine</th>
+                <th>Joueurs</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +22,13 @@
                 <td>{{ equipe.id }}</td>
                 <td>{{ equipe.nomEquipe }}</td>
                 <td>{{ equipe.numeroEquipe }}</td>
+                <td>{{ equipe.capitaine.nom }}</td>
+                <td>
+                    <ul>
+                        {% for joueur in equipe.joueurs %}
+                            <li>{{ joueur.nom }}</li>
+                        {% endfor %}
+                    </ul>
                 <td>
                     <a href="{{ path('app_equipe_show', {'id': equipe.id}) }}">show</a>
                     <a href="{{ path('app_equipe_edit', {'id': equipe.id}) }}">edit</a>

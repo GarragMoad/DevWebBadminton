@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\JoueurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: JoueurRepository::class)]
 class Joueur
@@ -44,6 +45,10 @@ class Joueur
     #[ORM\ManyToMany(targetEntity: Equipe::class, mappedBy: 'joueurs')]
     private Collection $equipes;
 
+    public function __construct()
+    {
+        $this->equipes = new ArrayCollection(); // Initialiser la propriété ici
+    }
     public function getId(): ?int
     {
         return $this->id;
