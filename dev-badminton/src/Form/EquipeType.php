@@ -6,9 +6,12 @@ namespace App\Form;
 use App\Entity\Capitaine;
 use App\Entity\Club;
 use App\Entity\Equipe;
+use App\Entity\Joueur;
 use App\Form\CapitaineType;
+use App\Form\JoueurType;
 use App\Service\ClubService;
 use App\Service\CapitaineService;
+use App\Service\JoueurService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,22 +20,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Repository\ClubRepository;
 use App\Repository\CapitaineRepository;
+use App\Repository\JoueurRepository;
 
 class EquipeType extends AbstractType
 {
     private $security;
     private $clubRepository;
     private $capitaineRepository;
+    private $joueurRepository;
     private $clubService;
     private $capitaineService;
 
-    public function __construct(Security $security, ClubRepository $clubRepository, CapitaineRepository $capitaineRepository, ClubService $clubService, CapitaineService $capitaineService)
+    private $joueurService;
+
+    public function __construct(Security $security, ClubRepository $clubRepository, CapitaineRepository $capitaineRepository, JoueurRepository $joueurRepository, ClubService $clubService, CapitaineService $capitaineService , JoueurService $joueurService)
     {
         $this->security = $security;
         $this->clubRepository = $clubRepository;
         $this->capitaineRepository = $capitaineRepository;
+        $this->joueurRepository = $joueurRepository;
         $this->clubService = $clubService;
         $this->capitaineService = $capitaineService;
+        $this->joueurService = $joueurService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -69,16 +78,31 @@ class EquipeType extends AbstractType
             ->add('new_capitaine', CapitaineType::class, [
                 'mapped' => false,
                 'required' => false,
+            ])
+            ->add('joueur_choice', ChoiceType::class, [
+                'choices' => [
+                    'Choisir des joueurs existants' => 'existing',
+                    'Créer de nouveaux joueurs' => 'new',
+                ],
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+            ])
+            ->add('joueurs', EntityType::class, [
+                'class' => Joueur::class,
+                'choices' => $this->joueurService->getJoueursFromUser($user),
+                'choice_label' => function(Joueur $joueur) {
+                    return $joueur->getNom();
+                },
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+            ])
+            ->add('new_joueurs', JoueurType::class, [
+                'mapped' => false,
+                'include_equipes' => false,
+                'required' => false,
             ]);
-
-        // Ajouter des champs pour les joueurs si nécessaire
-        // $builder->add('joueurs', CollectionType::class, [
-        //     'entry_type' => JoueurType::class,
-        //     'entry_options' => ['label' => false],
-        //     'allow_add' => true,
-        //     'allow_delete' => true,
-        //     'by_reference' => false,
-        // ]);
     }
 
     private function getClubsForUser($user)

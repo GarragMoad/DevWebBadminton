@@ -43,17 +43,20 @@ class JoueurType extends AbstractType
             ->add('cpph_mixtes')
 
         ;
-                $builder->add('equipes', EntityType::class, [
-                    'class' => Equipe::class,
-                    'choices' => $this->getEquipesForUser($user),
-                    'choice_label' => function(Equipe $equipe) {
-                        return $equipe->getNomEquipe();
-                    },
-                    'multiple' => true,
-                    'expanded' => true,
-                    'mapped' => true,
-                    
-                ]);
+        if($options['include_equipes']){
+            $builder->add('equipes', EntityType::class, [
+                'class' => Equipe::class,
+                'choices' => $this->getEquipesForUser($user),
+                'choice_label' => function(Equipe $equipe) {
+                    return $equipe->getNomEquipe();
+                },
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => true,
+                
+            ]);
+        }
+               
             
     }
 
@@ -73,6 +76,7 @@ class JoueurType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Joueur::class,
+            'include_equipes' => true,
         ]);
     }
 }
