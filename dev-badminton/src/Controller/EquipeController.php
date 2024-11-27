@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Equipe;
 use App\Form\EquipeType;
 use App\Repository\EquipeRepository;
+use App\Service\EquipeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,39 +20,23 @@ final class EquipeController extends AbstractController
         #[Route(name: 'app_equipe_index', methods: ['GET'])]
         public function index(EquipeRepository $equipeRepository, ClubService $clubService): Response
         {
-            $equipes = $this->getEquipesForUser($equipeRepository, $clubService);
-    
+            $equipes = $this->getEquipesForUser($equipeRepository, $clubService);    
             return $this->render('equipe/index.html.twig', [
                 'equipes' => $equipes,
             ]);
         }
     
         #[Route('/new', name: 'app_equipe_new', methods: ['GET', 'POST'])]
-        public function new(Request $request, EntityManagerInterface $entityManager): Response
+        public function new(Request $request, EquipeService $equipeService): Response
         {
-            $equipe = new Equipe();
-            // for ($i = 0; $i < 2; $i++) { // Par exemple, initialiser avec 3 joueurs vides
-            //     $equipe->addJoueur(new Joueur());
-            // }
-            $form = $this->createForm(EquipeType::class, $equipe);
-            $form->handleRequest($request);
-    
-            if ($form->isSubmitted() && $form->isValid()) {
-                $capitaine = $equipe->getCapitaine();
-                foreach ($equipe->getJoueurs() as $joueur) {
-                    $equipe->addJoueur($joueur);
-                    $entityManager->persist($joueur);
-                }
-                $entityManager->persist($capitaine);
-                $entityManager->persist($equipe);
-                $entityManager->flush();
-    
-                return $this->redirectToRoute('app_equipe_index', [], Response::HTTP_SEE_OTHER);
-            }
-    
+           $formViews=$equipeService->createEquipe($request);
+
+           if (isset($formViews['redirect'])) {
+            return $this->redirect($formViews['redirect']);
+        }
             return $this->render('equipe/new.html.twig', [
-                'equipe' => $equipe,
-                'form' => $form,
+                'equipe' => $formViews['equipe'],
+                'form' =>$formViews['form'],
             ]);
         }
     
