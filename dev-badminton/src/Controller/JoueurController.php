@@ -33,13 +33,13 @@ final class JoueurController extends AbstractController
     public function index(JoueurRepository $joueurRepository): Response
     {
         $joueurs = [];
-        if ($this->isGranted(attribute: 'ROLE_CLUB')){
+        if($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN')){
+            $joueurs = $joueurRepository->findAll();
+        }
+        else if ($this->isGranted(attribute: 'ROLE_CLUB')) {
             $user = $this->getUser();
             $club = $this->clubService->getClubFromUser($user);
             $joueurs = $joueurRepository->findJoueursByClub($club);
-        }
-        if($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN')){
-            $joueurs = $joueurRepository->findAll();
         }
         return $this->render('joueur/index.html.twig', [
             'joueurs' => $joueurs,

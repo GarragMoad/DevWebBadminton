@@ -47,6 +47,17 @@
                 <th>Cpph_mixtes</th>
                 <td>{{ joueur.cpphMixtes }}</td>
             </tr>
+
+            <tr>
+                <th>Equipes</th>
+                <td>
+                    <ul>
+                        {% for equipe in joueur.equipes %}
+                            <li>{{ equipe.nomEquipe }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 

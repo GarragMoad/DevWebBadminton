@@ -1,0 +1,39 @@
+.form-container {
+    display: flex;
+    flex-direction: column; /* Organise les enfants verticalement */
+    gap: 20px; /* Ajoute un espacement entre les sections */
+    min-height: 100vh; /* Assure que le formulaire occupe tout l'écran si nécessaire */
+}
+
+.form-content {
+    flex: 1; /* Permet à la partie du formulaire principal de s'étendre */
+}
+
+.capitaine-form-add,
+.jouers-form-add {
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden; /* Empêche les débordements */
+}
+
+#existing-capitaine,
+#new-capitaine,
+#existing-joueurs,
+#new-joueurs {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden; /* Optionnel, pour éviter tout focus sur des éléments cachés */
+}
+
+#existing-capitaine.active,
+#new-capitaine.active,
+#existing-joueurs.active,
+#new-joueurs.active {
+    max-height: 500px; /* Ajustez cette valeur selon vos besoins */
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.form-footer {
+    margin-top: auto; /* Maintient le bouton toujours en bas */
+}

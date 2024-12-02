@@ -27,6 +27,17 @@
                 <th>Telephone</th>
                 <td>{{ capitaine.telephone }}</td>
             </tr>
+
+            <tr>
+                <th>Equipes</th>
+                <td>
+                    <ul>
+                        {% for equipe in capitaine.equipes %}
+                            <li>{{ equipe.nomEquipe }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CapitaineRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CapitaineRepository::class)]
 class Capitaine
@@ -24,6 +26,47 @@ class Capitaine
 
     #[ORM\Column(length: 25)]
     private ?string $telephone = null;
+
+    /**
+     * @var Collection<int, Equipe>
+     */
+    #[ORM\OneToMany(mappedBy: 'capitaine', targetEntity: Equipe::class)]
+    private Collection $equipes;
+
+    public function __construct()
+    {
+        $this->equipes = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, Equipe>
+     */
+    public function getEquipes(): Collection
+    {
+        return $this->equipes;
+    }
+
+    public function addEquipe(Equipe $equipe): static
+    {
+        if (!$this->equipes->contains($equipe)) {
+            $this->equipes->add($equipe);
+            $equipe->setCapitaine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipe(Equipe $equipe): static
+    {
+        if ($this->equipes->removeElement($equipe)) {
+            // Set the owning side to null (unless already changed)
+            if ($equipe->getCapitaine() === $this) {
+                $equipe->setCapitaine(null);
+            }
+        }
+
+        return $this;
+    }
 
 
     public function getId(): ?int

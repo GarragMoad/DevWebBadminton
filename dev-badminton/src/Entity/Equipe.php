@@ -25,7 +25,7 @@ class Equipe
     #[ORM\JoinColumn(nullable: false)]
     private ?Club $club = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne (targetEntity: Capitaine::class, inversedBy: 'equipes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Capitaine $capitaine = null;
 

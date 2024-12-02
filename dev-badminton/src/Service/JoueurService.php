@@ -6,15 +6,19 @@ namespace App\Service;
 use App\Entity\Club;
 use App\Entity\Equipe;
 use App\Entity\Joueur;
+use App\Repository\JoueurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class JoueurService
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private $joueurRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, JoueurRepository $joueurRepository)
     {
         $this->entityManager = $entityManager;
+        $this->joueurRepository = $joueurRepository;
     }
 
     public function getJoueursFromUser($user): ?array
@@ -38,5 +42,9 @@ class JoueurService
         }
         
         return null;
+    }
+
+    public function getEquipeJoueur(){
+
     }
 }
