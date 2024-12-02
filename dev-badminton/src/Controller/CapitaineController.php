@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Capitaine;
 use App\Form\CapitaineType;
 use App\Repository\CapitaineRepository;
+use App\Service\CapitaineService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,10 +17,18 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CapitaineController extends AbstractController
 {
     #[Route(name: 'app_capitaine_index', methods: ['GET'])]
-    public function index(CapitaineRepository $capitaineRepository): Response
+    public function index(CapitaineRepository $capitaineRepository, CapitaineService $capitaineService, Security $security): Response
     {
+        $capitaines = [];
+        if ($this->isGranted(attribute: 'ROLE_CLUB')){
+            $user = $this->getUser();
+            $capitaines = $capitaineService->getCapitaineFromUser($user);
+        }
+        if($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN')){
+            $capitaines= $capitaineRepository->findAll();
+        }
         return $this->render('capitaine/index.html.twig', [
-            'capitaines' => $capitaineRepository->findAll(),
+            'capitaines' => $capitaines
         ]);
     }
 

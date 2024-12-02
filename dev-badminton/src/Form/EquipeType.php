@@ -7,8 +7,6 @@ use App\Entity\Capitaine;
 use App\Entity\Club;
 use App\Entity\Equipe;
 use App\Entity\Joueur;
-use App\Form\CapitaineType;
-use App\Form\JoueurType;
 use App\Service\ClubService;
 use App\Service\CapitaineService;
 use App\Service\JoueurService;
