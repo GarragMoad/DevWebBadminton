@@ -4,16 +4,22 @@ namespace App\Service;
 
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\RouterInterface;
+use App\Repository\ClubRepository;
 
 class SideBarService
 {
     private Security $security;
     private RouterInterface $router;
 
-    public function __construct(Security $security, RouterInterface $router)
+    private ClubRepository $clubRepository;
+
+    private $clubId;
+
+    public function __construct(Security $security, RouterInterface $router , ClubRepository $clubRepository)
     {
         $this->security = $security;
         $this->router = $router;
+        $this->clubRepository = $clubRepository;
     }
 
     public function getMenuItems(): array
@@ -40,7 +46,27 @@ class SideBarService
         }
 
         // Menu pour les utilisateurs avec le rôle "ROLE_ADMIN"
-        if ($this->security->isGranted('ROLE_ADMIN')) {
+        if ($this->security->isGranted('ROLE_CLUB')) {
+            $user = $this->security->getUser();
+            if ($user && method_exists($user, 'getEmail')) {
+                $email = $user->getEmail();
+                // Extraire la partie avant le @
+                $clubName = explode('@', $email)[0];
+                $club = $this->clubRepository->findOneBy(['nom' => $clubName]);
+                if ($club) {
+                    $this->clubId = $club->getId();
+                }
+
+            }
+        }
+        if($this->clubId){
+            $menuItems[] = [
+                'label' => 'Club',
+                'icon' => 'fa fa-home',
+                'url' => $this->router->generate('app_club_show', ['id' => $this->clubId]),
+            ];
+        }
+        else{
             $menuItems[] = [
                 'label' => 'Clubs',
                 'icon' => 'fas fa-list',
@@ -48,7 +74,7 @@ class SideBarService
             ];
         }
 
-        // Autres items du menu
+
         $menuItems[] = [
             'label' => 'Equipes',
             'icon' => 'fas fa-list',

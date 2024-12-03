@@ -66,7 +66,6 @@ class EquipeType extends AbstractType
                     'mapped' => false,
                     'expanded' => true,
                     'multiple' => false,
-                    'attr' => ['data-render-capitaine' => $options['render_capitaine']],
                 ]);
             }
 
@@ -82,7 +81,6 @@ class EquipeType extends AbstractType
             $builder->add('new_capitaine', CapitaineType::class, [
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['data-render-capitaine' => $options['render_capitaine']],
             ])
                 ->add('joueur_choice', ChoiceType::class, [
                     'choices' => [
@@ -92,7 +90,6 @@ class EquipeType extends AbstractType
                     'mapped' => false,
                     'expanded' => true,
                     'multiple' => false,
-                    'attr' => ['data-render-joueur' => $options['render_joueur']],
                 ]);
         }
 
@@ -111,7 +108,6 @@ class EquipeType extends AbstractType
                         'mapped' => false,
                         'include_equipes' => false,
                         'required' => false,
-                        'attr' => ['data-render-joueur' => $options['render_joueur']],
                     ]);
                 }
 
