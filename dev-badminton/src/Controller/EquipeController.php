@@ -58,7 +58,9 @@ final class EquipeController extends AbstractController
         public function edit(Request $request, Equipe $equipe, EntityManagerInterface $entityManager, ClubService $clubService): Response
         {
     
-            $form = $this->createForm(EquipeType::class, $equipe);
+            $form = $this->createForm(EquipeType::class, $equipe,[
+                'is_edit' => true
+            ]);
             $form->handleRequest($request);
     
             if ($form->isSubmitted() && $form->isValid()) {

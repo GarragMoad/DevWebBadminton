@@ -45,6 +45,7 @@ class EquipeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $this->security->getUser();
+        $isEditMode = $options['is_edit']; // Option pour savoir si on est en mode édition
 
         $builder
             ->add('nom_equipe')
@@ -55,38 +56,47 @@ class EquipeType extends AbstractType
                 'choice_label' => function(Club $club) {
                     return $club->getNom();
                 }
-            ])
-            ->add('capitaine_choice', ChoiceType::class, [
-                'choices' => [
-                    'Choisir un capitaine existant' => 'existing',
-                    'Créer un nouveau capitaine' => 'new',
-                ],
-                'mapped' => false,
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('capitaine', EntityType::class, [
+            ]);
+            if(!$isEditMode){
+                $builder->add('capitaine_choice', ChoiceType::class, [
+                    'choices' => [
+                        'Choisir un capitaine existant' => 'existing',
+                        'Créer un nouveau capitaine' => 'new',
+                    ],
+                    'mapped' => false,
+                    'expanded' => true,
+                    'multiple' => false,
+                    'attr' => ['data-render-capitaine' => $options['render_capitaine']],
+                ]);
+            }
+
+            $builder->add('capitaine', EntityType::class, [
                 'class' => Capitaine::class,
                 'choices' => $this->capitaineService->getCapitaineFromUser($user),
                 'choice_label' => function(Capitaine $capitaine) {
                     return $capitaine->getNom();
                 },
                 'required' => false,
-            ])
-            ->add('new_capitaine', CapitaineType::class, [
+            ]);
+        if(!$isEditMode){
+            $builder->add('new_capitaine', CapitaineType::class, [
                 'mapped' => false,
                 'required' => false,
+                'attr' => ['data-render-capitaine' => $options['render_capitaine']],
             ])
-            ->add('joueur_choice', ChoiceType::class, [
-                'choices' => [
-                    'Choisir des joueurs existants' => 'existing',
-                    'Créer de nouveaux joueurs' => 'new',
-                ],
-                'mapped' => false,
-                'expanded' => true,
-                'multiple' => false,
-            ])
-            ->add('joueurs', EntityType::class, [
+                ->add('joueur_choice', ChoiceType::class, [
+                    'choices' => [
+                        'Choisir des joueurs existants' => 'existing',
+                        'Créer de nouveaux joueurs' => 'new',
+                    ],
+                    'mapped' => false,
+                    'expanded' => true,
+                    'multiple' => false,
+                    'attr' => ['data-render-joueur' => $options['render_joueur']],
+                ]);
+        }
+
+            $builder->add('joueurs', EntityType::class, [
                 'class' => Joueur::class,
                 'choices' => $this->joueurService->getJoueursFromUser($user),
                 'choice_label' => function(Joueur $joueur) {
@@ -95,12 +105,16 @@ class EquipeType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
-            ])
-            ->add('new_joueurs', JoueurType::class, [
-                'mapped' => false,
-                'include_equipes' => false,
-                'required' => false,
             ]);
+            if(!$isEditMode){
+                    $builder->add('new_joueurs', JoueurType::class, [
+                        'mapped' => false,
+                        'include_equipes' => false,
+                        'required' => false,
+                        'attr' => ['data-render-joueur' => $options['render_joueur']],
+                    ]);
+                }
+
     }
 
     private function getClubsForUser($user)
@@ -118,6 +132,7 @@ class EquipeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Equipe::class,
+            'is_edit'=> false,
         ]);
     }
 }
