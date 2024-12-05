@@ -5,6 +5,7 @@ use App\Entity\Club;
 use App\Entity\Equipe;
 use App\Entity\Capitaine;
 use App\Entity\Joueur;
+use App\Entity\User;
 use App\Form\JoueurType;
 use App\Form\EquipeType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -102,25 +103,12 @@ class EquipeService
 
     public function getEquipesFromUser($user): ?array
     {
-        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
+        $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
         if ($club) {
             return $this->entityManager->getRepository(Equipe::class)->findBy(['club' => $club]);
         }
         return null;
     }
 
-    public function getCapitainesFromUser($user): ?array
-    {
-        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
-        if ($club) {
-            $equipes = $this->entityManager->getRepository(Equipe::class)->findBy(['club' => $club]);
-            $capitaines = [];
-            foreach ($equipes as $equipe) {
-                $capitaines[] = $equipe->getCapitaine();
-            }
-            return $capitaines;
-        }
-        return null;
-    }
 
 }

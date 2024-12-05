@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Entity\Club;
 use App\Entity\Equipe;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CapitaineService
@@ -19,7 +20,7 @@ class CapitaineService
     public function getCapitaineFromUser($user): ?array
     {
         // Récupérer le club associé à l'utilisateur
-        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
+        $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
         
         if ($club) {
             // Récupérer les équipes associées au club

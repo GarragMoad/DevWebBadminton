@@ -31,6 +31,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToOne(targetEntity: Club::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private $club;
+
+    public function getClub(): ?Club
+    {
+        return $this->club;
+    }
+
+    public function setClub(?Club $club): self
+    {
+        $this->club = $club;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

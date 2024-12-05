@@ -46,7 +46,7 @@ final class ClubController extends AbstractController
             return $this->redirect($formViews['redirect']);
         }
         return $this->render('club/new.html.twig', [
-            'formClub' => $formViews['clubForm'], 'ClubToReceptionForm' => $formViews['clubToReceptionForm']
+            'formClub' => $formViews['clubForm']
             
         ]);
     }

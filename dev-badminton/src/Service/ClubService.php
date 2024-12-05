@@ -8,68 +8,77 @@ use App\Entity\Equipe;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ClubType;
-use App\Form\ClubToReceptionType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\RouterInterface; // Import du RouterInterface
 use App\Entity\User;
-
 
 class ClubService
 {
     private $entityManager;
     private $formFactory;
     private $router;
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router)
+
+    private $mailerService;
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, MailerService $mailerService)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->formFactory = $formFactory;
+        $this->mailerService=$mailerService;
     }
-    public function createClub(Request $request): array 
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function createClub(Request $request): array
     {   
         // Création du club 
         $club = new Club();
-        $reception= new Reception();
 
         // Créer le formulaire pour le club
         $ClubForm = $this->formFactory->create(ClubType::class, $club);
-        $ClubToReceptionForm= $this->formFactory->create(ClubToReceptionType::class, $reception);
-        $ClubToReceptionForm->handleRequest($request);
         $ClubForm->handleRequest($request);
-        
+        if ($ClubForm->isSubmitted() ) {
+            $email = $ClubForm->get('email')->getData();
+            /*$email = $ClubForm->get('email')->getData();
+            dump($email);*/
 
-        if ($ClubForm->isSubmitted() && $ClubForm->isValid()) {
-                // Persistons d'abord le club
-                $this->entityManager->persist($club);
-                $this->entityManager->flush();
+            // Créer un user pour le club
+            $this->createClubIdentification($club , $email);
+            // Persistons le club
+            $this->entityManager->persist($club);
+            $this->entityManager->flush();
 
-                if($ClubToReceptionForm->isSubmitted() && $ClubToReceptionForm->isValid()){
-                    $reception->setClub($club);
-                    $this->entityManager->persist($reception);
-                    $this->entityManager->flush(); 
-                    $this->createClubIdentification($club);  // Créer un user pour le club
                     return ['redirect' => $this->router->generate('app_club_index')];
-                }
             }
 
        
         return [
             'clubForm' => $ClubForm,
-            'clubToReceptionForm' => $ClubToReceptionForm,
         ];
         
     }
 
-    public function createClubIdentification(Club $club)
+    /**
+     * @throws \Exception
+     * @throws TransportExceptionInterface
+     */
+    public function createClubIdentification(Club $club , String $email): void
     {
         $user= new User();
-        //$password = bin2hex(random_bytes(4));
-        $user->setPassword(password_hash("toto", PASSWORD_BCRYPT));
-        $user->setEmail(strtolower($club->getNom()) . '@example.com');
+        $password = bin2hex(random_bytes(8));
+        $user->setPassword(password_hash($password ,PASSWORD_BCRYPT));
+        $user->setEmail($email);
         $user->setRoles(['ROLE_CLUB']);
+        $club->setUser($user);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        $this->mailerService->sendEmail(
+            $email,
+            'DevWebBadminton Inscription' ,
+            'Nous vous invitons à changer votre  mot de passe temporaire : ' . $password . 'en consultant la page Changer mot de passe .' );
 
     }
 
@@ -136,7 +145,7 @@ class ClubService
 
     public function getClubFromUser(User $user): ?club
     {
-        $club = $this->entityManager->getRepository(Club::class)->findOneBy(['nom' => explode('@', $user->getEmail())[0]]);
+        $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
         return $club ? $club : null;
     }
 

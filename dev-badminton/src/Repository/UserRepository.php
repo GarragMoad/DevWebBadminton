@@ -33,6 +33,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Récupère le club associé à l'utilisateur connecté.
+     *
+     * @param User $user
+     * @return Club|null
+     */
+    public function findClubByUser(User $user): ?Club
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.club', 'c')
+            ->where('u = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
