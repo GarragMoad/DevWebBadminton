@@ -23,7 +23,6 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'expanded' => true, // Utilisez des cases à cocher
             ])
-            ->add('password',PasswordType::class)
         ;
     }
 
