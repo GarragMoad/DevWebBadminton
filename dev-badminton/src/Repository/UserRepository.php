@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use App\Entity\Club;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -42,12 +43,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findClubByUser(User $user): ?Club
     {
         return $this->createQueryBuilder('u')
-            ->join('u.club', 'c')
-            ->where('u = :user')
-            ->setParameter('user', $user)
+            ->leftJoin('u.club', 'c')
+            ->addSelect('c') // Ajoute les données du club
+            ->where('u.id = :id')
+            ->setParameter('id', $user->getId())
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()?->getClub();
     }
+
 
     //    /**
     //     * @return User[] Returns an array of User objects

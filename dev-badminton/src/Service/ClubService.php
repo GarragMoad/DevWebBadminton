@@ -42,9 +42,6 @@ class ClubService
         $ClubForm->handleRequest($request);
         if ($ClubForm->isSubmitted() ) {
             $email = $ClubForm->get('email')->getData();
-            /*$email = $ClubForm->get('email')->getData();
-            dump($email);*/
-
             // Créer un user pour le club
             $this->createClubIdentification($club , $email);
             // Persistons le club

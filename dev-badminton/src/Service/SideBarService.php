@@ -15,11 +15,14 @@ class SideBarService
 
     private $clubId;
 
-    public function __construct(Security $security, RouterInterface $router , ClubRepository $clubRepository)
+    private $clubService;
+
+    public function __construct(Security $security, RouterInterface $router , ClubRepository $clubRepository, ClubService $clubService)
     {
         $this->security = $security;
         $this->router = $router;
         $this->clubRepository = $clubRepository;
+        $this->clubService = $clubService;
     }
 
     public function getMenuItems(): array
@@ -48,17 +51,12 @@ class SideBarService
         // Menu pour les utilisateurs avec le rôle "ROLE_ADMIN"
         if ($this->security->isGranted('ROLE_CLUB')) {
             $user = $this->security->getUser();
-            if ($user && method_exists($user, 'getEmail')) {
-                $email = $user->getEmail();
-                // Extraire la partie avant le @
-                $clubName = explode('@', $email)[0];
-                $club = $this->clubRepository->findOneBy(['nom' => $clubName]);
+                $club = $this->clubService->getClubFromUser($user);
                 if ($club) {
                     $this->clubId = $club->getId();
                 }
 
             }
-        }
         if($this->clubId){
             $menuItems[] = [
                 'label' => 'Club',
