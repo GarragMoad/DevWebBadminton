@@ -60,15 +60,15 @@ final class ClubController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_club_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Club $club, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Club $club): Response
     {
-        $formViews= $this->clubService->createClub($request);
+        $formViews= $this->clubService->editClub($club , $request);
         
         if (isset($formViews['redirect'])) {
             return $this->redirect($formViews['redirect']);
         }
         return $this->render('club/edit.html.twig', [
-            'formClub' => $formViews['clubForm'], 'ClubToReceptionForm' => $formViews['clubToReceptionForm'] , 'club' => $club
+            'formClub' => $formViews['clubForm'] , 'club' => $club
         ]);
     }
 

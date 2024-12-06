@@ -24,6 +24,7 @@ class ClubType extends AbstractType
                         'message' => 'Veuillez entrer une adresse email valide.',
                     ]),
                 ],
+                'data' => $options['email'],
                 'mapped' => false,
             ]);
 
@@ -33,6 +34,7 @@ class ClubType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Club::class,
+            'email' => null,
         ]);
     }
 }

@@ -32,7 +32,7 @@ class Equipe
     /**
      * @var Collection<int, Joueur>
      */
-    #[ORM\ManyToMany(targetEntity: Joueur::class)]
+    #[ORM\ManyToMany(targetEntity: Joueur::class, inversedBy: 'equipes')]
     private Collection $joueurs;
 
     public function __construct()

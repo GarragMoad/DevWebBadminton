@@ -79,6 +79,30 @@ class ClubService
 
     }
 
+    public function editClub(Club $club, Request $request): array
+    {
+        $email = $club->getUser()->getEmail();
+        $clubForm = $this->formFactory->create(ClubType::class, $club ,['email' => $email]);
+
+        $clubForm->handleRequest($request);
+        if ($clubForm->isSubmitted() && $clubForm->isValid()) {
+            $email = $clubForm->get('email')->getData();
+
+            if ($email) {
+                $user = $club->getUser();
+                if ($user) {
+                    $user->setEmail($email);
+                    $this->entityManager->flush();
+                }
+            }
+            $this->entityManager->flush();
+            return ['redirect' => $this->router->generate('app_club_index')];
+        }
+        return [
+            'clubForm' => $clubForm, 'club' => $club
+        ];
+    }
+
 
     public function getClub(int $id): ?Club
     {
