@@ -9,12 +9,30 @@
 </head>
 <body class="bg-light">
 
+<!-- Horizontal Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light  shadow-sm w-100" style="background-color: #e3f2fd;">
     <div class="container-fluid">
-        <div class="row min-vh-100">
-            <!-- Navbar verticale -->
-            <nav class="col-md-3 col-lg-2 d-md-block bg-primary text-light sidebar py-4">
-                 {{ render(controller('App\\Controller\\Partial\\MenuController::index')) }}
-            </nav>
+        <a class="navbar-brand" href="#">
+            <!--<img src="{{ asset('images/logo.png') }}" alt="Logo" width="30" height="30"> -->
+            <h1>Image</h1>
+        </a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout') }}">Déconnexion</a>
+                </li>
+            </ul>
+            <h2> {{ render(controller('App\\Controller\\Partial\\MenuController::getUserEmail')) }}</h2>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <!-- Vertical Navbar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-primary text-light sidebar py-4">
+            {{ render(controller('App\\Controller\\Partial\\MenuController::index')) }}
+        </nav>
 
             <!-- Contenu principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">

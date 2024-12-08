@@ -73,6 +73,11 @@ class UserService
             ];
         }
 
+        public function getUserEmail($user): string
+        {
+           return $user->getEmail();
+        }
+
 
 
 }
