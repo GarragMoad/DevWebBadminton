@@ -10,10 +10,10 @@
 <body class="bg-light">
 
 <!-- Horizontal Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light  shadow-sm w-100" style="background-color: #e3f2fd;">
+<!--<nav class="navbar navbar-expand-lg navbar-light  shadow-sm w-100" style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <!--<img src="{{ asset('images/logo.png') }}" alt="Logo" width="30" height="30"> -->
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" width="30" height="30">
             <h1>Image</h1>
         </a>
         <div class="collapse navbar-collapse justify-content-end">
@@ -26,13 +26,12 @@
         </div>
     </div>
 </nav>
-
+-->
 <div class="container-fluid">
     <div class="row min-vh-100">
         <!-- Vertical Navbar -->
-        <nav class="col-md-3 col-lg-2 d-md-block bg-primary text-light sidebar py-4">
             {{ render(controller('App\\Controller\\Partial\\MenuController::index')) }}
-        </nav>
+
 
             <!-- Contenu principal -->
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
@@ -40,7 +39,8 @@
             </main>
         </div>
     </div>
-
+    <script src="{{ asset('build/vendors-node_modules_feather-icons_dist_feather_js-node_modules_core-js_modules_es_string_rep-bc8cf8.js') }}"></script>
+    <script src="{{ asset('build/app.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

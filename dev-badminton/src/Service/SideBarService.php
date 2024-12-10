@@ -33,7 +33,7 @@ class SideBarService
         if ($this->security->isGranted('ROLE_ADMIN')){
             $menuItems[] = [
                 'label' => 'Dashboard',
-                'icon' => 'fa fa-home',
+                'icon' => 'users',
                 'url' => $this->router->generate('superAdmin'), // Route de votre dashboard
             ];
     
@@ -43,7 +43,7 @@ class SideBarService
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
             $menuItems[] = [
                 'label' => 'Admins',
-                'icon' => 'fas fa-list',
+                'icon' => 'fa fa-home',
                 'url' => $this->router->generate('app_user_index'),
             ];
         }
@@ -75,31 +75,31 @@ class SideBarService
 
         $menuItems[] = [
             'label' => 'Equipes',
-            'icon' => 'fas fa-list',
+            'icon' => 'fa fa-home',
             'url' => $this->router->generate('app_equipe_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Joueurs',
-            'icon' => 'fas fa-list',
+            'icon' => 'fa fa-home',
             'url' => $this->router->generate('app_joueur_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Capitaines',
-            'icon' => 'fas fa-list',
+            'icon' => 'fa fa-home',
             'url' => $this->router->generate('app_capitaine_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Reception',
-            'icon' => 'fas fa-list',
+            'icon' => 'fa fa-home',
             'url' => $this->router->generate('app_reception_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Type Reception',
-            'icon' => 'fas fa-list',
+            'icon' => 'fa fa-home',
             'url' => $this->router->generate('app_type_reception_index'),
         ];
 

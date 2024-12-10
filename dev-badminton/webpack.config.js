@@ -5,6 +5,7 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
+
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
@@ -18,7 +19,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addStyleEntry('sidebar', './assets/styles/sideBar.css')
+    .addStyleEntry('sidebar', './assets/styles/sideBar.scss')
     .addStyleEntry('equipe', './assets/styles/equipe.css')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
@@ -48,7 +49,7 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

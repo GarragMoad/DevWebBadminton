@@ -1,13 +1,14 @@
 {# templates/partial/admin_menu.html.twig #}
-<div class="sidebar-sticky">
-    <ul class="nav flex-column">
-    {% for menuItem in menuItems %}
-        <li class="nav-item">
-            <a class="nav-link text-light" href="{{ menuItem.url }}">
-                <i class="{{ menuItem.icon }}"></i> {{ menuItem.label }}
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-</div>
+{{ encore_entry_link_tags('sidebar') }}
+<nav class="navbar">
+    <ul class="navbar__menu">
+        {% for menuItem in menuItems %}
+            <li class="navbar__item">
+                <a href="{{ menuItem.url }}" class="navbar__link">
+                    <i data-feather="users"></i><span>{{ menuItem.label }}</span>
+                </a>
+            </li>
+        {% endfor %}
 
+    </ul>
+</nav>
