@@ -1,11 +1,12 @@
 {# templates/partial/admin_menu.html.twig #}
 {{ encore_entry_link_tags('sidebar') }}
+
 <nav class="navbar">
     <ul class="navbar__menu">
         {% for menuItem in menuItems %}
             <li class="navbar__item">
                 <a href="{{ menuItem.url }}" class="navbar__link">
-                    <i data-feather="users"></i><span>{{ menuItem.label }}</span>
+                    <i class="{{ menuItem.icon}}"></i><span>{{ menuItem.label }}</span>
                 </a>
             </li>
         {% endfor %}

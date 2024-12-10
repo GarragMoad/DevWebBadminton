@@ -1,6 +1,4 @@
 import './bootstrap.js';
-
-import feather from 'feather-icons';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -12,4 +10,3 @@ import './styles/sideBar.scss';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
-feather.replace();

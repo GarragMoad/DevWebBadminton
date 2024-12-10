@@ -26,14 +26,26 @@ body {
   background: #eaeef6;
   font-family: 'Open Sans', sans-serif;
 }
+.navbar__link i {
+  font-size: 24px; /* Adjust the size as needed */
+}
+
+.navbar__menu {
+  list-style-type: none; /* Supprime les puces */
+  padding: 0; /* Supprime le padding par défaut */
+}
+
+.navbar__item {
+  margin: 0; /* Supprime la marge par défaut */
+}
 
 .navbar {
   position: fixed;
-  top: $spacer;
+  top: 0px;
   left: $spacer;
-  background: #fff;
+  background: #000;
   border-radius: $borderRadius;
-  padding: $spacer 0;
+  padding: 50px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
   height: calc(100vh - #{$spacer * 4});
 
@@ -41,7 +53,7 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: $linkHeight;
     width: $spacer * 5.5;
     color: $text;
@@ -56,7 +68,7 @@ body {
       pointer-events: none;
       color: $primary;
       background: #fff;
-      padding: $spacer * 0.75;
+      padding: $spacer 0;
       transition: $transition;
       border-radius: $borderRadius * 1.75;
     }

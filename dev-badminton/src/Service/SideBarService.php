@@ -1,4 +1,4 @@
-<?php 
+<?php
 // src/Service/SidebarMenuBuilder.php
 namespace App\Service;
 
@@ -10,14 +10,11 @@ class SideBarService
 {
     private Security $security;
     private RouterInterface $router;
-
     private ClubRepository $clubRepository;
-
     private $clubId;
-
     private $clubService;
 
-    public function __construct(Security $security, RouterInterface $router , ClubRepository $clubRepository, ClubService $clubService)
+    public function __construct(Security $security, RouterInterface $router, ClubRepository $clubRepository, ClubService $clubService)
     {
         $this->security = $security;
         $this->router = $router;
@@ -29,81 +26,82 @@ class SideBarService
     {
         $menuItems = [];
 
-        // Menu item pour Dashboard
-        if ($this->security->isGranted('ROLE_ADMIN')){
+        // Menu item for Dashboard
+        if ($this->security->isGranted('ROLE_ADMIN')) {
             $menuItems[] = [
                 'label' => 'Dashboard',
-                'icon' => 'users',
-                'url' => $this->router->generate('superAdmin'), // Route de votre dashboard
+                'icon' => 'fa-solid fa-tachometer-alt',
+                'url' => $this->router->generate('superAdmin'),
             ];
-    
         }
-       
-        // Menu pour les administrateurs
+
+        // Menu for administrators
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
             $menuItems[] = [
                 'label' => 'Admins',
-                'icon' => 'fa fa-home',
+                'icon' => 'fa-solid fa-user-shield',
                 'url' => $this->router->generate('app_user_index'),
             ];
         }
 
-        // Menu pour les utilisateurs avec le rôle "ROLE_ADMIN"
+        // Menu for users with the role "ROLE_CLUB"
         if ($this->security->isGranted('ROLE_CLUB')) {
             $user = $this->security->getUser();
-                $club = $this->clubService->getClubFromUser($user);
-                if ($club) {
-                    $this->clubId = $club->getId();
-                }
-
+            $club = $this->clubService->getClubFromUser($user);
+            if ($club) {
+                $this->clubId = $club->getId();
             }
-        if($this->clubId){
+        }
+
+        if ($this->clubId) {
             $menuItems[] = [
                 'label' => 'Club',
-                'icon' => 'fa fa-home',
+                'icon' => 'fa-solid fa-building',
                 'url' => $this->router->generate('app_club_show', ['id' => $this->clubId]),
             ];
-        }
-        else{
+        } else {
             $menuItems[] = [
                 'label' => 'Clubs',
-                'icon' => 'fas fa-list',
+                'icon' => 'fa-solid fa-list',
                 'url' => $this->router->generate('app_club_index'),
             ];
         }
 
-
         $menuItems[] = [
             'label' => 'Equipes',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa-solid fa-users',
             'url' => $this->router->generate('app_equipe_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Joueurs',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa-solid fa-user',
             'url' => $this->router->generate('app_joueur_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Capitaines',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa-solid fa-user-tie',
             'url' => $this->router->generate('app_capitaine_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Reception',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa-solid fa-envelope',
             'url' => $this->router->generate('app_reception_index'),
         ];
 
         $menuItems[] = [
             'label' => 'Type Reception',
-            'icon' => 'fa fa-home',
+            'icon' => 'fa-solid fa-envelope-open-text',
             'url' => $this->router->generate('app_type_reception_index'),
         ];
 
-        // Ajoutez d'autres items au besoin
+        $menuItems[] = [
+            'label' => 'Se déconnecter',
+            'icon' => 'fa-solid fa-sign-out-alt',
+            'url' => $this->router->generate('logout'),
+        ];
 
         return $menuItems;
     }
