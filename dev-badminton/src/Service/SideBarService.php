@@ -38,7 +38,7 @@ class SideBarService
         // Menu for administrators
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
             $menuItems[] = [
-                'label' => 'Admins',
+                'label' => 'Users',
                 'icon' => 'fa-solid fa-user-shield',
                 'url' => $this->router->generate('app_user_index'),
             ];
@@ -86,19 +86,19 @@ class SideBarService
         ];
 
         $menuItems[] = [
-            'label' => 'Reception',
+            'label' => 'Receptions',
             'icon' => 'fa-solid fa-envelope',
             'url' => $this->router->generate('app_reception_index'),
         ];
 
         $menuItems[] = [
-            'label' => 'Type Reception',
+            'label' => 'Type_Receptions',
             'icon' => 'fa-solid fa-envelope-open-text',
             'url' => $this->router->generate('app_type_reception_index'),
         ];
 
         $menuItems[] = [
-            'label' => 'Se déconnecter',
+            'label' => 'Logout',
             'icon' => 'fa-solid fa-sign-out-alt',
             'url' => $this->router->generate('logout'),
         ];

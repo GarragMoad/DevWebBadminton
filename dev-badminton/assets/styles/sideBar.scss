@@ -34,6 +34,15 @@ body {
   list-style-type: none; /* Supprime les puces */
   padding: 0; /* Supprime le padding par défaut */
 }
+.navbar__title {
+  position: absolute; /* Positionnez le titre en haut */
+  top: 10px;
+  left: 50%; /* Centrez le titre horizontalement */
+  transform: translate(-50%, 0); /* Centre le titre de manière précise */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
 
 .navbar__item {
   margin: 0; /* Supprime la marge par défaut */
@@ -42,18 +51,21 @@ body {
 .navbar {
   position: fixed;
   top: 0px;
-  left: $spacer;
+  left: 0px;
+  bottom: 0px;
+  height: 100vh;
   background: #000;
-  border-radius: $borderRadius;
-  padding: 50px;
+  padding: 25px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
-  height: calc(100vh - #{$spacer * 4});
+  position: relative;
+  display: flex; /* Pour organiser les éléments */
+  flex-direction: column; /* Organise les enfants verticalement */
 
   &__link {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     height: $linkHeight;
     width: $spacer * 5.5;
     color: $text;
@@ -88,6 +100,7 @@ body {
 
   &__menu {
     position: relative;
+    margin-top: $spacer * 2 ;
   }
 
   &__item {
