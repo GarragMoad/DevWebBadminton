@@ -13,12 +13,12 @@ class Reception
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $horaireDebut = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $horaireFin = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'receptions')]
     #[ORM\JoinColumn(nullable: false)]

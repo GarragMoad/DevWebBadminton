@@ -8,17 +8,22 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ reception.id }}</td>
-            </tr>
-            <tr>
                 <th>HoraireDebut</th>
-                <td>{{ reception.horaireDebut ? reception.horaireDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
             </tr>
             <tr>
                 <th>HoraireFin</th>
-                <td>{{ reception.horaireFin ? reception.horaireFin|date('Y-m-d') : '' }}</td>
+                <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
             </tr>
+             <tr>
+                 <th>Club</th>
+                 <td>{{ reception.club.nom }}</td>
+             </tr>
+            <tr>
+                <th>Type Réception</th>
+                <td>{{ reception.typeReception.type}}</td>
+            </tr>
+
         </tbody>
     </table>
 
