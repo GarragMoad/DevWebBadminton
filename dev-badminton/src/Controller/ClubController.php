@@ -29,9 +29,7 @@ final class ClubController extends AbstractController
     #[Route(name: 'app_club_index', methods: ['GET'])]
     public function index(ClubRepository $clubRepository): Response
     {
-        
-        //$menuItems = $this->get('easyadmin.config.menu_items');
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('club/index.html.twig', [
             'clubs' => $clubRepository->findAll(),
         ]);

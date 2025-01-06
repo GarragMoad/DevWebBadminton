@@ -98,10 +98,18 @@ class SideBarService
         ];
 
         $menuItems[] = [
+            'label' => 'change password',
+            'icon' => 'fa-solid fa-key',
+            'url' => $this->router->generate('app_change_password'),
+        ];
+
+        $menuItems[] = [
             'label' => 'Logout',
             'icon' => 'fa-solid fa-sign-out-alt',
             'url' => $this->router->generate('logout'),
         ];
+
+
 
         return $menuItems;
     }

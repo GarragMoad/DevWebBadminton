@@ -62,7 +62,7 @@ class UserService
             $this->mailerService->sendEmail(
                 $userEmail,
                 'DevWebBadminton Inscription' ,
-                'Nous vous invitons à changer votre  mot de passe temporaire : ' . $tempPassword . 'en consultant la page .' );
+                'Nous vous invitons à changer votre  mot de passe temporaire : ' . $tempPassword . ' en consultant la page .' );
             return ['redirect' => $this->router->generate('app_user_index')];
         }
 

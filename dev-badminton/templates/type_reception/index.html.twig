@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Type</th>
                 <th>actions</th>
             </tr>
@@ -16,7 +15,6 @@
         <tbody>
         {% for type_reception in type_receptions %}
             <tr>
-                <td>{{ type_reception.id }}</td>
                 <td>{{ type_reception.type }}</td>
                 <td>
                     <a href="{{ path('app_type_reception_show', {'id': type_reception.id}) }}">show</a>
