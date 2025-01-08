@@ -39,7 +39,10 @@ final class JoueurController extends AbstractController
         else if ($this->isGranted(attribute: 'ROLE_CLUB')) {
             $user = $this->getUser();
             $club = $this->clubService->getClubFromUser($user);
-            $joueurs = $joueurRepository->findJoueursByClub($club);
+            $equipes = $club->getEquipe();
+            foreach ($equipes as $equipe) {
+                $joueurs = array_merge($joueurs, $equipe->getJoueurs()->toArray());
+            }
 
         }
         return $this->render('joueur/index.html.twig', [
