@@ -51,45 +51,6 @@ class EquipeService
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer les données du champ non mappé
-            $newCapitaineData = $form->get('new_capitaine')->getData();
-            // Récupérer les données du champ non mappé pour les nouveaux joueurs
-            $newJoueurData = $form->get('new_joueurs')->getData();
-            if($newJoueurData){
-                    $joueur = new Joueur();
-                    $joueur->setNom($newJoueurData->getNom());
-                    $joueur->setPrenom($newJoueurData->getPrenom());
-                    $joueur->setNumreoLicence($newJoueurData->getNumreoLicence());
-                    $joueur->setClassementSimple($newJoueurData->getClassementSimple());
-                    $joueur->setCpphSimple($newJoueurData->getCpphSimple());
-                    $joueur->setClassementDouble($newJoueurData->getClassementDouble());
-                    $joueur->setCpphDouble($newJoueurData->getCpphDouble());
-                    $joueur->setClassementMixtes($newJoueurData->getClassementMixtes());
-                    $joueur->setCpphMixtes($newJoueurData->getCpphMixtes());
-                    $this->entityManager->persist($joueur);
-                    $equipe->addJoueur($joueur);
-                
-            }
-            
-
-            // Créer un nouveau capitaine si les données sont présentes
-            if ($newCapitaineData) {
-                $capitaine = new Capitaine();
-                $capitaine->setNom($newCapitaineData->getNom());
-                $capitaine->setPrenom($newCapitaineData->getPrenom());
-                $capitaine->setMail($newCapitaineData->getMail());
-                $capitaine->setTelephone($newCapitaineData->getTelephone());
-                $this->entityManager->persist($capitaine);
-                $equipe->setCapitaine($capitaine);
-            } else if(! $newCapitaineData) {
-                // Récupérer le capitaine existant
-                $capitaine = $form->get('capitaine')->getData();
-                $equipe->setCapitaine($capitaine);
-            }
-            foreach ($equipe->getJoueurs() as $joueur) {
-                $equipe->addJoueur($joueur);
-                $this->entityManager->persist($joueur);
-            }
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
             return ['redirect' => $this->router->generate('app_equipe_index')];

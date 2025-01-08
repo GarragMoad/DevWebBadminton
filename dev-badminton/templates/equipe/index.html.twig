@@ -26,13 +26,23 @@
                 <td>{{ equipe.id }}</td>
                 <td>{{ equipe.nomEquipe }}</td>
                 <td>{{ equipe.numeroEquipe }}</td>
-                <td>{{ equipe.capitaine.nom }}</td>
                 <td>
+                    {% if equipe.capitaine is not null %}
+                        {{ equipe.capitaine.nom }}
+                    {% else %}
+                        <span>No Capitaine</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if equipe.joueurs is not empty %}
                     <ul>
-                        {% for joueur in equipe.joueurs %}
-                            <li>{{ joueur.nom }}</li>
-                        {% endfor %}
+
+                            {% for joueur in equipe.joueurs %}
+                                <li>{{ joueur.nom }}</li>
+                            {% endfor %}
                     </ul>
+                {% else %}  <span>No Joueurs</span> {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('app_equipe_show', {'id': equipe.id}) }}">show</a>
                     <a href="{{ path('app_equipe_edit', {'id': equipe.id}) }}">edit</a>

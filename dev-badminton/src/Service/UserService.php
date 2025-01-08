@@ -6,10 +6,12 @@ namespace App\Service;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+
 
 class UserService
 {
@@ -22,13 +24,19 @@ class UserService
 
     private $passwordHasher;
 
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService , RouterInterface $router, FormFactoryInterface $formFactory, UserPasswordHasherInterface $userPasswordHasher)
+    private $security;
+
+    private $equipeService;
+
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService , RouterInterface $router, FormFactoryInterface $formFactory, UserPasswordHasherInterface $userPasswordHasher, Security $security , EquipeService $equipeService)
     {
         $this->entityManager = $entityManager;
         $this->mailerService = $mailerService;
         $this->router=$router;
         $this->formFactory=$formFactory;
         $this->passwordHasher=$userPasswordHasher;
+        $this->security=$security;
+        $this->equipeService=$equipeService;
     }
 
     /**
@@ -78,6 +86,16 @@ class UserService
            return $user->getEmail();
         }
 
+    public function getEquipesForUser($user)
+    {
+        if ($this->security->isGranted('ROLE_ADMIN' || 'ROLE_SUPER_ADMIN')) {
+            return $this->equipeRepository->findAll();
+        } elseif ($this->security->isGranted('ROLE_CLUB')) {
+            $equipes = $this->equipeService->getEquipesFromUser($user);
+            return $equipes ? [$equipes] : [];
+        }
+        return [];
+    }
 
 
 }

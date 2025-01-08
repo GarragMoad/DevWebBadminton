@@ -53,66 +53,26 @@ class EquipeType extends AbstractType
             ->add('club', EntityType::class, [
                 'class' => Club::class,
                 'choices' => $this->getClubsForUser($user),
-                'choice_label' => function(Club $club) {
+                'choice_label' => function (Club $club) {
                     return $club->getNom();
                 }
             ]);
-            if(!$isEditMode){
-                $builder->add('capitaine_choice', ChoiceType::class, [
-                    'choices' => [
-                        'Choisir un capitaine existant' => 'existing',
-                        'Créer un nouveau capitaine' => 'new',
-                    ],
-                    'mapped' => false,
-                    'expanded' => true,
-                    'multiple' => false,
-                ]);
-            }
 
-            $builder->add('capitaine', EntityType::class, [
-                'class' => Capitaine::class,
-                'choices' => $this->capitaineService->getCapitaineFromUser($user),
-                'choice_label' => function(Capitaine $capitaine) {
-                    return $capitaine->getNom();
-                },
-                'required' => false,
-            ]);
-        if(!$isEditMode){
-            $builder->add('new_capitaine', CapitaineType::class, [
-                'mapped' => false,
-                'required' => false,
-            ])
-                ->add('joueur_choice', ChoiceType::class, [
-                    'choices' => [
-                        'Choisir des joueurs existants' => 'existing',
-                        'Créer de nouveaux joueurs' => 'new',
-                    ],
-                    'mapped' => false,
-                    'expanded' => true,
-                    'multiple' => false,
-                ]);
-        }
 
+        if ($isEditMode) {
             $builder->add('joueurs', EntityType::class, [
                 'class' => Joueur::class,
                 'choices' => $this->joueurService->getJoueursFromUser($user),
-                'choice_label' => function(Joueur $joueur) {
+                'choice_label' => function (Joueur $joueur) {
                     return $joueur->getNom();
                 },
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
             ]);
-            if(!$isEditMode){
-                    $builder->add('new_joueurs', JoueurType::class, [
-                        'mapped' => false,
-                        'include_equipes' => false,
-                        'required' => false,
-                    ]);
-                }
 
+        }
     }
-
     private function getClubsForUser($user)
     {
         if ($this->security->isGranted('ROLE_ADMIN')) {

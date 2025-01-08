@@ -7,27 +7,29 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Mail</th>
-                <th>Telephone</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Mail</th>
+            <th>Telephone</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for capitaine in capitaines %}
             <tr>
-                <td>{{ capitaine.id }}</td>
-                <td>{{ capitaine.nom }}</td>
-                <td>{{ capitaine.prenom }}</td>
-                <td>{{ capitaine.mail }}</td>
-                <td>{{ capitaine.telephone }}</td>
-                <td>
-                    <a href="{{ path('app_capitaine_show', {'id': capitaine.id}) }}">show</a>
-                    <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}">edit</a>
-                </td>
+                {% if capitaine is not null %}
+                    <td>{{ capitaine.nom }}</td>
+                    <td>{{ capitaine.prenom }}</td>
+                    <td>{{ capitaine.mail }}</td>
+                    <td>{{ capitaine.telephone }}</td>
+                    <td>
+                        <a href="{{ path('app_capitaine_show', {'id': capitaine.id}) }}">show</a>
+                        <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}">edit</a>
+                    </td>
+                {% else %}
+                    <td></td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

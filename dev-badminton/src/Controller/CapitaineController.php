@@ -38,8 +38,11 @@ final class CapitaineController extends AbstractController
         $capitaine = new Capitaine();
         $form = $this->createForm(CapitaineType::class, $capitaine);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $equipe = $capitaine->getEquipes();
+            foreach ($equipe as $equipe){
+                $equipe->setCapitaine($capitaine);
+            }
             $entityManager->persist($capitaine);
             $entityManager->flush();
 

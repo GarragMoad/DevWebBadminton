@@ -17,47 +17,7 @@
         {{ form_widget(form.club, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
-<div class="form-group">
-    {{ form_label(form.capitaine_choice, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    <div class="col-sm-10">
-        {{ form_widget(form.capitaine_choice, {'attr': {'class': 'form-control'}}) }}
-    </div>
-</div>
 
-<div id="existing-capitaine" class="form-group" style="display: none;">
-    {{ form_label(form.capitaine, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    <div class="col-sm-10">
-        {{ form_widget(form.capitaine, {'attr': {'class': 'form-control'}}) }}
-    </div>
-</div>
-
-<div id="new-capitaine" class="form-group" style="display: none;">
-    {{ form_label(form.new_capitaine, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    <div class="col-sm-10">
-        {{ form_widget(form.new_capitaine, {'attr': {'class': 'form-control'}}) }}
-    </div>
-</div>
-
-<div class="form-group">
-    {{ form_label(form.joueur_choice, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    <div class="col-sm-10">
-        {{ form_widget(form.joueur_choice, {'attr': {'class': 'form-control'}}) }}
-    </div>
-</div>
-
-<div id="existing-joueurs" class="form-group" style="display: none;">
-    {{ form_label(form.joueurs, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    <div class="col-sm-10">
-        {{ form_widget(form.joueurs, {'attr': {'class': 'form-control'}}) }}
-    </div>
-</div>
-
-<div id="new-joueurs" class="form-group" style="display: none;">
-    {{ form_label(form.new_joueurs, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-    <div class="col-sm-10">
-        {{ form_widget(form.new_joueurs, {'attr': {'class': 'form-control'}}) }}
-    </div>
-</div>
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
@@ -65,47 +25,3 @@
     </div>
 </div>
 {{ form_end(form) }}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const capitaineChoices = document.querySelectorAll('input[name="equipe[capitaine_choice]"]');
-        const existingCapitaine = document.getElementById('existing-capitaine');
-        const newCapitaine = document.getElementById('new-capitaine');
-        const joueurChoices = document.querySelectorAll('input[name="equipe[joueur_choice]"]');
-        const existingJoueurs = document.getElementById('existing-joueurs');
-        const newJoueurs = document.getElementById('new-joueurs');
-
-        function toggleCapitaineFields() {
-            const selectedValue = document.querySelector('input[name="equipe[capitaine_choice]"]:checked').value;
-            if (selectedValue === 'existing') {
-                existingCapitaine.style.display = 'block';
-                newCapitaine.style.display = 'none';
-            } else {
-                existingCapitaine.style.display = 'none';
-                newCapitaine.style.display = 'block';
-            }
-        }
-
-        function toggleJoueurFields() {
-            const selectedValue = document.querySelector('input[name="equipe[joueur_choice]"]:checked').value;
-            if (selectedValue === 'existing') {
-                existingJoueurs.style.display = 'block';
-                newJoueurs.style.display = 'none';
-            } else {
-                existingJoueurs.style.display = 'none';
-                newJoueurs.style.display = 'block';
-            }
-        }
-
-        capitaineChoices.forEach(choice => {
-            choice.addEventListener('change', toggleCapitaineFields);
-        });
-
-        joueurChoices.forEach(choice => {
-            choice.addEventListener('change', toggleJoueurFields);
-        });
-
-        toggleCapitaineFields();
-        toggleJoueurFields();
-    });
-</script>

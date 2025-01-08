@@ -8,7 +8,7 @@ use App\Entity\Equipe;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-class CapitaineService
+class   CapitaineService
 {
     private $entityManager;
 

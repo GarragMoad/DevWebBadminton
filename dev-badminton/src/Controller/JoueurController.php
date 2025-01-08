@@ -40,13 +40,14 @@ final class JoueurController extends AbstractController
             $user = $this->getUser();
             $club = $this->clubService->getClubFromUser($user);
             $joueurs = $joueurRepository->findJoueursByClub($club);
+
         }
         return $this->render('joueur/index.html.twig', [
             'joueurs' => $joueurs,
         ]);
     }
 
-    #[Route('/new', name: 'app_joueur_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_joueur_new',methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
             $formViews= $this->equipeService->createJoueurForEquipe($request);

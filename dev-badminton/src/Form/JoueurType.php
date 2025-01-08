@@ -76,7 +76,7 @@ class JoueurType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Joueur::class,
-            'include_equipes' => false,
+            'include_equipes' => true,
         ]);
     }
 }
