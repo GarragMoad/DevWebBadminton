@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Enum\Classement;
 use App\Repository\JoueurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpParser\Node\Scalar\String_;
 
 #[ORM\Entity(repositoryClass: JoueurRepository::class)]
 class Joueur
@@ -24,20 +26,20 @@ class Joueur
     #[ORM\Column(length: 25)]
     private ?string $numreo_licence = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $classement_simple = null;
+    #[ORM\Column(type: 'string',enumType: Classement::class)]
+    private ?Classement $classement_simple = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $cpph_simple = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $classement_double = null;
+    #[ORM\Column(type: 'string',enumType: Classement::class)]
+    private ?Classement $classement_double = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $cpph_double = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $classement_mixtes = null;
+    #[ORM\Column(type: 'string',enumType: Classement::class)]
+    private ?Classement $classement_mixtes = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $cpph_mixtes = null;
@@ -118,10 +120,10 @@ class Joueur
 
     public function getClassementSimple(): ?string
     {
-        return $this->classement_simple;
+        return $this->classement_simple?->value;
     }
 
-    public function setClassementSimple(string $classement_simple): static
+    public function setClassementSimple(Classement $classement_simple): static
     {
         $this->classement_simple = $classement_simple;
 
@@ -142,10 +144,10 @@ class Joueur
 
     public function getClassementDouble(): ?string
     {
-        return $this->classement_double;
+        return $this->classement_double?->value;
     }
 
-    public function setClassementDouble(?string $classement_double): static
+    public function setClassementDouble(?Classement $classement_double): static
     {
         $this->classement_double = $classement_double;
 
@@ -166,10 +168,10 @@ class Joueur
 
     public function getClassementMixtes(): ?string
     {
-        return $this->classement_mixtes;
+        return $this->classement_mixtes?->value;
     }
 
-    public function setClassementMixtes(?string $classement_mixtes): static
+    public function setClassementMixtes(?Classement $classement_mixtes): static
     {
         $this->classement_mixtes = $classement_mixtes;
 
@@ -186,5 +188,10 @@ class Joueur
         $this->cpph_mixtes = $cpph_mixtes;
 
         return $this;
+    }
+
+    public function getScore(): float
+    {
+        return $this->cpph_simple + $this->cpph_double + $this->cpph_mixtes;
     }
 }

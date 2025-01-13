@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Service\ClubService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Repository\EquipeRepository;
 
 
 
@@ -18,7 +19,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 class adminDashboardController extends AbstractDashboardController
 {
     
-    public function __construct(private  ClubService  $clubService, private EntityManagerInterface $entityManager , private Security $security)
+    public function __construct(private EquipeRepository $equipeRepository, private EntityManagerInterface $entityManager , private Security $security)
     {
        
     }
@@ -28,9 +29,18 @@ class adminDashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-         $clubs = $this->clubService->getAllClubs();
+        $equipes = $this->equipeRepository->findAll();
+        // Calculate scores for each team
+        foreach ($equipes as $equipe) {
+            $equipe->calculateScore();
+        }
+
+        usort($equipes, function($a, $b) {
+            return $b->getScore() <=> $a->getScore();
+        });
+
         return $this->render('superAdmin/dashboard.html.twig', [
-            'clubs' => $clubs,
+            'equipes' => $equipes,
         ]);
     }
     public function configureDashboard(): Dashboard

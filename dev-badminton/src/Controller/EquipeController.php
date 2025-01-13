@@ -39,8 +39,7 @@ final class EquipeController extends AbstractController
                 'form' =>$formViews['form'],
             ]);
         }
-    
-    
+
         #[Route('/{id}', name: 'app_equipe_show', methods: ['GET'])]
         public function show(Equipe $equipe, ClubService $clubService): Response
         {

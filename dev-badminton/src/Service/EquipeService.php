@@ -11,6 +11,7 @@ use App\Form\EquipeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\Request;
 class EquipeService
 {
     private $entityManager;
@@ -45,12 +46,17 @@ class EquipeService
         ];
     }
 
-    public function createEquipe($request){
+    public function createEquipe(Request $request)
+    {
         $equipe = new Equipe();
         $form = $this->formFactory->create(EquipeType::class, $equipe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($equipe->getJoueurs() as $joueur) {
+                $joueur->addEquipe($equipe);
+                $this->entityManager->persist($joueur);
+            }
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
             return ['redirect' => $this->router->generate('app_equipe_index')];
@@ -70,6 +76,7 @@ class EquipeService
         }
         return null;
     }
+
 
 
 }

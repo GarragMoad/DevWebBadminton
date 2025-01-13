@@ -7,6 +7,7 @@ use App\Form\JoueurType;
 use App\Repository\JoueurRepository;
 use App\Service\ClubService;
 use App\Service\EquipeService;
+use App\Service\JoueurService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,8 @@ final class JoueurController extends AbstractController
 
     private $equipeService;
 
-    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService)
+
+    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService )
     {
         $this->jouerequipeService = $jouerequipeService;
         $this->clubService = $clubService;
@@ -112,5 +114,7 @@ final class JoueurController extends AbstractController
             'form' => $form['form'],
             'joueur' => $joueur
         ]);
+
     }
+
 }

@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Jour</th>
                 <th>HoraireDebut</th>
                 <th>HoraireFin</th>
                 <th>actions</th>
@@ -16,6 +17,7 @@
         <tbody>
         {% for reception in receptions %}
             <tr>
+                <td>{{ reception.jour.getJour() }}</td>
                 <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
                 <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
                 <td>

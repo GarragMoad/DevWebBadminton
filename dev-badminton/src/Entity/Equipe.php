@@ -6,10 +6,12 @@ use App\Repository\EquipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: EquipeRepository::class)]
 class Equipe
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,6 +36,9 @@ class Equipe
      */
     #[ORM\ManyToMany(targetEntity: Joueur::class, inversedBy: 'equipes')]
     private Collection $joueurs;
+
+    #[ORM\Column(type: 'integer')]
+    private float $score = 0.0;
 
     public function __construct()
     {
@@ -101,9 +106,9 @@ class Equipe
         return $this->joueurs;
     }
 
-    public function addJoueur(Joueur $joueur): static
+    public function addJoueur(Joueur $joueur): self
     {
-        if (!$this->joueurs->contains($joueur)) {
+        if ($this->joueurs->count() < 4 && !$this->joueurs->contains($joueur)) {
             $this->joueurs->add($joueur);
         }
 
@@ -115,5 +120,49 @@ class Equipe
         $this->joueurs->removeElement($joueur);
 
         return $this;
+    }
+
+    public function getScore(): int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): static
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+
+    public function calculateScore(): void
+    {
+        $this->score = 0;
+        foreach ($this->joueurs as $joueur) {
+            $this->score += $joueur->getScore();
+        }
+    }
+
+
+    /**
+     * Validation pour s'assurer qu'il y a exactement 4 joueurs.
+     * @Assert\Callback
+     */
+    public function validateJoueursCount(ExecutionContextInterface $context): void
+    {
+        if ($this->joueurs->count() !== 4) {
+            $context->buildViolation('Vous devez créer exactement 4 joueurs.')
+                ->atPath('joueurs')
+                ->addViolation();
+        }
+
+        foreach ($this->joueurs as $joueur) {
+            if (empty($joueur->getNom()) || empty($joueur->getPrenom())) {
+                $context->buildViolation('Chaque joueur doit avoir un nom et un prénom.')
+                    ->atPath('joueurs')
+                    ->addViolation();
+                break;
+            }
+        }
     }
 }

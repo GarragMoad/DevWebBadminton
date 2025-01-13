@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Equipe;
 use App\Entity\Joueur;
+use App\Enum\Classement;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,6 +29,7 @@ class JoueurType extends AbstractType
         $this->equipeRepository = $equipeRepository;
     }
 
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $this->security->getUser();
@@ -35,30 +38,32 @@ class JoueurType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('numreo_licence')
-            ->add('classement_simple')
+            ->add('classement_simple', ChoiceType::class, [
+                'choices' => array_combine(
+                    array_map(fn($c) => $c->value, Classement::cases()),
+                    Classement::cases()
+                ),
+                'choice_label' => fn($choice) => $choice->value,
+            ])
             ->add('cpph_simple')
-            ->add('classement_double')
+            ->add('classement_double', ChoiceType::class, [
+                'choices' => array_combine(
+                    array_map(fn($c) => $c->value, Classement::cases()),
+                    Classement::cases()
+                ),
+                'choice_label' => fn($choice) => $choice->value,
+            ])
             ->add('cpph_double')
-            ->add('classement_mixtes')
-            ->add('cpph_mixtes')
-
-        ;
-        if($options['include_equipes']){
-            $builder->add('equipes', EntityType::class, [
-                'class' => Equipe::class,
-                'choices' => $this->getEquipesForUser($user),
-                'choice_label' => function(Equipe $equipe) {
-                    return $equipe->getNomEquipe();
-                },
-                'multiple' => true,
-                'expanded' => true,
-                'mapped' => true,
-                
-            ]);
-        }
-               
-            
+            ->add('classement_mixtes', ChoiceType::class, [
+                'choices' => array_combine(
+                    array_map(fn($c) => $c->value, Classement::cases()),
+                    Classement::cases()
+                ),
+                'choice_label' => fn($choice) => $choice->value,
+            ])
+            ->add('cpph_mixtes');
     }
+
 
     private function getEquipesForUser($user)
     {

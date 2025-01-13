@@ -1,3 +1,5 @@
+<!-- templates/equipe/_form.html.twig -->
+
 {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 <div class="form-group">
     {{ form_label(form.nom_equipe, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
@@ -17,11 +19,37 @@
         {{ form_widget(form.club, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
-
-
+<div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
+        <div class="joueurs-collection" data-prototype="{{ form_widget(form.joueurs.vars.prototype)|e('html_attr') }}">
+            {{ form_widget(form.joueurs) }}
+        </div>
+        <button type="button" class="btn btn-success add-joueur">Add Joueur</button>
+    </div>
+</div>
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         <button type="submit" class="btn btn-primary">Créer</button>
     </div>
 </div>
 {{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let collectionHolder = document.querySelector('.joueurs-collection');
+        let addButton = document.querySelector('.add-joueur');
+        let index = collectionHolder.querySelectorAll('fieldset').length;
+
+        addButton.addEventListener('click', function() {
+            let newForm = collectionHolder.dataset.prototype.replace(/__joueur__/g, index);
+            collectionHolder.insertAdjacentHTML('beforeend', newForm);
+            index++;
+        });
+
+        collectionHolder.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-joueur')) {
+                e.target.closest('fieldset').remove();
+            }
+        });
+    });
+</script>
