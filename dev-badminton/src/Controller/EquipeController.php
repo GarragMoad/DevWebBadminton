@@ -37,6 +37,7 @@ final class EquipeController extends AbstractController
             return $this->render('equipe/new.html.twig', [
                 'equipe' => $formViews['equipe'],
                 'form' =>$formViews['form'],
+                'is_edit' => false,
             ]);
         }
 
@@ -71,6 +72,7 @@ final class EquipeController extends AbstractController
             return $this->render('equipe/edit.html.twig', [
                 'equipe' => $equipe,
                 'form' => $form->createView(),
+                'is_edit' => true,
             ]);
         }
     

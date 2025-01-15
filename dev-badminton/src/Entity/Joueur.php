@@ -8,14 +8,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpParser\Node\Scalar\String_;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: JoueurRepository::class)]
 class Joueur
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 15)]
     private ?string $nom = null;
@@ -51,7 +53,7 @@ class Joueur
     {
         $this->equipes = new ArrayCollection(); // Initialiser la propriété ici
     }
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

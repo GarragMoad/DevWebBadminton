@@ -1,39 +1,51 @@
-.form-container {
-    display: flex;
-    flex-direction: column; /* Organise les enfants verticalement */
-    gap: 20px; /* Ajoute un espacement entre les sections */
-    min-height: 100vh; /* Assure que le formulaire occupe tout l'écran si nécessaire */
+.form-group {
+    margin-bottom: 20px;
 }
 
-.form-content {
-    flex: 1; /* Permet à la partie du formulaire principal de s'étendre */
+.form-horizontal .form-group label {
+    text-align: left;
+    font-weight: bold;
 }
 
-.capitaine-form-add,
-.jouers-form-add {
-    transition: max-height 0.3s ease, opacity 0.3s ease;
-    overflow: hidden; /* Empêche les débordements */
+.form-horizontal .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
 }
 
-#existing-capitaine,
-#new-capitaine,
-#existing-joueurs,
-#new-joueurs {
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden; /* Optionnel, pour éviter tout focus sur des éléments cachés */
+/* Boutons */
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
-#existing-capitaine.active,
-#new-capitaine.active,
-#existing-joueurs.active,
-#new-joueurs.active {
-    max-height: 500px; /* Ajustez cette valeur selon vos besoins */
-    opacity: 1;
-    visibility: visible;
+.btn-secondary, .btn-primary, .btn-success {
+    min-width: 120px;
+    text-align: center;
 }
 
+/* Section Joueur */
+.joueur-form {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
 
-.form-footer {
-    margin-top: auto; /* Maintient le bouton toujours en bas */
+.joueur-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Navigation */
+.form-group button {
+    margin-right: 10px;
+}
+
+.joueur-form {
+    transition: opacity 0.3s ease-in-out;
 }

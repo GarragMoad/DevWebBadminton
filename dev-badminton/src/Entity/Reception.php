@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Enum\Classement;
+use App\Enum\TypeReception;
 use App\Repository\ReceptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,9 +26,8 @@ class Reception
     #[ORM\JoinColumn(nullable: false)]
     private ?Club $club = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TypeReception $typeReception = null;
+    #[ORM\Column(type: 'string',enumType: TypeReception::class)]
+    private ?TypeReception $typeReception = null ;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]

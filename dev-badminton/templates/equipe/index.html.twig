@@ -12,7 +12,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom_equipe</th>
                 <th>Numero_equipe</th>
                 <th>Capitaine</th>
@@ -23,14 +22,13 @@
         <tbody>
         {% for equipe in equipes %}
             <tr>
-                <td>{{ equipe.id }}</td>
                 <td>{{ equipe.nomEquipe }}</td>
                 <td>{{ equipe.numeroEquipe }}</td>
                 <td>
                     {% if equipe.capitaine is not null %}
                         {{ equipe.capitaine.nom }}
                     {% else %}
-                        <span>No Capitaine</span>
+                        <a href="{{ path('app_capitaine_new') }}"> Ajouter un capitaine</a>
                     {% endif %}
                 </td>
                 <td>

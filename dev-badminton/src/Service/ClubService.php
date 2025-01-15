@@ -5,12 +5,14 @@ namespace App\Service;
 use App\Entity\Club;
 use App\Entity\Reception;
 use App\Entity\Equipe;
+use App\Repository\ClubRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ClubType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Routing\RouterInterface; // Import du RouterInterface
+use Symfony\Component\Routing\RouterInterface;
 use App\Entity\User;
 
 class ClubService
@@ -20,13 +22,19 @@ class ClubService
     private $router;
 
     private $mailerService;
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, MailerService $mailerService)
+
+    private Security $security;
+
+    private ClubRepository $clubRepository;
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, MailerService $mailerService , Security $security , ClubRepository $clubRepository)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->formFactory = $formFactory;
         $this->mailerService=$mailerService;
+        $this->security = $security;
+        $this->clubRepository = $clubRepository;
     }
 
     /**
@@ -168,6 +176,17 @@ class ClubService
     {
         $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
         return $club ? $club : null;
+    }
+
+    public function getClubForForm($user)
+    {
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return $this->clubRepository->findAll();
+        } elseif ($this->security->isGranted('ROLE_CLUB')) {
+            $club = $this->getClubFromUser($user);
+            return $club ? [$club] : [];
+        }
+        return [];
     }
 
 }

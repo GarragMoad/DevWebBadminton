@@ -22,6 +22,7 @@ class EquipeType extends AbstractType
     private $clubRepository;
     private $clubService;
 
+
     public function __construct(Security $security, ClubRepository $clubRepository, ClubService $clubService)
     {
         $this->security = $security;
@@ -36,7 +37,7 @@ class EquipeType extends AbstractType
             ->add('numero_equipe')
             ->add('club', EntityType::class, [
                 'class' => Club::class,
-                'choices' => $this->getClubsForUser($this->security->getUser()),
+                'choices' => $this->clubService->getClubForForm($this->security->getUser()),
                 'choice_label' => 'nom',
             ])
             ->add('current_joueur_index', HiddenType::class, [
@@ -49,24 +50,19 @@ class EquipeType extends AbstractType
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false,
+            ])
+            ->add('is_edit', HiddenType::class, [
+                'mapped' => false,
+                'data' => $options['is_edit'] ?? false,
             ]);
     }
 
-    private function getClubsForUser($user)
-    {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return $this->clubRepository->findAll();
-        } elseif ($this->security->isGranted('ROLE_CLUB')) {
-            $club = $this->clubService->getClubFromUser($user);
-            return $club ? [$club] : [];
-        }
-        return [];
-    }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Equipe::class,
+            'is_edit' => false,
         ]);
     }
 }

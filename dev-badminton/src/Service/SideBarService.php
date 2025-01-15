@@ -92,12 +92,6 @@ class SideBarService
         ];
 
         $menuItems[] = [
-            'label' => 'Type_Receptions',
-            'icon' => 'fa-solid fa-envelope-open-text',
-            'url' => $this->router->generate('app_type_reception_index'),
-        ];
-
-        $menuItems[] = [
             'label' => 'change password',
             'icon' => 'fa-solid fa-key',
             'url' => $this->router->generate('app_change_password'),

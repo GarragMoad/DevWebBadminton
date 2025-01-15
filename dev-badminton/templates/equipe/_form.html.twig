@@ -24,6 +24,7 @@
 <div id="joueurs-forms">
     {% for key, joueur in form.joueurs %}
         <div class="joueur-form" data-index="{{ key }}" style="display: {{ key == 0 ? 'block' : 'none' }};">
+            <h4 class="joueur-title">Joueur {{ key + 1 }}</h4>
             {{ form_widget(joueur) }}
         </div>
     {% endfor %}
@@ -32,7 +33,9 @@
 <div class="form-group">
     <button type="button" id="prev-joueur" class="btn btn-secondary" style="display: none;">Précédent</button>
     <button type="button" id="next-joueur" class="btn btn-primary">Suivant</button>
-    <button type="submit" id="submit-equipe" class="btn btn-success" style="display: none;">Créer l'équipe</button>
+    <button type="submit" id="submit-equipe" class="btn btn-success" style="display: none;">
+        {{ is_edit ? 'Mettre à jour l\'équipe' : 'Créer l\'équipe' }}
+    </button>
 </div>
 
 {{ form_end(form) }}
@@ -53,7 +56,14 @@
 
         function showJoueur(index) {
             joueurForms.forEach((form, idx) => {
-                form.style.display = idx === index ? 'block' : 'none';
+                if (idx === index) {
+                    form.style.display = 'block';
+                    form.style.opacity = 0;
+                    setTimeout(() => (form.style.opacity = 1), 10);
+                } else {
+                    form.style.opacity = 0;
+                    setTimeout(() => (form.style.display = 'none'), 300);
+                }
             });
             currentIndex = index;
             updateButtons();
@@ -73,3 +83,56 @@
     });
 
 </script>
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-horizontal .form-group label {
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .form-horizontal .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Boutons */
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .btn-secondary, .btn-primary, .btn-success {
+        min-width: 120px;
+        text-align: center;
+    }
+
+    /* Section Joueur */
+    .joueur-form {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .joueur-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    /* Navigation */
+    .form-group button {
+        margin-right: 10px;
+    }
+
+    .joueur-form {
+        transition: opacity 0.3s ease-in-out;
+    }
+</style>

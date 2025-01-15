@@ -6,6 +6,7 @@ use App\Repository\EquipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,10 +15,10 @@ class Equipe
 {
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
     #[ORM\Column(length: 15)]
     private ?string $nom_equipe = null;
 
@@ -50,7 +51,7 @@ class Equipe
         }
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -145,29 +146,6 @@ class Equipe
         $this->score = 0;
         foreach ($this->joueurs as $joueur) {
             $this->score += $joueur->getScore();
-        }
-    }
-
-
-    /**
-     * Validation pour s'assurer qu'il y a exactement 4 joueurs.
-     * @Assert\Callback
-     */
-    public function validateJoueursCount(ExecutionContextInterface $context): void
-    {
-        if ($this->joueurs->count() !== 4) {
-            $context->buildViolation('Vous devez créer exactement 4 joueurs.')
-                ->atPath('joueurs')
-                ->addViolation();
-        }
-
-        foreach ($this->joueurs as $joueur) {
-            if (empty($joueur->getNom()) || empty($joueur->getPrenom())) {
-                $context->buildViolation('Chaque joueur doit avoir un nom et un prénom.')
-                    ->atPath('joueurs')
-                    ->addViolation();
-                break;
-            }
         }
     }
 }

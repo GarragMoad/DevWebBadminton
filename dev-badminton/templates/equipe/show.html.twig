@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ equipe.id }}</td>
-            </tr>
-            <tr>
                 <th>Nom_equipe</th>
                 <td>{{ equipe.nomEquipe }}</td>
             </tr>
@@ -25,7 +21,11 @@
             </tr>
              <tr>
                 <th>Capitaine</th>
-                <td>{{ capitaine.nom }}</td>
+                 {% if equipe.capitaine is empty %}
+                    <td>Aucun Capitaine pour cette équipe</td>
+                {% else %}
+                    <td>{{ capitaine.nom }}</td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Jouers</th>
