@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EquipeRepository::class)]
 class Equipe
@@ -35,6 +36,7 @@ class Equipe
      * @var Collection<int, Joueur>
      */
     #[ORM\ManyToMany(targetEntity: Joueur::class, inversedBy: 'equipes')]
+    #[Assert\Valid()]
     private Collection $joueurs;
 
     #[ORM\Column(type: 'integer')]
@@ -43,6 +45,9 @@ class Equipe
     public function __construct()
     {
         $this->joueurs = new ArrayCollection();
+        for ($i = 0; $i <4 ; $i++) {
+            $this->joueurs->add(new Joueur());
+        }
     }
 
     public function getId(): ?int

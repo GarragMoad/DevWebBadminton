@@ -1,7 +1,6 @@
 <?php
 // src/Form/EquipeType.php
 
-// src/Form/EquipeType.php
 
 namespace App\Form;
 
@@ -9,6 +8,7 @@ use App\Entity\Club;
 use App\Entity\Equipe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,29 +31,24 @@ class EquipeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $user = $this->security->getUser();
-
         $builder
             ->add('nom_equipe')
             ->add('numero_equipe')
             ->add('club', EntityType::class, [
                 'class' => Club::class,
-                'choices' => $this->getClubsForUser($user),
-                'choice_label' => function (Club $club) {
-                    return $club->getNom();
-                }
+                'choices' => $this->getClubsForUser($this->security->getUser()),
+                'choice_label' => 'nom',
+            ])
+            ->add('current_joueur_index', HiddenType::class, [
+                'mapped' => false,
+                'data' => 0, // Indice du joueur en cours
             ])
             ->add('joueurs', CollectionType::class, [
                 'entry_type' => JoueurType::class,
                 'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
+                'allow_add' => false,
+                'allow_delete' => false,
                 'by_reference' => false,
-                'prototype' => true,
-                'prototype_name' => '__joueur__',
-                'attr' => [
-                    'class' => 'joueurs-collection',
-                ],
             ]);
     }
 
