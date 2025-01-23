@@ -62,9 +62,10 @@ class EquipeService
                 $joueur->addEquipe($equipe);
                 $this->entityManager->persist($joueur);
             }
+            $score = $this->classementService->calculateEquipeValue($equipe);
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
-            $score = $this->classementService->calculateEquipeValue($equipe);
+
 
             return ['redirect' => $this->router->generate('app_equipe_index')];
         }

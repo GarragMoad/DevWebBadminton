@@ -46,8 +46,6 @@ class ClassementService
             $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementMixtes()));
         }
         $equipe->setScore($totalValue);
-        $this->entityManager->persist($equipe);
-        $this->entityManager->flush();
 
         return $totalValue;
     }
