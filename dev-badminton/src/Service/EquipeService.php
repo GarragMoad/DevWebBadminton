@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+
 use App\Entity\Club;
 use App\Entity\Equipe;
 use App\Entity\Capitaine;
@@ -12,20 +13,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 class EquipeService
 {
     private $entityManager;
     private $formFactory;
-
     private $router;
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory , RouterInterface $router)
+    private $classementService;
+
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, ClassementService $classementService)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->classementService = $classementService;
     }
 
-    public function createJoueurForEquipe($request){
+    public function createJoueurForEquipe($request)
+    {
         $joueur = new Joueur();
         $form = $this->formFactory->create(JoueurType::class, $joueur);
         $form->handleRequest($request);
@@ -33,14 +38,14 @@ class EquipeService
         if ($form->isSubmitted() && $form->isValid()) {
             $equipes = $joueur->getEquipes(); // Récupérer la collection d'équipes
 
-        foreach ($equipes as $equipe) {
-          $equipe->addJoueur($joueur); 
-        }
+            foreach ($equipes as $equipe) {
+                $equipe->addJoueur($joueur);
+            }
             $this->entityManager->persist($joueur);
             $this->entityManager->flush();
             return ['redirect' => $this->router->generate('app_joueur_index')];
         }
-        return[
+        return [
             'joueur' => $joueur,
             'form' => $form,
         ];
@@ -59,6 +64,8 @@ class EquipeService
             }
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
+            $score = $this->classementService->calculateEquipeValue($equipe);
+
             return ['redirect' => $this->router->generate('app_equipe_index')];
         }
 
@@ -76,7 +83,4 @@ class EquipeService
         }
         return null;
     }
-
-
-
 }

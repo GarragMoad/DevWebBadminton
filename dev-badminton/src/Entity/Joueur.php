@@ -192,8 +192,5 @@ class Joueur
         return $this;
     }
 
-    public function getScore(): float
-    {
-        return $this->cpph_simple + $this->cpph_double + $this->cpph_mixtes;
-    }
+
 }

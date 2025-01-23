@@ -30,10 +30,6 @@ class adminDashboardController extends AbstractDashboardController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $equipes = $this->equipeRepository->findAll();
-        // Calculate scores for each team
-        foreach ($equipes as $equipe) {
-            $equipe->calculateScore();
-        }
 
         usort($equipes, function($a, $b) {
             return $b->getScore() <=> $a->getScore();
