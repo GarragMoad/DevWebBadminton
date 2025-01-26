@@ -120,9 +120,9 @@ class Joueur
         return $this;
     }
 
-    public function getClassementSimple(): ?string
+    public function getClassementSimple(): ?Classement
     {
-        return $this->classement_simple?->value;
+        return $this->classement_simple;
     }
 
     public function setClassementSimple(Classement $classement_simple): static
@@ -144,9 +144,9 @@ class Joueur
         return $this;
     }
 
-    public function getClassementDouble(): ?string
+    public function getClassementDouble(): ?Classement
     {
-        return $this->classement_double?->value;
+        return $this->classement_double;
     }
 
     public function setClassementDouble(?Classement $classement_double): static
@@ -168,9 +168,9 @@ class Joueur
         return $this;
     }
 
-    public function getClassementMixtes(): ?string
+    public function getClassementMixtes(): ?Classement
     {
-        return $this->classement_mixtes?->value;
+        return $this->classement_mixtes;
     }
 
     public function setClassementMixtes(?Classement $classement_mixtes): static

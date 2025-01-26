@@ -53,16 +53,14 @@ final class EquipeController extends AbstractController
                 'capitaine' => $equipe->getCapitaine(),
             ]);
         }
-    
+
         #[Route('/{id}/edit', name: 'app_equipe_edit', methods: ['GET', 'POST'])]
         public function edit(Request $request, Equipe $equipe, EntityManagerInterface $entityManager, ClubService $clubService): Response
         {
-    
+
             $form = $this->createForm(EquipeType::class, $equipe,[
-                'is_edit' => true
+                'is_edit' => true,
             ]);
-            $form->handleRequest($request);
-    
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager->flush();
     
