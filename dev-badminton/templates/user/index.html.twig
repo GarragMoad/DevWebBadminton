@@ -7,11 +7,11 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for user in users %}
@@ -25,11 +25,15 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="pagination">
+        {{ knp_pagination_render(users) }}
+    </div>
 
     <a href="{{ path('app_user_new') }}">Create new</a>
 {% endblock %}

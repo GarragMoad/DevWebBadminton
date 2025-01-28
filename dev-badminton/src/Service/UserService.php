@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use App\Repository\EquipeRepository;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 
@@ -32,8 +34,15 @@ class UserService
 
     private $equipeRepository;
 
+    private  PaginatorInterface $paginator;
 
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService , RouterInterface $router, FormFactoryInterface $formFactory, UserPasswordHasherInterface $userPasswordHasher, Security $security , EquipeService $equipeService , EquipeRepository $equipeRepository)
+    private UserRepository $userRepository;
+
+
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService , RouterInterface $router, FormFactoryInterface $formFactory,
+                                UserPasswordHasherInterface $userPasswordHasher, Security $security , EquipeService $equipeService ,
+                                EquipeRepository $equipeRepository, PaginatorInterface $paginator , UserRepository $userRepository
+    )
     {
         $this->entityManager = $entityManager;
         $this->mailerService = $mailerService;
@@ -43,6 +52,29 @@ class UserService
         $this->security=$security;
         $this->equipeService=$equipeService;
         $this->equipeRepository=$equipeRepository;
+        $this->paginator=$paginator;
+        $this->userRepository=$userRepository;
+    }
+
+    /**
+     * Retourne une liste paginée des utilisateurs.
+     *
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getPaginatedUsers(Request $request)
+    {
+        // Construire la requête avec le QueryBuilder
+        $query = $this->userRepository->createQueryBuilder('u')
+            ->orderBy('u.email', 'ASC') // Tri par ID (modifiable selon vos besoins)
+            ->getQuery();
+
+        // Utiliser le paginator pour gérer la pagination
+        return $this->paginator->paginate(
+            $query,                     // La requête
+            $request->query->getInt('page', 1), // Numéro de page (GET ?page=1)
+            10                          // Nombre d'éléments par page
+        );
     }
 
     /**

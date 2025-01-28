@@ -1,3 +1,4 @@
+{# templates/joueur/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Joueur index{% endblock %}
@@ -7,21 +8,21 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Numreo_licence</th>
-                <th>Classement_simple</th>
-                <th>Cpph_simple</th>
-                <th>Classement_double</th>
-                <th>Cpph_double</th>
-                <th>Classement_mixtes</th>
-                <th>Cpph_mixtes</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Numéro de licence</th>
+            <th>Classement simple</th>
+            <th>CPPH simple</th>
+            <th>Classement double</th>
+            <th>CPPH double</th>
+            <th>Classement mixtes</th>
+            <th>CPPH mixtes</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-        {% for joueur in joueurs %}
+        {% for joueur in pagination.items %}
             <tr>
                 <td>{{ joueur.nom }}</td>
                 <td>{{ joueur.prenom }}</td>
@@ -33,18 +34,23 @@
                 <td>{{ joueur.classementMixtes.value }}</td>
                 <td>{{ joueur.cpphMixtes }}</td>
                 <td>
-                    <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">show</a>
-                    <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">edit</a>
-                    <a href="{{ path('app_joueur_equipe',{'id': joueur.id}) }}">Associer</a>
+                    <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">Show</a>
+                    <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">Edit</a>
+                    <a href="{{ path('app_joueur_equipe', {'id': joueur.id}) }}">Associer</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="11">no records found</td>
+                <td colspan="11">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_joueur_new') }}">Create new</a>
+    {# Bloc pagination : liens de navigation générés automatiquement #}
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <a href="{{ path('app_joueur_new') }}" class="btn btn-primary mt-3">Create New</a>
 {% endblock %}

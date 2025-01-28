@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Equipe;
-use App\Form\EquipeType;
 use App\Repository\EquipeRepository;
-use App\Service\ClassementService;
 use App\Service\EquipeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\ClubService;
-use App\Entity\Joueur;
+
 
 #[Route('/equipe')]
 final class EquipeController extends AbstractController

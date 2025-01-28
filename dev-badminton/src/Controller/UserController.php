@@ -23,11 +23,14 @@ final class UserController extends AbstractController
     {
         $this->userService = $userService;
     }
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+
+    #[Route( name: 'app_user_index', methods: ['GET'])]
+    public function index(Request $request): Response
     {
+        $paginatedUsers = $this->userService->getPaginatedUsers($request);
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $paginatedUsers,
         ]);
     }
 

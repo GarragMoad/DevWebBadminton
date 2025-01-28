@@ -27,7 +27,8 @@ final class JoueurController extends AbstractController
     private $classementService;
 
 
-    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService , ClassementService $classementService)
+    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService ,
+                                ClassementService $classementService, private JoueurService $joueurService)
     {
         $this->jouerequipeService = $jouerequipeService;
         $this->clubService = $clubService;
@@ -36,23 +37,12 @@ final class JoueurController extends AbstractController
     }
 
     #[Route(name: 'app_joueur_index', methods: ['GET'])]
-    public function index(JoueurRepository $joueurRepository): Response
+    public function index(Request $request): Response
     {
-        $joueurs = [];
-        if($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN')){
-            $joueurs = $joueurRepository->findAll();
-        }
-        else if ($this->isGranted(attribute: 'ROLE_CLUB')) {
-            $user = $this->getUser();
-            $club = $this->clubService->getClubFromUser($user);
-            $equipes = $club->getEquipe();
-            foreach ($equipes as $equipe) {
-                $joueurs = array_merge($joueurs, $equipe->getJoueurs()->toArray());
-            }
-
-        }
+        // Utilisation du service pour récupérer les joueurs paginés
+        $paginatedPlayers = $this->joueurService->getPaginatedPlayers($request);
         return $this->render('joueur/index.html.twig', [
-            'joueurs' => $joueurs,
+            'pagination' => $paginatedPlayers,
         ]);
     }
 
