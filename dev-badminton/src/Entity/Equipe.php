@@ -43,6 +43,8 @@ class Equipe
     #[ORM\Column(type: 'integer')]
     private float $score = 0.0;
 
+    #[ORM\Column(type: 'integer')]
+    private float $cpph_equipe = 0.0;
     public function __construct()
     {
         $this->joueurs = new ArrayCollection();
@@ -140,12 +142,16 @@ class Equipe
         return $this;
     }
 
-
-    public function calculateScore(): void
+    public function getCpph_equipe():float
     {
-        $this->score = 0;
-        foreach ($this->joueurs as $joueur) {
-            $this->score += $joueur->getScore();
-        }
+        return  $this->cpph_equipe;
     }
+
+    public function setCpph_equipe(float $cpph): static
+    {
+        $this->cpph_equipe = $cpph;
+
+        return $this;
+    }
+
 }

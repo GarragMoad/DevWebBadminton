@@ -2,12 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\ClassementService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Service\ClubService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Repository\EquipeRepository;
@@ -19,7 +19,7 @@ use App\Repository\EquipeRepository;
 class adminDashboardController extends AbstractDashboardController
 {
     
-    public function __construct(private EquipeRepository $equipeRepository, private EntityManagerInterface $entityManager , private Security $security)
+    public function __construct(private EquipeRepository $equipeRepository, private EntityManagerInterface $entityManager , private Security $security, private ClassementService $classementService)
     {
        
     }
@@ -31,9 +31,7 @@ class adminDashboardController extends AbstractDashboardController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $equipes = $this->equipeRepository->findAll();
 
-        usort($equipes, function($a, $b) {
-            return $b->getScore() <=> $a->getScore();
-        });
+        $equipes = $this->classementService->sortEquipes($equipes);
 
         return $this->render('superAdmin/dashboard.html.twig', [
             'equipes' => $equipes,

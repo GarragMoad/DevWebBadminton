@@ -88,6 +88,7 @@ final class JoueurController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($equipes as $equipe) {
                 $this->classementService->calculateEquipeValue($equipe);
+                $this->classementService->calculateEquipeValueWithCpph($equipe);
             }
             $entityManager->flush();
             return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);

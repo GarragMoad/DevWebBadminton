@@ -67,6 +67,7 @@ class EquipeService
                 $this->entityManager->persist($joueur);
             }
             $score = $this->classementService->calculateEquipeValue($equipe);
+            $cpph = $this->classementService->calculateEquipeValueWithCpph($equipe);
             $this->entityManager->persist($equipe);
             $this->entityManager->flush();
 
@@ -89,6 +90,7 @@ class EquipeService
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->classementService->calculateEquipeValue($equipe);
+            $this->classementService->calculateEquipeValueWithCpph($equipe);
             $this->entityManager->flush();
 
             return ['redirect' => $this->router->generate('app_equipe_index')];

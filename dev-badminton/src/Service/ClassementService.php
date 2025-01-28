@@ -49,4 +49,30 @@ class ClassementService
 
         return $totalValue;
     }
+
+    public function calculateEquipeValueWithCpph(Equipe $equipe): int
+    {
+        $totalValue = 0;
+        foreach ($equipe->getJoueurs() as $joueur)
+        {
+            $totalValue += $joueur->getCpphSimple();
+            $totalValue += $joueur->getCpphDouble();
+            $totalValue += $joueur->getCpphMixtes();
+        }
+        $equipe->setCpph_equipe($totalValue);
+        return $totalValue;
+    }
+
+    public function sortEquipes(array $equipes): array
+    {
+        usort($equipes, function (Equipe $a, Equipe $b) {
+            if ($a->getScore() === $b->getScore()) {
+                return $b->getCpph_equipe() <=> $a->getCpph_equipe();
+            }
+            return $b->getScore() <=> $a->getScore();
+        });
+
+        return $equipes;
+    }
+
 }
