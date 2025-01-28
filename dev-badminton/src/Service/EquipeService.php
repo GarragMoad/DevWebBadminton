@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class EquipeService
 {
@@ -21,12 +22,15 @@ class EquipeService
     private $router;
     private $classementService;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, ClassementService $classementService)
+    private $security;
+
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, ClassementService $classementService, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->classementService = $classementService;
+        $this->security = $security;
     }
 
     public function createJoueurForEquipe($request)
@@ -76,12 +80,44 @@ class EquipeService
         ];
     }
 
-    public function getEquipesFromUser($user): ?array
+    public function editEquipe(Request $request, Equipe $equipe)
     {
-        $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
-        if ($club) {
-            return $this->entityManager->getRepository(Equipe::class)->findBy(['club' => $club]);
+        $form = $this->formFactory->create(EquipeType::class, $equipe, [
+            'is_edit' => true,
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->classementService->calculateEquipeValue($equipe);
+            $this->entityManager->flush();
+
+            return ['redirect' => $this->router->generate('app_equipe_index')];
         }
-        return null;
+
+        return [
+            'equipe' => $equipe,
+            'form' => $form->createView(),
+            'is_edit' => true,
+        ];
+    }
+
+
+    public function getEquipesForUser($user): array
+    {
+        if ($this->security->isGranted('ROLE_ADMIN') || $this->security->isGranted('ROLE_SUPER_ADMIN')) {
+            // Retourne toutes les équipes pour les administrateurs
+            return $this->entityManager->getRepository(Equipe::class)->findAll();
+        }
+
+        if ($this->security->isGranted('ROLE_CLUB')) {
+            // Retourne les équipes du club de l'utilisateur
+            $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
+            if ($club) {
+                return $this->entityManager->getRepository(Equipe::class)->findBy(['club' => $club]);
+            }
+        }
+
+        // Aucun accès pour les autres rôles
+        return [];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Equipe;
 use App\Form\EquipeType;
 use App\Repository\EquipeRepository;
+use App\Service\ClassementService;
 use App\Service\EquipeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,26 +55,21 @@ final class EquipeController extends AbstractController
             ]);
         }
 
-        #[Route('/{id}/edit', name: 'app_equipe_edit', methods: ['GET', 'POST'])]
-        public function edit(Request $request, Equipe $equipe, EntityManagerInterface $entityManager, ClubService $clubService): Response
-        {
+    #[Route('/{id}/edit', name: 'app_equipe_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Equipe $equipe, EquipeService $equipeService): Response
+    {
+        $formViews = $equipeService->editEquipe($request, $equipe);
 
-            $form = $this->createForm(EquipeType::class, $equipe,[
-                'is_edit' => true,
-            ]);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager->flush();
-    
-                return $this->redirectToRoute('app_equipe_index', [], Response::HTTP_SEE_OTHER);
-            }
-    
-            return $this->render('equipe/edit.html.twig', [
-                'equipe' => $equipe,
-                'form' => $form->createView(),
-                'is_edit' => true,
-            ]);
+        if (isset($formViews['redirect'])) {
+            return $this->redirect($formViews['redirect']);
         }
-    
+
+        return $this->render('equipe/edit.html.twig', [
+            'equipe' => $formViews['equipe'],
+            'form' => $formViews['form'],
+            'is_edit' => $formViews['is_edit'],
+        ]);
+    }
         #[Route('/{id}', name: 'app_equipe_delete', methods: ['POST'])]
         public function delete(Request $request, Equipe $equipe, EntityManagerInterface $entityManager, ClubService $clubService): Response
         {

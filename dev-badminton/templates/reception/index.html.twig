@@ -21,7 +21,6 @@
                 <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
                 <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_reception_show', {'id': reception.id}) }}">show</a>
                     <a href="{{ path('app_reception_edit', {'id': reception.id}) }}">edit</a>
                 </td>
             </tr>

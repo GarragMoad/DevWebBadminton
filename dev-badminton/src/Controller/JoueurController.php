@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Joueur;
 use App\Form\JoueurType;
 use App\Repository\JoueurRepository;
+use App\Service\ClassementService;
 use App\Service\ClubService;
 use App\Service\EquipeService;
 use App\Service\JoueurService;
@@ -23,12 +24,15 @@ final class JoueurController extends AbstractController
 
     private $equipeService;
 
+    private $classementService;
 
-    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService )
+
+    public function __construct(JoueurEquipeService $jouerequipeService , ClubService $clubService, EquipeService $equipeService , ClassementService $classementService)
     {
         $this->jouerequipeService = $jouerequipeService;
         $this->clubService = $clubService;
         $this->equipeService = $equipeService;
+        $this->classementService = $classementService;
     }
 
     #[Route(name: 'app_joueur_index', methods: ['GET'])]
@@ -80,10 +84,12 @@ final class JoueurController extends AbstractController
     {
         $form = $this->createForm(JoueurType::class, $joueur);
         $form->handleRequest($request);
-
+        $equipes = $joueur->getEquipes();
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($equipes as $equipe) {
+                $this->classementService->calculateEquipeValue($equipe);
+            }
             $entityManager->flush();
-
             return $this->redirectToRoute('app_joueur_index', [], Response::HTTP_SEE_OTHER);
         }
 

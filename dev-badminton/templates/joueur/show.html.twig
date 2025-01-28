@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ joueur.id }}</td>
-            </tr>
-            <tr>
                 <th>Nom</th>
                 <td>{{ joueur.nom }}</td>
             </tr>
@@ -25,7 +21,7 @@
             </tr>
             <tr>
                 <th>Classement_simple</th>
-                <td>{{ joueur.classementSimple }}</td>
+                <td>{{ joueur.classementSimple.value }}</td>
             </tr>
             <tr>
                 <th>Cpph_simple</th>
@@ -33,7 +29,7 @@
             </tr>
             <tr>
                 <th>Classement_double</th>
-                <td>{{ joueur.classementDouble }}</td>
+                <td>{{ joueur.classementDouble.value }}</td>
             </tr>
             <tr>
                 <th>Cpph_double</th>
@@ -41,7 +37,7 @@
             </tr>
             <tr>
                 <th>Classement_mixtes</th>
-                <td>{{ joueur.classementMixtes }}</td>
+                <td>{{ joueur.classementMixtes.value }}</td>
             </tr>
             <tr>
                 <th>Cpph_mixtes</th>

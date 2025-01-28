@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use App\Repository\EquipeRepository;
+
 
 
 class UserService
@@ -28,7 +30,10 @@ class UserService
 
     private $equipeService;
 
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService , RouterInterface $router, FormFactoryInterface $formFactory, UserPasswordHasherInterface $userPasswordHasher, Security $security , EquipeService $equipeService)
+    private $equipeRepository;
+
+
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService , RouterInterface $router, FormFactoryInterface $formFactory, UserPasswordHasherInterface $userPasswordHasher, Security $security , EquipeService $equipeService , EquipeRepository $equipeRepository)
     {
         $this->entityManager = $entityManager;
         $this->mailerService = $mailerService;
@@ -37,6 +42,7 @@ class UserService
         $this->passwordHasher=$userPasswordHasher;
         $this->security=$security;
         $this->equipeService=$equipeService;
+        $this->equipeRepository=$equipeRepository;
     }
 
     /**
@@ -88,14 +94,15 @@ class UserService
 
     public function getEquipesForUser($user)
     {
-        if ($this->security->isGranted('ROLE_ADMIN' || 'ROLE_SUPER_ADMIN')) {
-            return $this->equipeRepository->findAll();
+        if ($this->security->isGranted('ROLE_ADMIN') || $this->security->isGranted('ROLE_SUPER_ADMIN')) {
+            return $this->equipeRepository->findAll(); // Toutes les équipes
         } elseif ($this->security->isGranted('ROLE_CLUB')) {
-            $equipes = $this->equipeService->getEquipesFromUser($user);
-            return $equipes ? [$equipes] : [];
+            return $this->equipeService->getEquipesFromUser($user); // Équipes filtrées
         }
-        return [];
+
+        return []; // Pas d'équipes accessibles
     }
+
 
 
 }

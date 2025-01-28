@@ -41,9 +41,9 @@ class ClassementService
         $totalValue = 0;
 
         foreach ($equipe->getJoueurs() as $joueur) {
-            $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementSimple()));
-            $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementDouble()));
-            $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementMixtes()));
+            $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementSimple()->value));
+            $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementDouble()->value));
+            $totalValue += $this->getClassementValue(Classement::from($joueur->getClassementMixtes()->value));
         }
         $equipe->setScore($totalValue);
 

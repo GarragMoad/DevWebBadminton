@@ -26,11 +26,11 @@
                 <td>{{ joueur.nom }}</td>
                 <td>{{ joueur.prenom }}</td>
                 <td>{{ joueur.numreoLicence }}</td>
-                <td>{{ joueur.classementSimple }}</td>
+                <td>{{ joueur.classementSimple.value }}</td>
                 <td>{{ joueur.cpphSimple }}</td>
-                <td>{{ joueur.classementDouble }}</td>
+                <td>{{ joueur.classementDouble.value }}</td>
                 <td>{{ joueur.cpphDouble }}</td>
-                <td>{{ joueur.classementMixtes }}</td>
+                <td>{{ joueur.classementMixtes.value }}</td>
                 <td>{{ joueur.cpphMixtes }}</td>
                 <td>
                     <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">show</a>
