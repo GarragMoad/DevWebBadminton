@@ -83,37 +83,5 @@ final class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-/*
-    #[Route('/password-reset', name: 'app_password_reset_request')]
-    public function passwordResetRequest(Request $request, UserRepository $userRepository, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
-    {
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
-            $user = $userRepository->findOneBy(['email' => $email]);
 
-            if ($user) {
-                // Générer un mot de passe temporaire
-                $temporaryPassword = bin2hex(random_bytes(4)); // 8 caractères hexadécimaux
-                $user->setPassword(password_hash($temporaryPassword, PASSWORD_BCRYPT));
-
-                // Sauvegarder le mot de passe dans la base de données
-                $entityManager->flush();
-
-                // Envoyer l'email
-                $emailMessage = (new Email())
-                    ->from('noreply@example.com')
-                    ->to($email)
-                    ->subject('Réinitialisation de votre mot de passe')
-                    ->html("<p>Votre mot de passe temporaire est : <strong>{$temporaryPassword}</strong></p>");
-
-                $mailer->send($emailMessage);
-
-                $this->addFlash('success', 'Un mot de passe temporaire vous a été envoyé.');
-            } else {
-                $this->addFlash('error', 'Cet email n’existe pas dans notre base de données.');
-            }
-        }
-
-        return $this->render('security/password_reset_request.html.twig');
-    }*/
 }

@@ -18,6 +18,7 @@
                 <th>CPPH double</th>
                 <th>Classement mixtes</th>
                 <th>CPPH mixtes</th>
+                <th>Equipes</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -34,9 +35,13 @@
                     <td>{{ joueur.classementMixtes.value }}</td>
                     <td>{{ joueur.cpphMixtes }}</td>
                     <td>
-                        <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">Show</a>
+                        {% for equipe in joueur.equipes %}
+                            {{ equipe.NomEquipe }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
                         <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">Edit</a>
-                        <a href="{{ path('app_joueur_equipe', {'id': joueur.id}) }}">Associer</a>
+                        {# <a href="{{ path('app_joueur_equipe', {'id': joueur.id}) }}">Associer</a> #}
                     </td>
                 </tr>
             {% else %}

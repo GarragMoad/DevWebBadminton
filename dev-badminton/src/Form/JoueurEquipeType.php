@@ -28,7 +28,7 @@ class JoueurEquipeType extends AbstractType
             ->add('equipe', EntityType::class, [
                 'class' => Equipe::class,
                 'choice_label' => 'Nom_equipe',
-                'choices' => $this->equipeService->getEquipesFromUser($user),
+                'choices' => $this->equipeService->getEquipesForUser($user),
                 'label' => 'Equipe',
                 'placeholder' => 'Sélectionnez une équipe',
             ]);
