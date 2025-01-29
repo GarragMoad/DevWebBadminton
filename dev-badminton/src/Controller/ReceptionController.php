@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reception;
 use App\Form\Reception1Type;
-use App\Repository\ReceptionRepository;
-use App\Service\ClubService;
+use App\Service\ReceptionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +16,11 @@ use App\Form\ReceptionType;
 final class ReceptionController extends AbstractController
 {
     #[Route(name: 'app_reception_index', methods: ['GET'])]
-    public function index(ReceptionRepository $receptionRepository , ClubService $clubService): Response
+    public function index(ReceptionService $receptionService, Request $request): Response
     {
-        $receptions = $this->getReceptionForUser($receptionRepository , $clubService);
+        $pagination = $receptionService->getPaginatedReceptions($request);
         return $this->render('reception/index.html.twig', [
-            'receptions' => $receptions,
+            'pagination' => $pagination,
         ]);
     }
 
@@ -82,20 +81,4 @@ final class ReceptionController extends AbstractController
         return $this->redirectToRoute('app_reception_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function getReceptionForUser(ReceptionRepository $receptionRepository , ClubService $clubService): array
-    {
-        $user = $this->getUser();
-        $receptions= [];
-
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $receptions = $receptionRepository->findAll();
-        } elseif ($this->isGranted('ROLE_CLUB')) {
-            $club = $clubService->getClubFromUser($user);
-            if ($club) {
-                $receptions = $club->getReceptions()->toArray();
-            }
-        }
-
-        return $receptions;
-    }
 }

@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Service\ClassementService;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,47 +16,34 @@ use App\Repository\EquipeRepository;
 
 
 
-class adminDashboardController extends AbstractDashboardController
+
+class adminDashboardController extends AbstractController
 {
     
-    public function __construct(private EquipeRepository $equipeRepository, private EntityManagerInterface $entityManager , private Security $security, private ClassementService $classementService)
+    public function __construct(private EquipeRepository $equipeRepository, private EntityManagerInterface $entityManager , private Security $security,
+                                private ClassementService $classementService, private PaginatorInterface $paginator)
     {
        
     }
 
 
     #[Route('/superAdmin', name: 'superAdmin')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $equipes = $this->equipeRepository->findAll();
-
         $equipes = $this->classementService->sortEquipes($equipes);
 
-        return $this->render('superAdmin/dashboard.html.twig', [
-            'equipes' => $equipes,
-        ]);
-    }
-    public function configureDashboard(): Dashboard
-    {
-        return Dashboard::new()
-            ->setTitle('Dev Badminton');
-    }
+        $pagination = $this->paginator->paginate(
+            $equipes,
+            $request->query->getInt('page', 1),
+            10
+        );
 
-    public function configureMenuItems(): iterable
-    {   
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
-            yield MenuItem::linkToRoute('Users', 'fas fa-list', 'app_user_index');
-        }
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            yield MenuItem::linkToRoute('Clubs', 'fas fa-list', 'app_club_index');
-        }
-        yield MenuItem::linkToRoute('Equipes', 'fas fa-list', 'app_equipe_index');
-        yield MenuItem::linkToRoute('Joueurs', 'fas fa-list', 'app_joueur_index');
-        yield MenuItem::linkToRoute('Capitaines', 'fas fa-list', 'app_capitaine_index');
-        yield MenuItem::linkToRoute('Reception', 'fas fa-list', 'app_reception_index');
-        yield MenuItem::linkToRoute('TypeReception', 'fas fa-list', 'app_type_reception_index');
+        return $this->render('superAdmin/dashboard.html.twig', [
+            'pagination' => $pagination,
+        ]);
     }
 
 }

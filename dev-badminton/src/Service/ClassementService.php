@@ -75,4 +75,5 @@ class ClassementService
         return $equipes;
     }
 
+
 }

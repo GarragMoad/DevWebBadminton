@@ -5,32 +5,45 @@
 {% block body %}
     <h1>Reception index</h1>
 
-    <table class="table">
-        <thead>
+    {% if pagination is not null and pagination.items is not empty %}
+
+        <table class="table">
+            <thead>
             <tr>
                 <th>Jour</th>
                 <th>HoraireDebut</th>
                 <th>HoraireFin</th>
+                <th>Club</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for reception in receptions %}
-            <tr>
-                <td>{{ reception.jour.getJour() }}</td>
-                <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
-                <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_reception_edit', {'id': reception.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for reception in pagination.items %}
+                <tr>
+                    <td>{{ reception.jour.getJour() }}</td>
+                    <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
+                    <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
+                    <td> {{ reception.club.nom }}</td>
+                    <td>
+                        <a href="{{ path('app_reception_edit', {'id': reception.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No reception available.</p>
+    {% endif %}
+
+
+    <!-- Bloc pagination : liens de navigation générés automatiquement -->
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 
     <a href="{{ path('app_reception_new') }}">Create new</a>
 {% endblock %}

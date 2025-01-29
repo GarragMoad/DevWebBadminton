@@ -5,26 +5,38 @@
 {% block body %}
     <h1>Classement des équipes</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Equipe</th>
-            <th>Score</th>
-            <th>cpph_equipe</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for equipe in equipes %}
+    {% if pagination is not null and pagination.items is not empty %}
+
+        <table class="table">
+            <thead>
             <tr>
-                <td>{{ equipe.nomEquipe }}</td>
-                <td>{{ equipe.score }}</td>
-                <td>{{ equipe.cpph_equipe }}</td>
+                <th>Equipe</th>
+                <th>Score</th>
+                <th>cpph_equipe</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">No teams found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for equipe in pagination.items %}
+                <tr>
+                    <td>{{ equipe.nomEquipe }}</td>
+                    <td>{{ equipe.score }}</td>
+                    <td>{{ equipe.cpph_equipe }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">No teams found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <!-- Bloc pagination : liens de navigation générés automatiquement -->
+        <div class="pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>No teams available.</p>
+    {% endif %}
+
+
 {% endblock %}
