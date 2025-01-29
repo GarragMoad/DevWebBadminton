@@ -17,18 +17,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CapitaineController extends AbstractController
 {
     #[Route(name: 'app_capitaine_index', methods: ['GET'])]
-    public function index(CapitaineRepository $capitaineRepository, CapitaineService $capitaineService, Security $security): Response
+    public function index(Request $request, CapitaineService $capitaineService): Response
     {
-        $capitaines = [];
-        if ($this->isGranted(attribute: 'ROLE_CLUB')){
-            $user = $this->getUser();
-            $capitaines = $capitaineService->getCapitaineFromUser($user);
-        }
-        if($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN')){
-            $capitaines= $capitaineRepository->findAll();
-        }
+
+        $pagination = $capitaineService->getPaginatedCapitaines($request);
         return $this->render('capitaine/index.html.twig', [
-            'capitaines' => $capitaines
+            'pagination' => $pagination
         ]);
     }
 

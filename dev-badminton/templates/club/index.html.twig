@@ -5,8 +5,9 @@
 {% block body %}
     <h1>Club index</h1>
 
-    <table class="table table-striped">
-        <thead class="thead-dark">
+    {% if pagination is not null and pagination.items is not empty %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
             <tr>
                 <th>Nom</th>
                 <th>Sigle</th>
@@ -14,26 +15,35 @@
                 <th>Adresse</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for club in clubs %}
-            <tr>
-                <td>{{ club.nom }}</td>
-                <td>{{ club.sigle }}</td>
-                <td>{{ club.gymnase }}</td>
-                <td>{{ club.adresse }}</td>
-                <td>
-                    <a href="{{ path('app_club_show', {'id': club.id}) }}" class="btn btn-sm btn-info">Show</a>
-                    <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-sm btn-warning">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">No records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for club in pagination.items %}
+                <tr>
+                    <td>{{ club.nom }}</td>
+                    <td>{{ club.sigle }}</td>
+                    <td>{{ club.gymnase }}</td>
+                    <td>{{ club.adresse }}</td>
+                    <td>
+                        <a href="{{ path('app_club_show', {'id': club.id}) }}" class="btn btn-sm btn-info">Show</a>
+                        <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Bloc pagination : liens de navigation générés automatiquement -->
+        <div class="pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>No clubs available.</p>
+    {% endif %}
 
     <a href="{{ path('app_club_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

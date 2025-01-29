@@ -27,11 +27,12 @@ final class ClubController extends AbstractController
     }
     
     #[Route(name: 'app_club_index', methods: ['GET'])]
-    public function index(ClubRepository $clubRepository): Response
+    public function index(ClubRepository $clubRepository , Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $pagination = $this->clubService->getPaginatedClubs($request);
         return $this->render('club/index.html.twig', [
-            'clubs' => $clubRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

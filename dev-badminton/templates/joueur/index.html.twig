@@ -1,4 +1,3 @@
-{# templates/joueur/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Joueur index{% endblock %}
@@ -6,51 +5,56 @@
 {% block body %}
     <h1>Joueur index</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Numéro de licence</th>
-            <th>Classement simple</th>
-            <th>CPPH simple</th>
-            <th>Classement double</th>
-            <th>CPPH double</th>
-            <th>Classement mixtes</th>
-            <th>CPPH mixtes</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for joueur in pagination.items %}
+    {% if pagination is not null and pagination.items is not empty %}
+        <table class="table">
+            <thead>
             <tr>
-                <td>{{ joueur.nom }}</td>
-                <td>{{ joueur.prenom }}</td>
-                <td>{{ joueur.numreoLicence }}</td>
-                <td>{{ joueur.classementSimple.value }}</td>
-                <td>{{ joueur.cpphSimple }}</td>
-                <td>{{ joueur.classementDouble.value }}</td>
-                <td>{{ joueur.cpphDouble }}</td>
-                <td>{{ joueur.classementMixtes.value }}</td>
-                <td>{{ joueur.cpphMixtes }}</td>
-                <td>
-                    <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">Show</a>
-                    <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">Edit</a>
-                    <a href="{{ path('app_joueur_equipe', {'id': joueur.id}) }}">Associer</a>
-                </td>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Numéro de licence</th>
+                <th>Classement simple</th>
+                <th>CPPH simple</th>
+                <th>Classement double</th>
+                <th>CPPH double</th>
+                <th>Classement mixtes</th>
+                <th>CPPH mixtes</th>
+                <th>Actions</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">No records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for joueur in pagination.items %}
+                <tr>
+                    <td>{{ joueur.nom }}</td>
+                    <td>{{ joueur.prenom }}</td>
+                    <td>{{ joueur.numreoLicence }}</td>
+                    <td>{{ joueur.classementSimple.value }}</td>
+                    <td>{{ joueur.cpphSimple }}</td>
+                    <td>{{ joueur.classementDouble.value }}</td>
+                    <td>{{ joueur.cpphDouble }}</td>
+                    <td>{{ joueur.classementMixtes.value }}</td>
+                    <td>{{ joueur.cpphMixtes }}</td>
+                    <td>
+                        <a href="{{ path('app_joueur_show', {'id': joueur.id}) }}">Show</a>
+                        <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">Edit</a>
+                        <a href="{{ path('app_joueur_equipe', {'id': joueur.id}) }}">Associer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="11">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    {# Bloc pagination : liens de navigation générés automatiquement #}
-    <div class="pagination">
-        {{ knp_pagination_render(pagination) }}
-    </div>
+        <!-- Bloc pagination : liens de navigation générés automatiquement -->
+        <div class="pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>No players available.</p>
+    {% endif %}
 
     <a href="{{ path('app_joueur_new') }}" class="btn btn-primary mt-3">Create New</a>
 {% endblock %}

@@ -28,9 +28,8 @@ final class UserController extends AbstractController
     public function index(Request $request): Response
     {
         $paginatedUsers = $this->userService->getPaginatedUsers($request);
-
         return $this->render('user/index.html.twig', [
-            'users' => $paginatedUsers,
+            'pagination' => $paginatedUsers,
         ]);
     }
 

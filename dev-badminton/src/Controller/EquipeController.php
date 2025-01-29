@@ -17,11 +17,11 @@ use App\Service\ClubService;
 final class EquipeController extends AbstractController
 {
         #[Route(name: 'app_equipe_index', methods: ['GET'])]
-        public function index(EquipeRepository $equipeRepository, ClubService $clubService): Response
+        public function index(EquipeRepository $equipeRepository, EquipeService $equipeService , Request $request): Response
         {
-            $equipes = $this->getEquipesForUser($equipeRepository, $clubService);    
+            $equipesPaginated = $equipeService->getPaginatedEquipe($request);
             return $this->render('equipe/index.html.twig', [
-                'equipes' => $equipes,
+                'pagination' => $equipesPaginated,
             ]);
         }
     

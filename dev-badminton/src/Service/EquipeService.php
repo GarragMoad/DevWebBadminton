@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\JoueurType;
 use App\Form\EquipeType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,8 @@ class EquipeService
 
     private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, ClassementService $classementService, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router,
+                                ClassementService $classementService, Security $security, Private PaginatorInterface $paginator)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
@@ -103,6 +105,34 @@ class EquipeService
         ];
     }
 
+    public function getPaginatedEquipe(Request $request)
+    {
+        $user = $this->security->getUser();
+        if ($this->security->isGranted('ROLE_ADMIN') || $this->security->isGranted('ROLE_SUPER_ADMIN')) {
+            // Pour les admins, retourner toutes les équipes paginées
+            $equipes = $this->entityManager->getRepository(Equipe::class)->findBy([], ['nom_equipe' => 'ASC']);
+        } elseif ($this->security->isGranted('ROLE_CLUB')) {
+            // Pour les clubs, récupérer les équipes du club de l'utilisateur
+            $club = $this->entityManager->getRepository(User::class)->findClubByUser($user);
+            if ($club) {
+                // Utilisation de findBy pour récupérer les équipes du club
+                $equipes = $this->entityManager->getRepository(Equipe::class)->findBy(['club' => $club], ['nom_equipe' => 'ASC']);
+            } else {
+                // Si le club n'est pas trouvé, retourner un tableau vide
+                $equipes = [];
+            }
+        } else {
+            // Aucun accès pour les autres rôles
+            $equipes = [];
+        }
+
+        // Utiliser le paginator pour paginer les résultats
+        return $this->paginator->paginate(
+            $equipes,
+            $request->query->getInt('page', 1),  // Page actuelle (GET ?page=1)
+            5  // Nombre d'éléments par page
+        );
+    }
 
     public function getEquipesForUser($user): array
     {
@@ -122,4 +152,5 @@ class EquipeService
         // Aucun accès pour les autres rôles
         return [];
     }
+
 }

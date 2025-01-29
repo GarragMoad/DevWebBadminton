@@ -7,6 +7,7 @@ use App\Entity\Reception;
 use App\Entity\Equipe;
 use App\Repository\ClubRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ClubType;
@@ -26,7 +27,8 @@ class ClubService
     private Security $security;
 
     private ClubRepository $clubRepository;
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, MailerService $mailerService , Security $security , ClubRepository $clubRepository)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, RouterInterface $router, MailerService $mailerService ,
+                                Security $security , ClubRepository $clubRepository, Private PaginatorInterface $paginator)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
@@ -37,6 +39,26 @@ class ClubService
         $this->clubRepository = $clubRepository;
     }
 
+    /**
+     * Retourne une liste paginée des clubs.
+     *
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getPaginatedClubs(Request $request)
+    {
+        // Construire la requête avec le QueryBuilder
+        $query = $this->clubRepository->createQueryBuilder('u')
+            ->orderBy('u.nom', 'ASC')
+            ->getQuery();
+
+        // Utiliser le paginator pour gérer la pagination
+        return $this->paginator->paginate(
+            $query,                     // La requête
+            $request->query->getInt('page', 1), // Numéro de page (GET ?page=1)
+            10                          // Nombre d'éléments par page
+        );
+    }
     /**
      * @throws TransportExceptionInterface
      */

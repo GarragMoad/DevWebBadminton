@@ -9,8 +9,9 @@
 {% block body %}
     <h1>Equipe index</h1>
 
-    <table class="table">
-        <thead>
+    {% if pagination is not null and pagination.items is not empty %}
+        <table class="table">
+            <thead>
             <tr>
                 <th>Nom_equipe</th>
                 <th>Numero_equipe</th>
@@ -18,41 +19,51 @@
                 <th>Joueurs</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for equipe in equipes %}
-            <tr>
-                <td>{{ equipe.nomEquipe }}</td>
-                <td>{{ equipe.numeroEquipe }}</td>
-                <td>
-                    {% if equipe.capitaine is not null %}
-                        {{ equipe.capitaine.nom }}
-                    {% else %}
-                        <a href="{{ path('app_capitaine_new') }}"> Ajouter un capitaine</a>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if equipe.joueurs is not empty %}
-                    <ul>
+            </thead>
+            <tbody>
+            {% for equipe in pagination.items %}
+                <tr>
+                    <td>{{ equipe.nomEquipe }}</td>
+                    <td>{{ equipe.numeroEquipe }}</td>
+                    <td>
+                        {% if equipe.capitaine is not null %}
+                            {{ equipe.capitaine.nom }}
+                        {% else %}
+                            <a href="{{ path('app_capitaine_new') }}"> Ajouter un capitaine</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equipe.joueurs is not empty %}
+                            <ul>
+                                {% for joueur in equipe.joueurs %}
+                                    <li>{{ joueur.nom }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>No Joueurs</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_equipe_show', {'id': equipe.id}) }}">show</a>
+                        <a href="{{ path('app_equipe_edit', {'id': equipe.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-                            {% for joueur in equipe.joueurs %}
-                                <li>{{ joueur.nom }}</li>
-                            {% endfor %}
-                    </ul>
-                {% else %}  <span>No Joueurs</span> {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('app_equipe_show', {'id': equipe.id}) }}">show</a>
-                    <a href="{{ path('app_equipe_edit', {'id': equipe.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <!-- Bloc pagination : liens de navigation générés automatiquement -->
+        <div class="pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>No teams available.</p>
+    {% endif %}
 
     <a href="{{ path('app_equipe_new') }}">Create new</a>
 {% endblock %}

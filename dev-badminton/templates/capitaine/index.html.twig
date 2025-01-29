@@ -5,38 +5,59 @@
 {% block body %}
     <h1>Capitaine index</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Mail</th>
-            <th>Telephone</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for capitaine in capitaines %}
+    {% if pagination is not null and pagination.items is not empty %}
+        <table class="table">
+            <thead>
             <tr>
-                {% if capitaine is not null %}
-                    <td>{{ capitaine.nom }}</td>
-                    <td>{{ capitaine.prenom }}</td>
-                    <td>{{ capitaine.mail }}</td>
-                    <td>{{ capitaine.telephone }}</td>
-                    <td>
-                        <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}">edit</a>
-                    </td>
-                {% else %}
-                    <td></td>
-                {% endif %}
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Mail</th>
+                <th>Telephone</th>
+                <th>Equipe</th>
+                <th>Club</th>
+                <th>Actions</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for capitaine in pagination.items %}
+                <tr>
+                    {% if capitaine is not null %}
+                        <td>{{ capitaine.nom }}</td>
+                        <td>{{ capitaine.prenom }}</td>
+                        <td>{{ capitaine.mail }}</td>
+                        <td>{{ capitaine.telephone }}</td>
+                        <td>
+                            {% for equipe in capitaine.equipes %}
+                                {{ equipe.NomEquipe }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for equipe in capitaine.equipes %}
+                                {{ equipe.club.nom }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}">Edit</a>
+                        </td>
+                    {% else %}
+                        <td colspan="5">No data available</td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Bloc pagination uniquement visible si des résultats sont présents -->
+        <div class="pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% else %}
+        <p>No captains available.</p>
+    {% endif %}
 
     <a href="{{ path('app_capitaine_new') }}">Create new</a>
 {% endblock %}
