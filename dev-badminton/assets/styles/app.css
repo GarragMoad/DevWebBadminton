@@ -1,8 +1,152 @@
-/* Structure de base de la page */
+/* ====== Structure de base ====== */
 body {
     display: flex;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #f4f6f9;
+    color: #333;
 }
+
+.container-fluid {
+    padding: 0;
+}
+
+/* ====== Navbar Vertical ====== */
+.navbar {
+    background-color: #343a40;
+    color: white;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 0.75rem 1rem;
+    transition: background 0.3s;
+}
+
+.navbar a:hover {
+    background-color: #495057;
+    border-radius: 4px;
+}
+
+/* ====== Contenu Principal ====== */
+main {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 1rem;
+}
+
+/* ====== Tableau CRUD ====== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #343a40;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* ====== Boutons ====== */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+}
+
+.btn-add {
+    background-color: #28a745;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+}
+
+.btn-edit {
+    background-color: #007bff;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* ====== Formulaires ====== */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+}
+
+input[type="text"], input[type="email"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+    .navbar {
+        min-height: auto;
+        padding: 0.5rem;
+    }
+
+    main {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+
+    th, td {
+        padding: 8px 10px;
+    }
+}
+
 
