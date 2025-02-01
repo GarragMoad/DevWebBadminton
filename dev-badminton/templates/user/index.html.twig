@@ -1,15 +1,16 @@
+{# templates/user/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Liste des Utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>Liste des Utilisateurs</h1>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="thead-dark">
         <tr>
             <th>Email</th>
-            <th>Roles</th>
+            <th>Rôles</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -18,20 +19,24 @@
             <tr>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                <td class="d-flex align-items-center gap-2">
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                    {{ include('user/_delete_form.html.twig', {'user': user}) }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">No records found</td>
+                <td colspan="3">Aucun utilisateur trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-        <div class="pagination">
-            {{ knp_pagination_render(pagination) }}
-        </div>
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <div class="text-end mt-3">
+        <a href="{{ path('app_user_new') }}" class="btn btn-success">Créer un nouvel utilisateur</a>
+    </div>
 {% endblock %}

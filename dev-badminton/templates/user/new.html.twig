@@ -1,11 +1,12 @@
+{# templates/user/new.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}Créer un nouvel Utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
+    <h1>Créer un nouvel Utilisateur</h1>
 
-    {{ include('user/_form.html.twig') }}
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    <div class="form-container">
+        {{ include('user/_form.html.twig') }}
+    </div>
 {% endblock %}
