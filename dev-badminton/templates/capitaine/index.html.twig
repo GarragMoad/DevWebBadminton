@@ -1,63 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Capitaine index{% endblock %}
+{% block title %}Liste des Capitaines{% endblock %}
 
 {% block body %}
-    <h1>Capitaine index</h1>
+    <h1>Liste des Capitaines</h1>
 
     {% if pagination is not null and pagination.items is not empty %}
-        <table class="table">
-            <thead>
+        <table class="table table-striped">
+            <thead class="thead-dark">
             <tr>
                 <th>Nom</th>
-                <th>Prenom</th>
+                <th>Prénom</th>
                 <th>Mail</th>
-                <th>Telephone</th>
-                <th>Equipe</th>
-                <th>Club</th>
+                <th>Téléphone</th>
+                <th>Équipe(s)</th>
+                <th>Club(s)</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             {% for capitaine in pagination.items %}
                 <tr>
-                    {% if capitaine is not null %}
-                        <td>{{ capitaine.nom }}</td>
-                        <td>{{ capitaine.prenom }}</td>
-                        <td>{{ capitaine.mail }}</td>
-                        <td>{{ capitaine.telephone }}</td>
-                        <td>
-                            {% for equipe in capitaine.equipes %}
-                                {{ equipe.NomEquipe }}{% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for equipe in capitaine.equipes %}
-                                {{ equipe.club.nom }}{% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}">Edit</a>
-                        </td>
-                    {% else %}
-                        <td colspan="5">No data available</td>
-                    {% endif %}
+                    <td>{{ capitaine.nom }}</td>
+                    <td>{{ capitaine.prenom }}</td>
+                    <td>{{ capitaine.mail }}</td>
+                    <td>{{ capitaine.telephone }}</td>
+                    <td>
+                        {% for equipe in capitaine.equipes %}
+                            {{ equipe.nomEquipe }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for equipe in capitaine.equipes %}
+                            {{ equipe.club.nom }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="d-flex align-items-center gap-2">
+                        <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                        {{ include('capitaine/_delete_form.html.twig', {'capitaine': capitaine}) }}
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">No records found</td>
+                    <td colspan="7">Aucun capitaine trouvé</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
 
-        <!-- Bloc pagination uniquement visible si des résultats sont présents -->
         <div class="pagination">
             {{ knp_pagination_render(pagination) }}
         </div>
     {% else %}
-        <p>No captains available.</p>
+        <p>Aucun capitaine disponible.</p>
     {% endif %}
 
-    <a href="{{ path('app_capitaine_new') }}">Create new</a>
+    <div class="text-end mt-3">
+        <a href="{{ path('app_capitaine_new') }}" class="btn btn-success">Créer un nouveau capitaine</a>
+    </div>
 {% endblock %}

@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Capitaine{% endblock %}
+{% block title %}Modifier Capitaine{% endblock %}
 
 {% block body %}
-    <h1>Edit Capitaine</h1>
+    <h1>Modifier Capitaine</h1>
 
-    {{ include('capitaine/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('capitaine/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <a href="{{ path('app_capitaine_index') }}">back to list</a>
+    <a href="{{ path('app_capitaine_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
 
     {{ include('capitaine/_delete_form.html.twig') }}
 {% endblock %}

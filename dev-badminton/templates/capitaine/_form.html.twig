@@ -1,4 +1,28 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<div class="form-group">
+    {{ form_label(form.nom, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.prenom, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.mail, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.telephone, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.equipes, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.equipes, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<button type="submit" class="btn btn-success">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}
