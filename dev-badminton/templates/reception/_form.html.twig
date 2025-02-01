@@ -1,4 +1,12 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{# templates/reception/_form.html.twig #}
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+<div class="form-group">
+    {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="d-flex justify-content-end gap-2 mt-3">
+    <a href="{{ path('app_reception_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+</div>
+
 {{ form_end(form) }}

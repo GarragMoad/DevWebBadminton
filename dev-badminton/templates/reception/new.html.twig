@@ -1,11 +1,12 @@
+{# templates/reception/new.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}New Reception{% endblock %}
+{% block title %}Créer une nouvelle Réception{% endblock %}
 
 {% block body %}
-    <h1>Create new Reception</h1>
+    <h1>Créer une nouvelle Réception</h1>
 
-    {{ include('reception/_form.html.twig') }}
-
-    <a href="{{ path('app_reception_index') }}">back to list</a>
+    <div class="form-container">
+        {{ include('reception/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    </div>
 {% endblock %}
