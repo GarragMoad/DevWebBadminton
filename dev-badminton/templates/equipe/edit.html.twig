@@ -1,10 +1,13 @@
+{# templates/equipe/edit.html.twig #}
 {% extends 'base.html.twig' %}
 
+{% block title %}Modifier Équipe{% endblock %}
+
 {% block body %}
-    <h1> Modifier une équipe</h1>
-    {% include 'equipe/_form.html.twig' with { form: form, is_edit: is_edit } %}
-    {# {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary"> 'Mettre à jour'</button>
-    {{ form_end(form) }} #}
+    <h1>Modifier Équipe</h1>
+
+    {{ include('equipe/_form.html.twig', { form: form, is_edit: true }) }}
+
+    <a href="{{ path('app_equipe_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+    {{ include('equipe/_delete_form.html.twig', {'equipe': equipe}) }}
 {% endblock %}

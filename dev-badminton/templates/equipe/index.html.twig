@@ -1,23 +1,24 @@
+{# templates/equipe/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Equipe index{% endblock %}
+{% block title %}Equipe Index{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('build/equipe.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/equipe.css') }}">
 {% endblock %}
 
 {% block body %}
-    <h1>Equipe index</h1>
+    <h1>Liste des Équipes</h1>
 
     {% if pagination is not null and pagination.items is not empty %}
-        <table class="table">
-            <thead>
+        <table class="table table-striped">
+            <thead class="thead-dark">
             <tr>
-                <th>Nom_equipe</th>
-                <th>Numero_equipe</th>
+                <th>Nom de l'équipe</th>
+                <th>Numéro d'équipe</th>
                 <th>Capitaine</th>
                 <th>Joueurs</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -25,13 +26,7 @@
                 <tr>
                     <td>{{ equipe.nomEquipe }}</td>
                     <td>{{ equipe.numeroEquipe }}</td>
-                    <td>
-                        {% if equipe.capitaine is not null %}
-                            {{ equipe.capitaine.nom }}
-                        {% else %}
-                            <a href="{{ path('app_capitaine_new') }}"> Ajouter un capitaine</a>
-                        {% endif %}
-                    </td>
+                    <td>{{ equipe.capitaine ? equipe.capitaine.nom : 'Aucun capitaine' }}</td>
                     <td>
                         {% if equipe.joueurs is not empty %}
                             <ul>
@@ -40,29 +35,30 @@
                                 {% endfor %}
                             </ul>
                         {% else %}
-                            <span>No Joueurs</span>
+                            <span>Aucun joueur</span>
                         {% endif %}
                     </td>
-                    <td>
-                        <a href="{{ path('app_equipe_edit', {'id': equipe.id}) }}">edit</a>
+                    <td class="d-flex align-items-center gap-2">
+                        <a href="{{ path('app_equipe_edit', {'id': equipe.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                        {{ include('equipe/_delete_form.html.twig', {'equipe': equipe}) }}
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">No records found</td>
+                    <td colspan="5">Aucune équipe trouvée</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
 
-        <!-- Bloc pagination : liens de navigation générés automatiquement -->
         <div class="pagination">
             {{ knp_pagination_render(pagination) }}
         </div>
-
     {% else %}
-        <p>No teams available.</p>
+        <p>Aucune équipe disponible.</p>
     {% endif %}
 
-    <a href="{{ path('app_equipe_new') }}">Create new</a>
+    <div class="text-end mt-3">
+        <a href="{{ path('app_equipe_new') }}" class="btn btn-success">Créer une nouvelle équipe</a>
+    </div>
 {% endblock %}
