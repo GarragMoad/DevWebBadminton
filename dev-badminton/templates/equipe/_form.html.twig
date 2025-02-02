@@ -1,21 +1,22 @@
 {# templates/equipe/_form.html.twig #}
 {{ form_start(form, {'attr': {'class': 'form'}}) }}
 <div class="form-group">
-    {{ form_label(form.nom_equipe) }}
+    {{ form_label(form.nom_equipe, null, {'label_attr': {'class': 'form-label'}}) }}
     {{ form_widget(form.nom_equipe, {'attr': {'class': 'form-control'}}) }}
 </div>
 
 <div class="form-group">
-    {{ form_label(form.numero_equipe) }}
+    {{ form_label(form.numero_equipe, null, {'label_attr': {'class': 'form-label'}}) }}
     {{ form_widget(form.numero_equipe, {'attr': {'class': 'form-control'}}) }}
 </div>
 
 <div class="form-group">
-    {{ form_label(form.club) }}
+    {{ form_label(form.club, null, {'label_attr': {'class': 'form-label'}}) }}
     {{ form_widget(form.club, {'attr': {'class': 'form-control'}}) }}
 </div>
 
-<div class="text-end">
+<div class="d-flex justify-content-end gap-2 mt-3">
+    <a href="{{ path('app_equipe_index') }}" class="btn btn-secondary">Retour à la liste</a>
     <button type="submit" class="btn btn-success">{{ is_edit ? 'Mettre à jour' : 'Créer' }}</button>
 </div>
 {{ form_end(form) }}
