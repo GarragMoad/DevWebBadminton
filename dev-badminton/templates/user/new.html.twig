@@ -6,7 +6,7 @@
 {% block body %}
     <h1>Créer un nouvel Utilisateur</h1>
 
-    <div class="form-container">
-        {{ include('user/_form.html.twig') }}
-    </div>
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('app_user_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
 {% endblock %}
