@@ -13,15 +13,14 @@
 <div class="container-fluid">
     <div class="row min-vh-100">
         <!-- Vertical Navbar -->
-            {{ render(controller('App\\Controller\\Partial\\MenuController::index')) }}
+        {{ render(controller('App\\Controller\\Partial\\MenuController::index')) }}
 
-
-            <!-- Contenu principal -->
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
-                {% block body %}{% endblock %}
-            </main>
-        </div>
+        <!-- Contenu principal -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+            {% block body %}{% endblock %}
+        </main>
     </div>
-    <script src="{{ asset('build/app.js') }}"></script>
+</div>
+<script src="{{ asset('build/app.js') }}"></script>
 </body>
 </html>
