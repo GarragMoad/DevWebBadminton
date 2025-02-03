@@ -1,20 +1,20 @@
-{# templates/reception/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Réceptions{% endblock %}
+{% block title %}Reception index{% endblock %}
 
 {% block body %}
-    <h1>Liste des Réceptions</h1>
+    <h1>Reception index</h1>
 
     {% if pagination is not null and pagination.items is not empty %}
-        <table class="table table-striped">
-            <thead class="thead-dark">
+
+        <table class="table">
+            <thead>
             <tr>
                 <th>Jour</th>
-                <th>Horaire Début</th>
-                <th>Horaire Fin</th>
+                <th>HoraireDebut</th>
+                <th>HoraireFin</th>
                 <th>Club</th>
-                <th>Actions</th>
+                <th>actions</th>
             </tr>
             </thead>
             <tbody>
@@ -23,28 +23,27 @@
                     <td>{{ reception.jour.getJour() }}</td>
                     <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
                     <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
-                    <td>{{ reception.club.nom }}</td>
-                    <td class="d-flex align-items-center gap-2">
-                        <a href="{{ path('app_reception_edit', {'id': reception.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
-                        {{ include('reception/_delete_form.html.twig', {'reception': reception}) }}
+                    <td> {{ reception.club.nom }}</td>
+                    <td>
+                        <a href="{{ path('app_reception_edit', {'id': reception.id}) }}">edit</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">Aucune réception trouvée</td>
+                    <td colspan="4">no records found</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
-        <div class="pagination">
-            {{ knp_pagination_render(pagination) }}
-        </div>
     {% else %}
-        <p>Aucune réception disponible.</p>
+        <p>No reception available.</p>
     {% endif %}
 
-    <div class="text-end mt-3">
-        <a href="{{ path('app_reception_new') }}" class="btn btn-success">Créer une nouvelle réception</a>
+
+    <!-- Bloc pagination : liens de navigation générés automatiquement -->
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
     </div>
+
+    <a href="{{ path('app_reception_new') }}">Create new</a>
 {% endblock %}
