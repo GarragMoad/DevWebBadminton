@@ -1,49 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reception index{% endblock %}
+{% block title %}Liste des Réceptions{% endblock %}
 
 {% block body %}
-    <h1>Reception index</h1>
+    <div class="container-fluid">
+        <h1>Liste des Réceptions</h1>
 
-    {% if pagination is not null and pagination.items is not empty %}
-
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Jour</th>
-                <th>HoraireDebut</th>
-                <th>HoraireFin</th>
-                <th>Club</th>
-                <th>actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for reception in pagination.items %}
+        {% if pagination is not null and pagination.items is not empty %}
+            <table class="table table-striped table-hover reception-table">
+                <thead>
                 <tr>
-                    <td>{{ reception.jour.getJour() }}</td>
-                    <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
-                    <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
-                    <td> {{ reception.club.nom }}</td>
-                    <td>
-                        <a href="{{ path('app_reception_edit', {'id': reception.id}) }}">edit</a>
-                    </td>
+                    <th>Jour</th>
+                    <th>Horaire Début</th>
+                    <th>Horaire Fin</th>
+                    <th>Club</th>
+                    <th>Actions</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No reception available.</p>
-    {% endif %}
+                </thead>
+                <tbody>
+                {% for reception in pagination.items %}
+                    <tr>
+                        <td>{{ reception.jour.getJour() }}</td>
+                        <td>{{ reception.horaireDebut ? reception.horaireDebut|date('H:i') : '' }}</td>
+                        <td>{{ reception.horaireFin ? reception.horaireFin|date('H:i') : '' }}</td>
+                        <td>{{ reception.club.nom }}</td>
+                        <td class="reception-actions">
+                            <a href="{{ path('app_reception_edit', {'id': reception.id}) }}" class="btn btn-sm btn-primary btn-edit">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
+            <div class="reception-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% else %}
+            <p>Aucune réception disponible.</p>
+        {% endif %}
 
-    <!-- Bloc pagination : liens de navigation générés automatiquement -->
-    <div class="pagination">
-        {{ knp_pagination_render(pagination) }}
+        <div class="reception-actions">
+            <a href="{{ path('app_reception_new') }}" class="btn btn-success btn-create">
+                <i class="fas fa-plus"></i> Créer une nouvelle réception
+            </a>
+        </div>
     </div>
-
-    <a href="{{ path('app_reception_new') }}">Create new</a>
 {% endblock %}

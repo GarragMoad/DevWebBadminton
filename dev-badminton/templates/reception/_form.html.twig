@@ -1,4 +1,10 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'class': 'reception-form'}}) }}
+<div class="form-group">
     {{ form_widget(form) }}
-<button class="btn">{{ button_label|default('Save') }}</button>
+</div>
+<div class="reception-actions">
+    <button class="btn btn-success btn-create">
+        <i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
 {{ form_end(form) }}
