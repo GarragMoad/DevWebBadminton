@@ -1,65 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Joueur index{% endblock %}
+{% block title %}Liste des Joueurs{% endblock %}
 
 {% block body %}
-    <h1>Joueur index</h1>
+    <div class="container-fluid">
+        <h1>Liste des Joueurs</h1>
 
-    {% if pagination is not null and pagination.items is not empty %}
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Numéro de licence</th>
-                <th>Classement simple</th>
-                <th>CPPH simple</th>
-                <th>Classement double</th>
-                <th>CPPH double</th>
-                <th>Classement mixtes</th>
-                <th>CPPH mixtes</th>
-                <th>Equipes</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for joueur in pagination.items %}
+        {% if pagination is not null and pagination.items is not empty %}
+            <table class="table table-striped table-hover joueur-table">
+                <thead>
                 <tr>
-                    <td>{{ joueur.nom }}</td>
-                    <td>{{ joueur.prenom }}</td>
-                    <td>{{ joueur.numreoLicence }}</td>
-                    <td>{{ joueur.classementSimple.value }}</td>
-                    <td>{{ joueur.cpphSimple }}</td>
-                    <td>{{ joueur.classementDouble.value }}</td>
-                    <td>{{ joueur.cpphDouble }}</td>
-                    <td>{{ joueur.classementMixtes.value }}</td>
-                    <td>{{ joueur.cpphMixtes }}</td>
-                    <td>
-                        {% for equipe in joueur.equipes %}
-                            {{ equipe.NomEquipe }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}">Edit</a>
-                        {# <a href="{{ path('app_joueur_equipe', {'id': joueur.id}) }}">Associer</a> #}
-                    </td>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Numéro de licence</th>
+                    <th>Classement Simple</th>
+                    <th>CPPH Simple</th>
+                    <th>Classement Double</th>
+                    <th>CPPH Double</th>
+                    <th>Classement Mixtes</th>
+                    <th>CPPH Mixtes</th>
+                    <th>Equipes</th>
+                    <th>Actions</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="11">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for joueur in pagination.items %}
+                    <tr>
+                        <td>{{ joueur.nom }}</td>
+                        <td>{{ joueur.prenom }}</td>
+                        <td>{{ joueur.numreoLicence }}</td>
+                        <td>{{ joueur.classementSimple.value }}</td>
+                        <td>{{ joueur.cpphSimple }}</td>
+                        <td>{{ joueur.classementDouble.value }}</td>
+                        <td>{{ joueur.cpphDouble }}</td>
+                        <td>{{ joueur.classementMixtes.value }}</td>
+                        <td>{{ joueur.cpphMixtes }}</td>
+                        <td>
+                            {% for equipe in joueur.equipes %}
+                                {{ equipe.NomEquipe }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td class="joueur-actions">
+                            <a href="{{ path('app_joueur_edit', {'id': joueur.id}) }}" class="btn btn-sm btn-primary btn-edit">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="11" class="text-center">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-        <!-- Bloc pagination : liens de navigation générés automatiquement -->
-        <div class="pagination">
-            {{ knp_pagination_render(pagination) }}
+            <div class="joueur-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% else %}
+            <p>Aucun joueur disponible.</p>
+        {% endif %}
+
+        <div class="joueur-actions">
+            <a href="{{ path('app_joueur_new') }}" class="btn btn-success btn-create">
+                <i class="fas fa-plus"></i> Créer un nouveau joueur
+            </a>
         </div>
-
-    {% else %}
-        <p>No players available.</p>
-    {% endif %}
-
-    <a href="{{ path('app_joueur_new') }}" class="btn btn-primary mt-3">Create New</a>
+    </div>
 {% endblock %}

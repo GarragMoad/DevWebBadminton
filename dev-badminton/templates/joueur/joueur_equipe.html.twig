@@ -3,12 +3,24 @@
 {% block title %}Associer Joueur à Equipe{% endblock %}
 
 {% block body %}
-    <h1>Associer {{ joueur.nom }} {{ joueur.prenom }} à une Équipe</h1>
+    <div class="container-fluid">
+        <h1>Associer {{ joueur.nom }} {{ joueur.prenom }} à une Équipe</h1>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">Associer</button>
-    {{ form_end(form) }}
+        {{ form_start(form, {'attr': {'class': 'joueur-form'}}) }}
+        <div class="form-group">
+            {{ form_widget(form) }}
+        </div>
+        <div class="joueur-actions">
+            <button class="btn btn-success btn-create">
+                <i class="fas fa-link"></i> Associer
+            </button>
+        </div>
+        {{ form_end(form) }}
 
-    <a href="{{ path('app_joueur_index') }}">Retour à la liste</a>
+        <div class="joueur-actions mt-3">
+            <a href="{{ path('app_joueur_index') }}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
 {% endblock %}
