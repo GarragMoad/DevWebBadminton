@@ -1,48 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Club index{% endblock %}
+{% block title %}Liste des Clubs{% endblock %}
 
 {% block body %}
-    <h1>Club index</h1>
+    <div class="container-fluid">
+        <h1>Liste des Clubs</h1>
 
-    {% if pagination is not null and pagination.items is not empty %}
-        <table class="table table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Nom</th>
-                <th>Sigle</th>
-                <th>Gymnase</th>
-                <th>Adresse</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for club in pagination.items %}
+        {% if pagination is not null and pagination.items is not empty %}
+            <table class="table table-striped table-hover club-table">
+                <thead>
                 <tr>
-                    <td>{{ club.nom }}</td>
-                    <td>{{ club.sigle }}</td>
-                    <td>{{ club.gymnase }}</td>
-                    <td>{{ club.adresse }}</td>
-                    <td>
-                        <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-sm btn-warning">Edit</a>
-                    </td>
+                    <th>Nom</th>
+                    <th>Sigle</th>
+                    <th>Gymnase</th>
+                    <th>Adresse</th>
+                    <th>Actions</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for club in pagination.items %}
+                    <tr>
+                        <td>{{ club.nom }}</td>
+                        <td>{{ club.sigle }}</td>
+                        <td>{{ club.gymnase }}</td>
+                        <td>{{ club.adresse }}</td>
+                        <td class="club-actions">
+                            <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-sm btn-primary btn-edit">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-        <!-- Bloc pagination : liens de navigation générés automatiquement -->
-        <div class="pagination">
-            {{ knp_pagination_render(pagination) }}
+            <div class="club-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% else %}
+            <p>Aucun club disponible.</p>
+        {% endif %}
+
+        <div class="club-actions">
+            <a href="{{ path('app_club_new') }}" class="btn btn-success btn-create">
+                <i class="fas fa-plus"></i> Créer un nouveau club
+            </a>
         </div>
-
-    {% else %}
-        <p>No clubs available.</p>
-    {% endif %}
-
-    <a href="{{ path('app_club_new') }}" class="btn btn-success">Create new</a>
+    </div>
 {% endblock %}

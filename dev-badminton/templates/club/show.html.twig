@@ -1,31 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Club{% endblock %}
+{% block title %}Détails du Club{% endblock %}
 
 {% block body %}
-    <h1>Club</h1>
+    <div class="container-fluid">
+        <h1>Détails du Club</h1>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Nom</th>
-            <td>{{ club.nom }}</td>
-        </tr>
-        <tr>
-            <th>Sigle</th>
-            <td>{{ club.sigle }}</td>
-        </tr>
-        <tr>
-            <th>Gymnase</th>
-            <td>{{ club.gymnase }}</td>
-        </tr>
-        <tr>
-            <th>Adresse</th>
-            <td>{{ club.adresse }}</td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Nom</th>
+                <td>{{ club.nom }}</td>
+            </tr>
+            <tr>
+                <th>Sigle</th>
+                <td>{{ club.sigle }}</td>
+            </tr>
+            <tr>
+                <th>Gymnase</th>
+                <td>{{ club.gymnase }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ club.adresse }}</td>
+            </tr>
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_club_edit', {'id': club.id}) }}">edit</a>
-    {{ include('club/_delete_form.html.twig', {'club': club}) }}
+        <div class="club-actions">
+            <a href="{{ path('app_club_edit', {'id': club.id}) }}" class="btn btn-primary btn-edit">
+                <i class="fas fa-edit"></i> Modifier
+            </a>
+            <a href="{{ path('app_club_index') }}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Retour à la liste
+            </a>
+            {{ include('club/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

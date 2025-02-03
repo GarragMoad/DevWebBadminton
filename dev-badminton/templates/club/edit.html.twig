@@ -1,19 +1,18 @@
+{% extends 'base.html.twig' %}
 
-
-    {% extends 'base.html.twig' %}
-
- {% block title %}Modifier Club{% endblock %}
+{% block title %}Modifier Club{% endblock %}
 
 {% block body %}
-    <h1>Modifier Club</h1>
+    <div class="container-fluid">
+        <h1>Modifier Club</h1>
 
-    {{ form_start(formClub) }}
-    {{ form_widget(formClub) }}
+        {{ include('club/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-    {{ form_end(formClub) }}
-    <a href="{{ path('app_club_index') }}">back to list</a>
-
-    {{ include('club/_delete_form.html.twig') }}
+        <div class="club-actions mt-3">
+            <a href="{{ path('app_club_index') }}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Retour à la liste
+            </a>
+            {{ include('club/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}
-

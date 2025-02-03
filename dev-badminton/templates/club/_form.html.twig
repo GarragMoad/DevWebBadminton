@@ -1,21 +1,10 @@
-{# {{ form_start(formClub) }}
+{{ form_start(formClub, {'attr': {'class': 'club-form'}}) }}
+<div class="form-group">
     {{ form_widget(formClub) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(formClub) }} #}
-
-
-{% extends 'base.html.twig' %}
-
-{% block title %}Ajouter un nouveau club{% endblock %}
-
-{% block body %}
-    <h1>Ajouter un nouveau club</h1>
-    
-    {{ form_start(formClub) }}
-        {{ form_widget(formClub) }}
-
-        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-    {{ form_end(formClub) }}
-    <a href="{{ path('app_club_index') }}">back to list</a>
-
-{% endblock %}
+</div>
+<div class="club-actions">
+    <button class="btn btn-success btn-create">
+        <i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+{{ form_end(formClub) }}
