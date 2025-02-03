@@ -1,10 +1,24 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Modifier une Équipe{% endblock %}
+
 {% block body %}
-    <h1> Modifier une équipe</h1>
-    {% include 'equipe/_form.html.twig' with { form: form, is_edit: is_edit } %}
-    {# {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary"> 'Mettre à jour'</button>
-    {{ form_end(form) }} #}
+    <div class="container-fluid">
+        <h1>Modifier l'équipe</h1>
+
+        {{ include('equipe/_form.html.twig', { is_edit: true }) }}
+
+        <div class="equipe-actions mt-3">
+            <div class="row">
+                <div class="col">
+                    <a href="{{ path('app_equipe_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-list"></i> Retour à la liste
+                    </a>
+                </div>
+                <div class="col text-right">
+                    {{ include('equipe/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

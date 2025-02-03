@@ -1,51 +1,29 @@
-.form-group {
-    margin-bottom: 20px;
+.equipe-table {
+    margin-top: 20px;
 }
 
-.form-horizontal .form-group label {
-    text-align: left;
-    font-weight: bold;
+.equipe-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
 }
 
-.form-horizontal .form-control {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
+.equipe-pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
-/* Boutons */
-.btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    margin-top: 10px;
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
 }
 
-.btn-secondary, .btn-primary, .btn-success {
-    min-width: 120px;
-    text-align: center;
+.btn-group .btn {
+    margin-right: 5px;
 }
 
-/* Section Joueur */
-.joueur-form {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    background-color: #f9f9f9;
-}
-
-.joueur-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #555;
-}
-
-/* Navigation */
-.form-group button {
-    margin-right: 10px;
-}
-
-.joueur-form {
-    transition: opacity 0.3s ease-in-out;
+.equipe-actions .btn-create {
+    margin-left: auto;
 }
