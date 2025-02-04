@@ -3,11 +3,22 @@
 {% block title %}Modifier Capitaine{% endblock %}
 
 {% block body %}
-    <h1>Modifier Capitaine</h1>
+    <div class="container-fluid">
+        <h1>Modifier le capitaine</h1>
 
-    {{ include('capitaine/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        {{ include('capitaine/_form.html.twig', { button_label: 'Mettre à jour' }) }}
 
-    <a href="{{ path('app_capitaine_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
-
-    {{ include('capitaine/_delete_form.html.twig') }}
+        <div class="capitaine-actions mt-3">
+            <div class="row">
+                <div class="col">
+                    <a href="{{ path('app_capitaine_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-list"></i> Retour à la liste
+                    </a>
+                </div>
+                <div class="col text-right">
+                    {{ include('capitaine/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un nouveau Capitaine{% endblock %}
+{% block title %}Nouveau Capitaine{% endblock %}
 
 {% block body %}
-    <h1>Créer un nouveau Capitaine</h1>
+    <div class="container-fluid">
+        <h1>Créer un nouveau capitaine</h1>
 
-    {{ include('capitaine/_form.html.twig') }}
+        {{ include('capitaine/_form.html.twig') }}
 
-    <a href="{{ path('app_capitaine_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+        <div class="capitaine-actions mt-3">
+            <a href="{{ path('app_capitaine_index') }}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
 {% endblock %}

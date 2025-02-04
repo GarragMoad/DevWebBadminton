@@ -3,59 +3,76 @@
 {% block title %}Liste des Capitaines{% endblock %}
 
 {% block body %}
-    <h1>Liste des Capitaines</h1>
+    <div class="container-fluid">
+        <h1>Liste des Capitaines</h1>
 
-    {% if pagination is not null and pagination.items is not empty %}
-        <table class="table table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Mail</th>
-                <th>Téléphone</th>
-                <th>Équipe(s)</th>
-                <th>Club(s)</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for capitaine in pagination.items %}
+        {% if pagination is not null and pagination.items is not empty %}
+            <table class="table table-striped table-hover capitaine-table">
+                <thead>
                 <tr>
-                    <td>{{ capitaine.nom }}</td>
-                    <td>{{ capitaine.prenom }}</td>
-                    <td>{{ capitaine.mail }}</td>
-                    <td>{{ capitaine.telephone }}</td>
-                    <td>
-                        {% for equipe in capitaine.equipes %}
-                            {{ equipe.nomEquipe }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for equipe in capitaine.equipes %}
-                            {{ equipe.club.nom }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td class="d-flex align-items-center gap-2">
-                        <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
-                        {{ include('capitaine/_delete_form.html.twig', {'capitaine': capitaine}) }}
-                    </td>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Mail</th>
+                    <th>Téléphone</th>
+                    <th>Équipe(s)</th>
+                    <th>Club(s)</th>
+                    <th>Actions</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="7">Aucun capitaine trouvé</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for capitaine in pagination.items %}
+                    <tr>
+                        <td>{{ capitaine.nom }}</td>
+                        <td>{{ capitaine.prenom }}</td>
+                        <td>{{ capitaine.mail }}</td>
+                        <td>{{ capitaine.telephone }}</td>
+                        <td>
+                            {% if capitaine.equipes is not empty %}
+                                <ul class="list-unstyled">
+                                    {% for equipe in capitaine.equipes %}
+                                        <li>{{ equipe.nomEquipe }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">Aucune équipe</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if capitaine.equipes is not empty %}
+                                <ul class="list-unstyled">
+                                    {% for equipe in capitaine.equipes %}
+                                        <li>{{ equipe.club.nom }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">Aucun club</span>
+                            {% endif %}
+                        </td>
+                        <td class="capitaine-actions">
+                            <a href="{{ path('app_capitaine_edit', {'id': capitaine.id}) }}" class="btn btn-sm btn-primary btn-edit">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">Aucun capitaine trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-        <div class="pagination">
-            {{ knp_pagination_render(pagination) }}
+            <div class="capitaine-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% else %}
+            <p class="alert alert-info">Aucun capitaine disponible.</p>
+        {% endif %}
+
+        <div class="capitaine-actions mt-3">
+            <a href="{{ path('app_capitaine_new') }}" class="btn btn-success btn-create">
+                <i class="fas fa-plus"></i> Créer un nouveau capitaine
+            </a>
         </div>
-    {% else %}
-        <p>Aucun capitaine disponible.</p>
-    {% endif %}
-
-    <div class="text-end mt-3">
-        <a href="{{ path('app_capitaine_new') }}" class="btn btn-success">Créer un nouveau capitaine</a>
     </div>
 {% endblock %}

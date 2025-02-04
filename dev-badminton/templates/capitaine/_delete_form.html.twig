@@ -1,5 +1,6 @@
-<form method="post" action="{{ path('app_capitaine_delete', {'id': capitaine.id}) }}"
-      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce capitaine ?');" class="d-inline">
+<form method="post" action="{{ path('app_capitaine_delete', {'id': capitaine.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce capitaine ?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ capitaine.id) }}">
-    <button class="btn btn-sm btn-danger">Supprimer</button>
+    <button class="btn btn-danger btn-delete">
+        <i class="fas fa-trash"></i> Supprimer
+    </button>
 </form>
